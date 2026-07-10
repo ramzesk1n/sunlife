@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-preview:
+  deploy-preview:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,52 +35,14 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          DEPLOY_TARGET: cf-pages
 
-      - name: Copy PHP placeholder for preview
-        run: |
-          mkdir -p dist/php
-          echo '{"status":"preview","message":"Form disabled in preview environment"}' > dist/php/send-form.json
-
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Vercel Preview
         id: deploy
-        uses: cloudflare/pages-action@v1
+        uses: amondnet/vercel-action@v25
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: sunlife-preview
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment PR with preview link
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const url = 'https://sunlife-preview.pages.dev';
-            const body = `🚀 **Preview deployed!**\n\n🔗 [${url}](${url})\n\n> Note: Contact form returns a preview placeholder. PHP backend is not available in Cloudflare Pages preview.`;
-            
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            
-            const existing = comments.find(c => c.body.includes('Preview deployed!'));
-            
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-comment: true
+          vercel-args: '--preview'

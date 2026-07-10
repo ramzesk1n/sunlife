@@ -20,35 +20,43 @@
 | `/galery` | Галерея + форма |
 | `/partnership` | Партнёрство + форма |
 
-## Deploy Preview
+## Deploy
 
-Каждый `git push` в `main`/`develop` и каждый Pull Request автоматически деплоится в **Cloudflare Pages**:
+Автоматический деплой на **Vercel**:
 
-- Preview URL: `https://sunlife-preview.pages.dev`
-- Workflow: `.github/workflows/preview.yml`
+- **Preview:** на каждый `push` в `main`/`develop` и Pull Request
+- **Production:** на `push` в `main` (или ручной запуск `workflow_dispatch`)
 
-### Как это работает
+### Workflow
 
-1. Push в ветку → GitHub Actions запускает `npm ci` + `npm run build`
-2. После билда создаётся `dist/php/send-form.json` — заглушка для формы (PHP не работает на Cloudflare Pages)
-3. Папка `dist/` деплоится в Cloudflare Pages
-4. В PR автоматически добавляется комментарий со ссылкой на preview
+| Файл | Триггер | Действие |
+|------|---------|----------|
+| `.github/workflows/preview.yml` | `push` в `main`/`develop`, `pull_request` | Preview deploy + комментарий в PR |
+| `.github/workflows/production.yml` | `push` в `main`, `workflow_dispatch` | Production deploy |
 
 ## Secrets
 
-Добавьте в Settings → Secrets and variables → Actions:
+Добавь в Settings → Secrets and variables → Actions:
 
 | Secret | Описание | Как получить |
 |--------|----------|-------------|
-| `CLOUDFLARE_API_TOKEN` | Токен для деплоя в Cloudflare Pages | [Cloudflare Dashboard](https://dash.cloudflare.com) → My Profile → API Tokens → Create Token → Use template "Cloudflare Pages" |
-| `CLOUDFLARE_ACCOUNT_ID` | ID вашего аккаунта Cloudflare | [Cloudflare Dashboard](https://dash.cloudflare.com) — в правом нижнем углу страницы |
+| `VERCEL_TOKEN` | Токен для деплоя | [Vercel Dashboard](https://vercel.com/account/tokens) → Create Token |
+| `VERCEL_ORG_ID` | ID организации/пользователя | `npx vercel link` или в Settings → General |
+| `VERCEL_PROJECT_ID` | ID проекта | `npx vercel link` или в Settings → General |
+
+### Быстрый способ получить Org ID и Project ID
+
+```bash
+npx vercel@latest link
+# Следуй инструкциям, затем:
+cat .vercel/project.json
+```
 
 ## PHP Backend
 
 - Файл `php/send-form.php` — обработчик формы обратной связи
-- **В preview (Cloudflare Pages):** форма возвращает JSON-заглушку `{"status":"preview","message":"Form disabled in preview environment"}`
-- **В production (shared-хостинг):** `php/send-form.php` копируется отдельно, не через Vite-билд
-- См. `.github/workflows/production.yml` — workflow для ручного запуска, готовый к добавлению SFTP-деплоя
+- **На Vercel:** PHP не выполняется. Форма возвращает JSON-заглушку.
+- **В production (shared-хостинг):** `php/send-form.php` копируется отдельно, не через Vite-билд.
 
 ## Локальная разработка
 
