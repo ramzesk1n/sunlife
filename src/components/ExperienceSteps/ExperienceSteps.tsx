@@ -13,11 +13,10 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 50, scale: 0.96 },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
       duration: 0.7,
       ease: 'easeOut' as const,
@@ -33,12 +32,12 @@ export default function ExperienceSteps() {
   return (
     <section
       ref={sectionRef}
-      id="experience-steps"
-      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
+      id="about"
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-cream"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[88rem] mx-auto">
         <motion.h2
-          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -47,7 +46,7 @@ export default function ExperienceSteps() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center max-w-2xl mx-auto mb-12"
+          className="text-text-muted text-center max-w-2xl mx-auto mb-14 md:mb-16"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -56,7 +55,7 @@ export default function ExperienceSteps() {
         </motion.p>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4"
           variants={shouldReduceMotion ? undefined : containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -65,23 +64,29 @@ export default function ExperienceSteps() {
             <motion.article
               key={step.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
-              className="glass rounded-2xl p-6 text-center group"
+              className="group relative flex flex-col lg:flex-row h-full min-h-[320px] lg:min-h-[360px] overflow-hidden rounded-2xl bg-gold-secondary shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-gold"
             >
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gold-pale border border-gold-primary/20 text-gold-dark text-xs font-display font-semibold mb-3">
-                {index + 1}
-              </span>
+              <div className="relative z-10 flex flex-1 flex-col justify-start p-4 lg:p-4 lg:w-[55%]">
+                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-sm font-display font-semibold text-gold-secondary shadow-sm">
+                  {index + 1}
+                </div>
+                <h3 className="mb-2 font-display text-sm font-semibold uppercase leading-tight tracking-wide text-white">
+                  {step.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-white/90">
+                  {step.description}
+                </p>
+              </div>
 
-              {step.stat && (
-                <span className="block font-display text-3xl md:text-4xl text-gold-primary mb-3 uppercase tracking-wider">
-                  {step.stat}
-                </span>
-              )}
-              <h3 className="font-display text-base font-semibold text-gold-primary-80 uppercase tracking-wider mb-2">
-                {step.title}
-              </h3>
-              <p className="text-text-muted text-sm leading-relaxed">
-                {step.description}
-              </p>
+              <div className="relative h-52 w-full shrink-0 overflow-hidden sm:h-64 lg:h-auto lg:w-[45%]">
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  loading="lazy"
+                  width="279"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
             </motion.article>
           ))}
         </motion.div>
