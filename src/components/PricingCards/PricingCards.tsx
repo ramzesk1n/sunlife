@@ -52,11 +52,11 @@ export default function PricingCards() {
       <section
         ref={sectionRef}
         id="pricing"
-        className="py-20 md:py-28 px-6"
+        className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
-            className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4"
+            className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -65,7 +65,7 @@ export default function PricingCards() {
           </motion.h2>
 
           <motion.p
-            className="text-brown-500 text-center max-w-xl mx-auto mb-12"
+            className="text-text-muted text-center max-w-xl mx-auto mb-12"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -85,49 +85,37 @@ export default function PricingCards() {
                 variants={shouldReduceMotion ? undefined : itemVariants}
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -4 }}
                 transition={{ duration: 0.3 }}
-                className={`relative bg-white-warm rounded-2xl p-6 shadow-card hover:shadow-warm-lg transition-shadow duration-300 flex flex-col ${
-                  pkg.popular ? 'ring-2 ring-terracotta-400' : ''
+                className={`relative glass rounded-2xl p-6 flex flex-col hover:shadow-glass transition-shadow duration-300 ${
+                  pkg.popular ? 'border-gold-primary/40' : ''
                 }`}
               >
                 {pkg.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-terracotta-400 text-white text-xs font-medium rounded-full shadow-warm">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold-primary text-cream text-xs font-display uppercase tracking-wider rounded-full shadow-gold">
                     Популярный
                   </span>
                 )}
 
                 <div className="flex-grow">
-                  <h3 className="font-serif text-xl text-brown-800 mb-1">
+                  <h3 className="font-display text-lg font-semibold text-gold-primary-80 uppercase tracking-wider mb-1">
                     {pkg.name}
                   </h3>
-                  <p className="text-brown-500 text-sm mb-4">{pkg.description}</p>
+                  <p className="text-text-muted text-sm mb-4">{pkg.description}</p>
 
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="font-serif text-3xl md:text-4xl text-brown-800">
+                    <span className="font-display text-3xl md:text-4xl text-gold-primary uppercase tracking-wider">
                       {pkg.price.toLocaleString('ru-RU')}
                     </span>
-                    <span className="text-brown-500 text-lg">{pkg.currency}</span>
+                    <span className="text-text-muted text-lg">{pkg.currency}</span>
                   </div>
 
                   <ul className="space-y-2 mb-4">
                     {pkg.features.map((feature, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2 text-sm text-brown-600"
+                        className="flex items-start gap-2 text-sm text-text-dark"
                       >
-                        <span
-                          className="text-terracotta-400 mt-0.5 flex-shrink-0"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
+                        <span className="text-gold-primary mt-0.5 flex-shrink-0" aria-hidden="true">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="3 8 6 11 13 4" />
                           </svg>
                         </span>
@@ -137,7 +125,7 @@ export default function PricingCards() {
                   </ul>
 
                   {pkg.note && (
-                    <p className="text-xs text-terracotta-600 bg-terracotta-50 rounded-lg p-3 mb-4">
+                    <p className="text-xs text-gold-dark bg-gold-pale rounded-lg p-3 mb-4">
                       ⚠️ {pkg.note}
                     </p>
                   )}
@@ -146,10 +134,10 @@ export default function PricingCards() {
                 <button
                   type="button"
                   onClick={() => openModal(pkg.id)}
-                  className={`w-full py-3 px-4 rounded-full font-medium transition-all duration-300 ${
+                  className={`w-full py-3 px-4 rounded-2xl font-display font-semibold uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
-                      ? 'bg-terracotta-400 hover:bg-terracotta-500 text-white shadow-warm hover:shadow-warm-lg'
-                      : 'bg-sand-100 hover:bg-sand-200 text-brown-700'
+                      ? 'border border-gold-primary text-gold-primary hover:bg-gold-primary hover:text-cream'
+                      : 'border border-gold-primary/40 text-gold-dark hover:bg-gold-primary hover:text-cream hover:border-gold-primary'
                   }`}
                 >
                   Выбрать
@@ -171,28 +159,28 @@ export default function PricingCards() {
             if (e.target === e.currentTarget) closeModal();
           }}
         >
-          <div className="absolute inset-0 bg-brown-900/50 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-text-dark/40 backdrop-blur-sm" />
 
-          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-sand-50 rounded-2xl shadow-warm-lg">
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto glass rounded-2xl">
             <button
               type="button"
               onClick={closeModal}
-              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-brown-600 transition-colors z-10"
+              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-cream-2 hover:bg-cream-dark text-gold-dark transition-colors z-10"
               aria-label="Закрыть форму"
             >
               ✕
             </button>
 
             <div className="p-6 md:p-8">
-              <h2 className="font-serif text-2xl md:text-3xl text-brown-800 mb-2">
+              <h2 className="font-display text-2xl md:text-3xl text-gold-primary-80 mb-2 uppercase tracking-wider">
                 Оставить заявку
               </h2>
               {selectedPackageName && (
-                <p className="text-terracotta-500 text-sm mb-2">
+                <p className="text-gold-primary text-sm mb-2 uppercase tracking-wider">
                   Выбран пакет: <strong>{selectedPackageName}</strong>
                 </p>
               )}
-              <p className="text-brown-500 mb-6">
+              <p className="text-text-muted mb-6">
                 Заполните форму, и мы свяжемся с вами
               </p>
               <ContactForm inline prefillPackage={selectedPackageName} />

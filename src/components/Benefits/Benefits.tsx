@@ -1,6 +1,28 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { benefits } from '../../content/benefits';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut' as const,
+    },
+  },
+};
 
 const iconMap: Record<string, React.ReactNode> = {
   camera: (
@@ -31,51 +53,23 @@ const iconMap: Record<string, React.ReactNode> = {
   ),
 };
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut' as const, // ease-out-expo
-    },
-  },
-};
-
 export default function Benefits() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
   const shouldReduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    // Prefers-reduced-motion: Framer Motion useReducedMotion hook handles this
-    // This effect is for any future GSAP cleanup if needed
-    return () => {};
-  }, []);
-
   return (
     <section
       ref={sectionRef}
       id="benefits"
-      className="py-20 md:py-28 px-6"
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4"
+          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           Гильдия фотографов САН ЛАЙФ — это
         </motion.h2>
@@ -90,17 +84,17 @@ export default function Benefits() {
             <motion.article
               key={benefit.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
-              className="bg-white-warm rounded-2xl p-6 shadow-card hover:shadow-warm transition-shadow duration-300 group"
+              className="glass rounded-2xl p-6 hover:shadow-glass transition-all duration-300 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-sand-100 flex items-center justify-center mb-4 text-terracotta-400 group-hover:bg-terracotta-50 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-xl bg-gold-pale border border-gold-primary/20 flex items-center justify-center mb-4 text-gold-primary group-hover:bg-gold-primary group-hover:text-cream transition-colors duration-300">
                 {iconMap[benefit.icon] ?? (
                   <span className="text-xl" aria-hidden="true">✦</span>
                 )}
               </div>
-              <h3 className="font-serif text-xl text-brown-800 mb-2">
+              <h3 className="font-display text-lg font-semibold text-gold-primary-80 uppercase tracking-wider mb-2">
                 {benefit.title}
               </h3>
-              <p className="text-brown-500 text-sm leading-relaxed">
+              <p className="text-text-muted text-sm leading-relaxed">
                 {benefit.description}
               </p>
             </motion.article>

@@ -28,7 +28,6 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
   });
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  // Sync prefillPackage when prop changes (for modal re-use)
   useEffect(() => {
     if (prefillPackage) {
       setFormData((prev) => ({ ...prev, package: prefillPackage }));
@@ -48,32 +47,31 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Заглушка — реальная отправка на Этапе 5
     setStatus('success');
   };
+
+  const inputClasses =
+    'w-full px-4 py-3 rounded-xl border border-gold-primary/20 bg-cream text-text-dark placeholder-text-light focus:border-gold-primary focus:ring-1 focus:ring-gold-primary/30 transition-colors';
 
   const formContent = (
     <>
       {status === 'success' ? (
-        <div className="bg-sand-50 rounded-2xl p-8 text-center">
-          <p className="font-serif text-xl text-brown-800 mb-2">
+        <div className="glass rounded-2xl p-8 text-center">
+          <p className="font-display text-xl text-gold-primary-80 mb-2 uppercase tracking-wider">
             Спасибо! Ваша заявка получена!
           </p>
-          <p className="text-brown-500 text-sm">
+          <p className="text-text-muted text-sm">
             Мы свяжемся с вами в ближайшее время.
           </p>
         </div>
       ) : (
         <form
           onSubmit={handleSubmit}
-          className={`space-y-5 ${
-            inline ? '' : 'bg-white-warm rounded-2xl p-6 md:p-8 shadow-card'
-          }`}
+          className={`space-y-5 ${inline ? '' : 'glass rounded-2xl p-6 md:p-8'}`}
         >
-          {/* Prefilled package (hidden or visible) */}
           {formData.package && (
             <div>
-              <label className="block text-sm font-medium text-brown-700 mb-1">
+              <label className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1">
                 Выбранный пакет
               </label>
               <input
@@ -81,7 +79,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
                 name="package"
                 value={formData.package}
                 readOnly
-                className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-sand-50 text-brown-800 cursor-not-allowed"
+                className={`${inputClasses} bg-gold-pale cursor-not-allowed`}
               />
             </div>
           )}
@@ -89,7 +87,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-name' : 'name'}
-              className="block text-sm font-medium text-brown-700 mb-1"
+              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Как к вам обращаться?
             </label>
@@ -100,7 +98,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-white text-brown-800 placeholder-brown-300 focus:border-terracotta-400 focus:ring-1 focus:ring-terracotta-400 transition-colors"
+              className={inputClasses}
               placeholder="Ваше имя"
             />
           </div>
@@ -108,7 +106,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-phone' : 'phone'}
-              className="block text-sm font-medium text-brown-700 mb-1"
+              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Телефон
             </label>
@@ -119,7 +117,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               value={formData.phone}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-white text-brown-800 placeholder-brown-300 focus:border-terracotta-400 focus:ring-1 focus:ring-terracotta-400 transition-colors"
+              className={inputClasses}
               placeholder="+7 (999) 123-45-67"
             />
           </div>
@@ -127,7 +125,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-contactMethod' : 'contactMethod'}
-              className="block text-sm font-medium text-brown-700 mb-1"
+              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Как вам удобнее получить ответ?
             </label>
@@ -136,7 +134,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               name="contactMethod"
               value={formData.contactMethod}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-white text-brown-800 focus:border-terracotta-400 focus:ring-1 focus:ring-terracotta-400 transition-colors"
+              className={inputClasses}
             >
               <option value="whatsapp">WhatsApp</option>
               <option value="telegram">Telegram</option>
@@ -147,7 +145,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-hospital' : 'hospital'}
-              className="block text-sm font-medium text-brown-700 mb-1"
+              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Роддом (номер или город)
             </label>
@@ -157,7 +155,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               name="hospital"
               value={formData.hospital}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-white text-brown-800 placeholder-brown-300 focus:border-terracotta-400 focus:ring-1 focus:ring-terracotta-400 transition-colors"
+              className={inputClasses}
               placeholder="Например, Роддом №8, Уфа"
             />
           </div>
@@ -165,7 +163,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-date' : 'date'}
-              className="block text-sm font-medium text-brown-700 mb-1"
+              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Дата выписки (если знаете)
             </label>
@@ -175,7 +173,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-white text-brown-800 focus:border-terracotta-400 focus:ring-1 focus:ring-terracotta-400 transition-colors"
+              className={inputClasses}
             />
           </div>
 
@@ -187,15 +185,15 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               checked={formData.consent}
               onChange={handleChange}
               required
-              className="mt-1 w-4 h-4 rounded border-sand-300 text-terracotta-400 focus:ring-terracotta-400"
+              className="mt-1 w-4 h-4 rounded border-gold-primary/30 text-gold-primary focus:ring-gold-primary/30"
             />
             <label
               htmlFor={inline ? 'inline-consent' : 'consent'}
-              className="text-sm text-brown-500"
+              className="text-sm text-text-muted"
             >
               Я даю своё согласие на обработку персональных данных и
               соглашаюсь с условиями{' '}
-              <a href="#" className="text-terracotta-400 hover:underline">
+              <a href="#" className="text-gold-primary hover:underline">
                 политики конфиденциальности
               </a>
             </label>
@@ -203,13 +201,13 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
 
           <button
             type="submit"
-            className="w-full py-4 bg-terracotta-400 hover:bg-terracotta-500 active:bg-terracotta-600 text-white font-medium rounded-full transition-colors duration-300 shadow-warm hover:shadow-warm-lg"
+            className="w-full py-4 border border-gold-primary text-gold-primary font-display font-semibold uppercase tracking-wider rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
           >
             Оставить заявку
           </button>
 
           {status === 'error' && (
-            <p className="text-sm text-terracotta-500 text-center">
+            <p className="text-sm text-red-600 text-center">
               Упс! Что-то пошло не так при отправке формы.
             </p>
           )}
@@ -226,13 +224,13 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
     <section
       ref={sectionRef}
       id="contact"
-      className="py-20 md:py-28 px-6"
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-xl mx-auto">
-        <h2 className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider">
           Оставить заявку
         </h2>
-        <p className="text-brown-500 text-center mb-10">
+        <p className="text-text-muted text-center mb-10">
           Заполните форму, и мы свяжемся с вами в ближайшее время
         </p>
         {formContent}

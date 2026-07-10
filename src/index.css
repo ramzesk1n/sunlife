@@ -1,49 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  /* === Цветовая палитра === */
-  --color-sand-50: #FAF8F4;
-  --color-sand-100: #F5F0E8;
-  --color-sand-200: #E8E0D0;
-  --color-sand-300: #D4C9B0;
-  --color-sand-400: #C4B596;
-  --color-sand-500: #B0A080;
+  /* === Webflow-стиль: золото + крем === */
+  --color-gold-primary: #ca8a47;
+  --color-gold-primary-80: #ca8a47cc;
+  --color-gold-primary-60: #ca8a4799;
+  --color-gold-dark: #936d28;
+  --color-gold-darker: #7a5a20;
+  --color-gold-light: #d4c5a9;
+  --color-gold-lighter: #e8dcc4;
+  --color-gold-pale: #f5efe4;
 
-  --color-terracotta-50: #FDF2F2;
-  --color-terracotta-100: #FCE7E7;
-  --color-terracotta-200: #F9D5D5;
-  --color-terracotta-300: #F0B0B0;
-  --color-terracotta-400: #D4A5A5;
-  --color-terracotta-500: #C08080;
-  --color-terracotta-600: #A06060;
+  --color-cream: #fffcf7;
+  --color-cream-2: #fffbf3;
+  --color-cream-3: #f9f5ed;
+  --color-cream-dark: #f5efe6;
 
-  --color-brown-50: #F7F5F2;
-  --color-brown-100: #E8E4DE;
-  --color-brown-200: #D0C8BC;
-  --color-brown-300: #A89A88;
-  --color-brown-400: #8A7A68;
-  --color-brown-500: #6B5D4D;
-  --color-brown-600: #4A3F33;
-  --color-brown-700: #2C2C2C;
-  --color-brown-800: #1A1A1A;
-  --color-brown-900: #0F0F0F;
+  --color-text-dark: #33302e;
+  --color-text-muted: #6b655d;
+  --color-text-light: #9a948a;
 
-  --color-white: #FFFFFF;
-  --color-white-warm: #FDFCFA;
+  --color-glass-bg: rgba(255, 255, 255, 0.08);
+  --color-glass-bg-solid: rgba(255, 255, 255, 0.65);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass-border-gold: rgba(191, 163, 124, 0.33);
+  --color-box-shadow: rgba(3, 3, 3, 0.1);
 
   /* === Шрифты === */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  --font-sans: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Montserrat', 'Manrope', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
 
   /* === Тени === */
-  --shadow-warm: 0 4px 24px rgba(74, 63, 51, 0.08);
-  --shadow-warm-lg: 0 8px 40px rgba(74, 63, 51, 0.12);
-  --shadow-card: 0 2px 16px rgba(74, 63, 51, 0.06);
-
-  /* === Анимации === */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-glass: 0 8px 32px 0 rgba(3, 3, 3, 0.1);
+  --shadow-gold: 0 2px 5px 0 rgba(191, 163, 124, 0.33);
+  --shadow-card: 0 2px 16px rgba(191, 163, 124, 0.12);
+  --shadow-soft: 0 4px 24px rgba(3, 3, 3, 0.06);
 }
 
 @layer base {
@@ -56,20 +48,21 @@
 
   body {
     font-family: var(--font-sans);
-    color: var(--color-brown-700);
-    background-color: var(--color-sand-100);
-    line-height: 1.6;
+    color: var(--color-text-dark);
+    background-color: var(--color-cream);
+    line-height: 1.5;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
-    color: var(--color-brown-800);
+    font-family: var(--font-display);
+    color: var(--color-gold-primary-80);
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  /* prefers-reduced-motion: уважаем системные настройки */
+  /* prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -87,11 +80,29 @@
     font-family: var(--font-sans);
   }
 
+  .font-display {
+    font-family: var(--font-display);
+  }
+
   .font-serif {
     font-family: var(--font-serif);
   }
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Liquid Glass utility */
+  .glass {
+    background: var(--color-glass-bg-solid);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: var(--shadow-glass);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .glass-border-gold {
+    border: 1px solid var(--color-glass-border-gold);
+    box-shadow: var(--shadow-gold);
   }
 }

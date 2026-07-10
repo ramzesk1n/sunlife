@@ -37,11 +37,11 @@ export default function FAQ() {
     <section
       ref={sectionRef}
       id="faq"
-      className="py-20 md:py-28 px-6"
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-3xl mx-auto">
         <motion.h2
-          className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4"
+          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -50,7 +50,7 @@ export default function FAQ() {
         </motion.h2>
 
         <motion.p
-          className="text-brown-500 text-center max-w-xl mx-auto mb-12"
+          className="text-text-muted text-center max-w-xl mx-auto mb-12"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -68,19 +68,19 @@ export default function FAQ() {
             <motion.div
               key={item.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
-              className="bg-white-warm rounded-xl shadow-card overflow-hidden"
+              className="glass rounded-xl overflow-hidden"
             >
               <button
                 type="button"
                 onClick={() => toggle(item.id)}
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-sand-50 transition-colors duration-200"
+                className="w-full flex items-center justify-between p-5 text-left hover:bg-cream-2/50 transition-colors duration-200"
                 aria-expanded={openId === item.id}
               >
-                <span className="font-medium text-brown-800 pr-4 text-left">
+                <span className="font-display font-semibold text-gold-dark pr-4 text-left uppercase tracking-wider text-sm">
                   {item.question}
                 </span>
                 <motion.span
-                  className="text-terracotta-400 flex-shrink-0 ml-2"
+                  className="text-gold-primary flex-shrink-0 ml-2"
                   animate={{ rotate: openId === item.id ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
                   aria-hidden="true"
@@ -100,7 +100,7 @@ export default function FAQ() {
                     transition={{ duration: shouldReduceMotion ? 0.01 : 0.3, ease: 'easeOut' }}
                   >
                     <div className="px-5 pb-5">
-                      <p className="text-brown-500 text-sm leading-relaxed">
+                      <p className="text-text-muted text-sm leading-relaxed">
                         {item.answer}
                       </p>
                     </div>

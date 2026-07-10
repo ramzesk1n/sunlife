@@ -4,7 +4,20 @@ import { reviews } from '../../content/reviews';
 
 const VISIBLE_COUNT = 3;
 
-// Unused variants removed — carousel uses AnimatePresence for slide transitions
+const slideVariants = {
+  enter: (dir: number) => ({
+    x: dir > 0 ? 300 : -300,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (dir: number) => ({
+    x: dir > 0 ? -300 : 300,
+    opacity: 0,
+  }),
+};
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,18 +33,13 @@ export default function Testimonials() {
   }, [page]);
 
   const nextPage = useCallback(() => {
-    if (page < totalPages - 1) {
-      goToPage(page + 1);
-    }
+    if (page < totalPages - 1) goToPage(page + 1);
   }, [page, totalPages, goToPage]);
 
   const prevPage = useCallback(() => {
-    if (page > 0) {
-      goToPage(page - 1);
-    }
+    if (page > 0) goToPage(page - 1);
   }, [page, goToPage]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') nextPage();
@@ -46,30 +54,15 @@ export default function Testimonials() {
     page * VISIBLE_COUNT + VISIBLE_COUNT
   );
 
-  const slideVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (dir: number) => ({
-      x: dir > 0 ? -300 : 300,
-      opacity: 0,
-    }),
-  };
-
   return (
     <section
       ref={sectionRef}
       id="testimonials"
-      className="py-20 md:py-28 px-6 overflow-hidden"
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4"
+          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -78,7 +71,7 @@ export default function Testimonials() {
         </motion.h2>
 
         <motion.p
-          className="text-brown-500 text-center max-w-xl mx-auto mb-12"
+          className="text-text-muted text-center max-w-xl mx-auto mb-12"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -86,14 +79,12 @@ export default function Testimonials() {
           100+ реальных отзывов от счастливых мам и семей
         </motion.p>
 
-        {/* Carousel container */}
         <div className="relative">
-          {/* Navigation arrows */}
           <button
             type="button"
             onClick={prevPage}
             disabled={page === 0}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-10 h-10 rounded-full bg-white-warm shadow-card hover:shadow-warm flex items-center justify-center text-brown-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-10 h-10 rounded-xl glass flex items-center justify-center text-gold-dark disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-gold transition-all duration-300"
             aria-label="Предыдущие отзывы"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -105,7 +96,7 @@ export default function Testimonials() {
             type="button"
             onClick={nextPage}
             disabled={page === totalPages - 1}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-10 h-10 rounded-full bg-white-warm shadow-card hover:shadow-warm flex items-center justify-center text-brown-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-10 h-10 rounded-xl glass flex items-center justify-center text-gold-dark disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-gold transition-all duration-300"
             aria-label="Следующие отзывы"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -113,7 +104,6 @@ export default function Testimonials() {
             </svg>
           </button>
 
-          {/* Cards */}
           <div className="px-8 md:px-12">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -129,26 +119,26 @@ export default function Testimonials() {
                 {visibleReviews.map((review) => (
                   <article
                     key={review.id}
-                    className="bg-white-warm rounded-2xl p-6 shadow-card h-full flex flex-col"
+                    className="glass rounded-2xl p-6 h-full flex flex-col"
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-sand-200 flex items-center justify-center text-brown-500 font-serif text-sm flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-dark font-display text-sm flex-shrink-0">
                         {review.author.charAt(0)}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-medium text-brown-800 text-sm truncate">
+                        <h3 className="font-display font-semibold text-gold-dark text-sm uppercase tracking-wider truncate">
                           {review.author}
                         </h3>
                         {review.city && (
-                          <p className="text-xs text-brown-400">{review.city}</p>
+                          <p className="text-xs text-text-light">{review.city}</p>
                         )}
                       </div>
                     </div>
-                    <p className="text-brown-600 text-sm leading-relaxed flex-grow">
+                    <p className="text-text-dark text-sm leading-relaxed flex-grow">
                       "{review.text}"
                     </p>
                     {review.date && (
-                      <p className="text-xs text-brown-400 mt-4 pt-4 border-t border-sand-100">
+                      <p className="text-xs text-text-light mt-4 pt-4 border-t border-gold-primary/10">
                         {review.date}
                       </p>
                     )}
@@ -158,17 +148,16 @@ export default function Testimonials() {
             </AnimatePresence>
           </div>
 
-          {/* Dots indicator */}
           <div className="flex justify-center gap-2 mt-8">
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => goToPage(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                className={`h-2.5 rounded-full transition-all duration-300 ${
                   i === page
-                    ? 'bg-terracotta-400 w-6'
-                    : 'bg-sand-300 hover:bg-sand-400'
+                    ? 'bg-gold-primary w-6'
+                    : 'bg-gold-light w-2.5 hover:bg-gold-primary/70'
                 }`}
                 aria-label={`Страница отзывов ${i + 1}`}
                 aria-current={i === page ? 'true' : undefined}

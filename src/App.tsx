@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { getMetaByPath } from './content/meta';
 
 /* Components */
+import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 import Benefits from './components/Benefits/Benefits';
 import ExperienceSteps from './components/ExperienceSteps/ExperienceSteps';
@@ -19,6 +20,7 @@ import Footer from './components/Footer/Footer';
 function HomePage() {
   return (
     <>
+      <Header />
       <Hero />
       <Benefits />
       <ExperienceSteps />
@@ -36,6 +38,7 @@ function HomePage() {
 function PricePage() {
   return (
     <>
+      <Header />
       <PricingCards />
       <FAQ />
       <ContactForm />
@@ -47,6 +50,7 @@ function PricePage() {
 function GalleryPage() {
   return (
     <>
+      <Header />
       <Gallery />
       <ContactForm />
       <Footer />
@@ -57,6 +61,7 @@ function GalleryPage() {
 function PartnershipPage() {
   return (
     <>
+      <Header />
       <Benefits />
       <ContactForm />
       <Footer />

@@ -3,7 +3,6 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 
-// Placeholder images — заменить на реальные при получении от заказчика
 const galleryImages = [
   { src: '/images/placeholder-1.jpg', alt: 'Выписка из роддома — мама с малышом', width: 800, height: 1000 },
   { src: '/images/placeholder-2.jpg', alt: 'Папа держит новорождённого', width: 800, height: 1000 },
@@ -56,11 +55,11 @@ export default function Gallery() {
     <section
       ref={sectionRef}
       id="gallery"
-      className="py-20 md:py-28 px-6"
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4"
+          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -69,7 +68,7 @@ export default function Gallery() {
         </motion.h2>
 
         <motion.p
-          className="text-brown-500 text-center max-w-xl mx-auto mb-12"
+          className="text-text-muted text-center max-w-xl mx-auto mb-12"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -91,17 +90,15 @@ export default function Gallery() {
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               transition={{ duration: 0.3 }}
               onClick={() => openLightbox(i)}
-              className="relative aspect-[4/5] bg-sand-200 rounded-xl overflow-hidden group cursor-pointer"
+              className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300"
               aria-label={`Открыть фото: ${img.alt}`}
             >
-              {/* Placeholder — заменить на <img> с реальными фото */}
-              <div className="w-full h-full flex items-center justify-center text-brown-400 group-hover:scale-105 transition-transform duration-500">
-                <span className="text-sm font-medium">{i + 1}</span>
+              <div className="w-full h-full flex items-center justify-center text-gold-primary/40 group-hover:scale-105 transition-transform duration-500">
+                <span className="text-sm font-display uppercase tracking-widest">{i + 1}</span>
               </div>
 
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-brown-800/0 group-hover:bg-brown-800/20 transition-colors duration-300 flex items-center justify-center">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm font-medium">
+              <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-lg">
                   🔍
                 </span>
               </div>
@@ -110,7 +107,6 @@ export default function Gallery() {
         </motion.div>
       </div>
 
-      {/* Lightbox */}
       <Lightbox
         open={lightboxOpen}
         close={closeLightbox}
