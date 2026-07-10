@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 interface FormData {
   name: string;
@@ -7,13 +7,15 @@ interface FormData {
   hospital: string;
   date: string;
   consent: boolean;
+  package?: string;
 }
 
 interface ContactFormProps {
   inline?: boolean;
+  prefillPackage?: string;
 }
 
-export default function ContactForm({ inline = false }: ContactFormProps) {
+export default function ContactForm({ inline = false, prefillPackage }: ContactFormProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -22,11 +24,19 @@ export default function ContactForm({ inline = false }: ContactFormProps) {
     hospital: '',
     date: '',
     consent: false,
+    package: prefillPackage ?? '',
   });
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+  // Sync prefillPackage when prop changes (for modal re-use)
+  useEffect(() => {
+    if (prefillPackage) {
+      setFormData((prev) => ({ ...prev, package: prefillPackage }));
+    }
+  }, [prefillPackage]);
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
@@ -60,6 +70,22 @@ export default function ContactForm({ inline = false }: ContactFormProps) {
             inline ? '' : 'bg-white-warm rounded-2xl p-6 md:p-8 shadow-card'
           }`}
         >
+          {/* Prefilled package (hidden or visible) */}
+          {formData.package && (
+            <div>
+              <label className="block text-sm font-medium text-brown-700 mb-1">
+                Выбранный пакет
+              </label>
+              <input
+                type="text"
+                name="package"
+                value={formData.package}
+                readOnly
+                className="w-full px-4 py-3 rounded-xl border border-sand-200 bg-sand-50 text-brown-800 cursor-not-allowed"
+              />
+            </div>
+          )}
+
           <div>
             <label
               htmlFor={inline ? 'inline-name' : 'name'}
