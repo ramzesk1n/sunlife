@@ -7,6 +7,7 @@ import { getMetaByPath } from './content/meta';
 import Hero from './components/Hero/Hero';
 import Benefits from './components/Benefits/Benefits';
 import ExperienceSteps from './components/ExperienceSteps/ExperienceSteps';
+import Geography from './components/Geography/Geography';
 import PricingCards from './components/PricingCards/PricingCards';
 import Gallery from './components/Gallery/Gallery';
 import Testimonials from './components/Testimonials/Testimonials';
@@ -21,6 +22,7 @@ function HomePage() {
       <Hero />
       <Benefits />
       <ExperienceSteps />
+      <Geography />
       <PricingCards />
       <Gallery />
       <Testimonials />
