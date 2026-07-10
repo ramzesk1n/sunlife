@@ -1,8 +1,32 @@
 import { useRef, useState } from 'react';
+import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { faqItems } from '../../content/faq';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.06,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut' as const,
+    },
+  },
+};
 
 export default function FAQ() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const shouldReduceMotion = useReducedMotion();
   const [openId, setOpenId] = useState<string | null>(null);
 
   const toggle = (id: string) => {
@@ -16,16 +40,34 @@ export default function FAQ() {
       className="py-20 md:py-28 px-6"
     >
       <div className="max-w-3xl mx-auto">
-        <h2 className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4">
+        <motion.h2
+          className="font-serif text-3xl md:text-4xl text-brown-800 text-center mb-4"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           Часто задаваемые вопросы
-        </h2>
-        <p className="text-brown-500 text-center max-w-xl mx-auto mb-12">
+        </motion.h2>
+
+        <motion.p
+          className="text-brown-500 text-center max-w-xl mx-auto mb-12"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+        >
           Ответы на самые популярные вопросы о фотосъёмке выписки
-        </p>
-        <div className="space-y-3">
+        </motion.p>
+
+        <motion.div
+          className="space-y-3"
+          variants={shouldReduceMotion ? undefined : containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
           {faqItems.map((item) => (
-            <div
+            <motion.div
               key={item.id}
+              variants={shouldReduceMotion ? undefined : itemVariants}
               className="bg-white-warm rounded-xl shadow-card overflow-hidden"
             >
               <button
@@ -34,30 +76,40 @@ export default function FAQ() {
                 className="w-full flex items-center justify-between p-5 text-left hover:bg-sand-50 transition-colors duration-200"
                 aria-expanded={openId === item.id}
               >
-                <span className="font-medium text-brown-800 pr-4">
+                <span className="font-medium text-brown-800 pr-4 text-left">
                   {item.question}
                 </span>
-                <span
-                  className={`text-terracotta-400 flex-shrink-0 transition-transform duration-300 ${
-                    openId === item.id ? 'rotate-180' : ''
-                  }`}
+                <motion.span
+                  className="text-terracotta-400 flex-shrink-0 ml-2"
+                  animate={{ rotate: openId === item.id ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
                   aria-hidden="true"
                 >
-                  ▼
-                </span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </motion.span>
               </button>
-              <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openId === item.id ? 'max-h-96' : 'max-h-0'
-                }`}
-              >
-                <p className="px-5 pb-5 text-brown-500 text-sm leading-relaxed">
-                  {item.answer}
-                </p>
-              </div>
-            </div>
+
+              <AnimatePresence initial={false}>
+                {openId === item.id && (
+                  <motion.div
+                    initial={shouldReduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={shouldReduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                    transition={{ duration: shouldReduceMotion ? 0.01 : 0.3, ease: 'easeOut' }}
+                  >
+                    <div className="px-5 pb-5">
+                      <p className="text-brown-500 text-sm leading-relaxed">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
