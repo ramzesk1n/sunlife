@@ -20,37 +20,22 @@
 | `/galery` | Галерея + форма |
 | `/partnership` | Партнёрство + форма |
 
-## Deploy
+## Деплой на Vercel
 
-Автоматический деплой на **Vercel**:
+Рекомендуется через **Vercel Git Integration**:
 
-- **Preview:** на каждый `push` в `main`/`develop` и Pull Request
-- **Production:** на `push` в `main` (или ручной запуск `workflow_dispatch`)
+1. Открой [vercel.com/new](https://vercel.com/new)
+2. Импортируй репозиторий `ramzesk1n/sunlife`
+3. Vercel автоматически:
+   - Деплоит на каждый `git push`
+   - Создаёт preview для Pull Requests
+   - Деплоит production на push в `main`
 
-### Workflow
+### Настройки (если нужно)
 
-| Файл | Триггер | Действие |
-|------|---------|----------|
-| `.github/workflows/preview.yml` | `push` в `main`/`develop`, `pull_request` | Preview deploy + комментарий в PR |
-| `.github/workflows/production.yml` | `push` в `main`, `workflow_dispatch` | Production deploy |
-
-## Secrets
-
-Добавь в Settings → Secrets and variables → Actions:
-
-| Secret | Описание | Как получить |
-|--------|----------|-------------|
-| `VERCEL_TOKEN` | Токен для деплоя | [Vercel Dashboard](https://vercel.com/account/tokens) → Create Token |
-| `VERCEL_ORG_ID` | ID организации/пользователя | `npx vercel link` или в Settings → General |
-| `VERCEL_PROJECT_ID` | ID проекта | `npx vercel link` или в Settings → General |
-
-### Быстрый способ получить Org ID и Project ID
-
-```bash
-npx vercel@latest link
-# Следуй инструкциям, затем:
-cat .vercel/project.json
-```
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Install Command:** `npm ci`
 
 ## PHP Backend
 
