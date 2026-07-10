@@ -1,0 +1,37 @@
+export interface Benefit {
+  id: string;
+  title: string;
+  description: string;
+  icon: string; // SVG icon name или emoji placeholder
+}
+
+export const benefits: Benefit[] = [
+  {
+    id: 'benefit-professionalism',
+    title: 'Профессионализм',
+    description:
+      'Команда профессиональных фотографов и видеооператоров с многолетним опытом работы, что гарантирует потрясающие фото и видео, а с ними и приятные воспоминания!',
+    icon: 'camera',
+  },
+  {
+    id: 'benefit-prices',
+    title: 'Адекватные цены',
+    description:
+      'Стоимость услуг гораздо ниже, чем у фотографов-частников и других компаний. Большое количество заказов позволяет понизить ценовую планку!',
+    icon: 'tag',
+  },
+  {
+    id: 'benefit-service',
+    title: 'Удобный сервис',
+    description:
+      'Скорость выдачи готовых фото и видео — от 7 до 10 дней. Доставка по Уфе бесплатная! Привезём заказ прямо на дом в удобное время!',
+    icon: 'truck',
+  },
+  {
+    id: 'benefit-speed',
+    title: 'Оперативность',
+    description:
+      'За каждым роддомом закреплён фотограф и оператор, они всегда рядом, это позволяет оперативно приехать на съёмки.',
+    icon: 'clock',
+  },
+] as const;

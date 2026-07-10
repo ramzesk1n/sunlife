@@ -1,0 +1,32 @@
+/* Base styles — дополнение к index.css */
+@layer base {
+  /* Focus styles для доступности */
+  :focus-visible {
+    outline: 2px solid var(--color-terracotta-400);
+    outline-offset: 2px;
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: var(--color-terracotta-200);
+    color: var(--color-brown-800);
+  }
+
+  /* Scrollbar — мягкий стиль */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-sand-100);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-sand-300);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-sand-400);
+  }
+}

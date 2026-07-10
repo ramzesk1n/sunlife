@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Цветовая палитра === */
+  --color-sand-50: #FAF8F4;
+  --color-sand-100: #F5F0E8;
+  --color-sand-200: #E8E0D0;
+  --color-sand-300: #D4C9B0;
+  --color-sand-400: #C4B596;
+  --color-sand-500: #B0A080;
+
+  --color-terracotta-50: #FDF2F2;
+  --color-terracotta-100: #FCE7E7;
+  --color-terracotta-200: #F9D5D5;
+  --color-terracotta-300: #F0B0B0;
+  --color-terracotta-400: #D4A5A5;
+  --color-terracotta-500: #C08080;
+  --color-terracotta-600: #A06060;
+
+  --color-brown-50: #F7F5F2;
+  --color-brown-100: #E8E4DE;
+  --color-brown-200: #D0C8BC;
+  --color-brown-300: #A89A88;
+  --color-brown-400: #8A7A68;
+  --color-brown-500: #6B5D4D;
+  --color-brown-600: #4A3F33;
+  --color-brown-700: #2C2C2C;
+  --color-brown-800: #1A1A1A;
+  --color-brown-900: #0F0F0F;
+
+  --color-white: #FFFFFF;
+  --color-white-warm: #FDFCFA;
+
+  /* === Шрифты === */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+  /* === Тени === */
+  --shadow-warm: 0 4px 24px rgba(74, 63, 51, 0.08);
+  --shadow-warm-lg: 0 8px 40px rgba(74, 63, 51, 0.12);
+  --shadow-card: 0 2px 16px rgba(74, 63, 51, 0.06);
+
+  /* === Анимации === */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-brown-700);
+    background-color: var(--color-sand-100);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    color: var(--color-brown-800);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* prefers-reduced-motion: уважаем системные настройки */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
