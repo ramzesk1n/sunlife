@@ -56,7 +56,7 @@ export default function PricingCards() {
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
-            className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+            className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -65,7 +65,7 @@ export default function PricingCards() {
           </motion.h2>
 
           <motion.p
-            className="text-text-muted text-center max-w-xl mx-auto mb-12"
+            className="text-text-muted text-center text-base md:text-lg max-w-xl mx-auto mb-12"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -85,24 +85,24 @@ export default function PricingCards() {
                 variants={shouldReduceMotion ? undefined : itemVariants}
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -4 }}
                 transition={{ duration: 0.3 }}
-                className={`relative glass rounded-2xl p-6 flex flex-col hover:shadow-glass transition-shadow duration-300 ${
+                className={`relative glass rounded-2xl p-8 flex flex-col hover:shadow-glass transition-shadow duration-300 ${
                   pkg.popular ? 'border-gold-primary/40' : ''
                 }`}
               >
                 {pkg.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold-primary text-cream text-xs font-display uppercase tracking-wider rounded-full shadow-gold">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold-primary text-cream text-sm font-display uppercase tracking-wider rounded-full shadow-gold">
                     Популярный
                   </span>
                 )}
 
                 <div className="flex-grow">
-                  <h3 className="font-display text-lg font-semibold text-gold-primary-80 uppercase tracking-wider mb-1">
+                  <h3 className="font-display text-xl md:text-2xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-2">
                     {pkg.name}
                   </h3>
-                  <p className="text-text-muted text-sm mb-4">{pkg.description}</p>
+                  <p className="text-text-muted text-base mb-4">{pkg.description}</p>
 
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="font-display text-3xl md:text-4xl text-gold-primary uppercase tracking-wider">
+                    <span className="font-display text-4xl md:text-5xl text-gold-primary uppercase tracking-wider">
                       {pkg.price.toLocaleString('ru-RU')}
                     </span>
                     <span className="text-text-muted text-lg">{pkg.currency}</span>
@@ -112,7 +112,7 @@ export default function PricingCards() {
                     {pkg.features.map((feature, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2 text-sm text-text-dark"
+                        className="flex items-start gap-2 text-base text-text-dark"
                       >
                         <span className="text-gold-primary mt-0.5 flex-shrink-0" aria-hidden="true">
                           <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -125,7 +125,7 @@ export default function PricingCards() {
                   </ul>
 
                   {pkg.note && (
-                    <p className="text-xs text-gold-dark bg-gold-pale rounded-lg p-3 mb-4">
+                    <p className="text-sm text-gold-dark bg-gold-pale rounded-lg p-3 mb-4">
                       ⚠️ {pkg.note}
                     </p>
                   )}
@@ -134,7 +134,7 @@ export default function PricingCards() {
                 <button
                   type="button"
                   onClick={() => openModal(pkg.id)}
-                  className={`w-full py-3 px-4 rounded-2xl font-display font-semibold uppercase tracking-wider transition-all duration-300 ${
+                  className={`w-full py-4 px-4 rounded-2xl font-display font-semibold uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
                       ? 'border border-gold-primary text-gold-primary hover:bg-gold-primary hover:text-cream'
                       : 'border border-gold-primary/40 text-gold-dark hover:bg-gold-primary hover:text-cream hover:border-gold-primary'

@@ -5,6 +5,7 @@ import { getMetaByPath } from './content/meta';
 
 /* Components */
 import Header from './components/Header/Header';
+import CookieBanner from './components/CookieBanner/CookieBanner';
 import Hero from './components/Hero/Hero';
 import Benefits from './components/Benefits/Benefits';
 import ExperienceSteps from './components/ExperienceSteps/ExperienceSteps';
@@ -15,6 +16,7 @@ import Testimonials from './components/Testimonials/Testimonials';
 import FAQ from './components/FAQ/FAQ';
 import ContactForm from './components/ContactForm/ContactForm';
 import Footer from './components/Footer/Footer';
+import PrivacyPage from './pages/PrivacyPage';
 
 /* Page wrappers */
 function HomePage() {
@@ -69,6 +71,16 @@ function PartnershipPage() {
   );
 }
 
+function PrivacyPageWrapper() {
+  return (
+    <>
+      <Header />
+      <PrivacyPage />
+      <Footer />
+    </>
+  );
+}
+
 /* SEO updater */
 function SeoUpdater() {
   const location = useLocation();
@@ -109,12 +121,14 @@ export default function App() {
   return (
     <>
       <SeoUpdater />
+      <CookieBanner />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage />} />
           <Route path="/price" element={<PricePage />} />
           <Route path="/galery" element={<GalleryPage />} />
           <Route path="/partnership" element={<PartnershipPage />} />
+          <Route path="/privacy" element={<PrivacyPageWrapper />} />
         </Routes>
       </AnimatePresence>
     </>

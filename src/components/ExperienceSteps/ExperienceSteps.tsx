@@ -98,7 +98,7 @@ export default function ExperienceSteps() {
     >
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary text-center mb-4 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: '1.25rem' }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -107,7 +107,7 @@ export default function ExperienceSteps() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center max-w-2xl mx-auto mb-14 md:mb-16"
+          className="text-text-muted text-center text-base md:text-lg max-w-2xl mx-auto mb-14 md:mb-16"
           initial={shouldReduceMotion ? false : { opacity: 0, y: '1.25rem' }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -125,16 +125,16 @@ export default function ExperienceSteps() {
               className="about-card absolute w-full max-w-5xl opacity-0"
               style={{ zIndex: index + 1 }}
             >
-              <article className="mx-auto w-full rounded-2xl bg-white p-2 shadow-xl">
-                <div className="flex overflow-hidden rounded-xl bg-gold-lighter">
-                  <div className="flex-1 p-7">
-                    <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-display font-semibold text-gold-primary shadow-sm">
+              <article className="mx-auto w-full rounded-3xl bg-white p-3 shadow-xl">
+                <div className="flex overflow-hidden rounded-2xl bg-gold-lighter">
+                  <div className="flex-1 p-8 md:p-10 lg:p-12">
+                    <div className="mb-4 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-white text-xl md:text-2xl font-display font-semibold text-gold-primary shadow-sm">
                       {index + 1}
                     </div>
-                    <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-text-dark mb-2">
+                    <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-semibold uppercase tracking-wide text-text-dark mb-3">
                       {step.title}
                     </h3>
-                    <p className="text-sm leading-relaxed text-text-muted">
+                    <p className="text-base md:text-lg leading-relaxed text-text-muted">
                       {step.description}
                     </p>
                   </div>
@@ -165,17 +165,17 @@ export default function ExperienceSteps() {
           <motion.article
             key={step.id}
             variants={shouldReduceMotion ? undefined : itemVariants}
-            className="mx-auto mb-6 w-full max-w-4xl rounded-2xl bg-white p-2 shadow-xl"
+            className="mx-auto mb-6 w-full max-w-4xl rounded-3xl bg-white p-3 shadow-xl"
           >
-            <div className="flex flex-col overflow-hidden rounded-xl bg-gold-lighter">
-              <div className="flex-1 p-5">
-                <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-display font-semibold text-gold-primary shadow-sm">
+            <div className="flex flex-col overflow-hidden rounded-2xl bg-gold-lighter">
+              <div className="flex-1 p-6 md:p-8">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl font-display font-semibold text-gold-primary shadow-sm">
                   {index + 1}
                 </div>
-                <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-text-dark mb-2">
+                <h3 className="font-display text-xl md:text-2xl font-semibold uppercase tracking-wide text-text-dark mb-3">
                   {step.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-text-muted">
+                <p className="text-base md:text-lg leading-relaxed text-text-muted">
                   {step.description}
                 </p>
               </div>

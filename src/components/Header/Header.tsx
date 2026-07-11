@@ -73,25 +73,22 @@ export default function Header() {
       >
         <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-gold-primary/40 flex items-center justify-center text-gold-primary bg-cream-2">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2" />
-                <path d="M12 21v2" />
-                <path d="M4.22 4.22l1.42 1.42" />
-                <path d="M18.36 18.36l1.42 1.42" />
-                <path d="M1 12h2" />
-                <path d="M21 12h2" />
-                <path d="M4.22 19.78l1.42-1.42" />
-                <path d="M18.36 5.64l1.42-1.42" />
-              </svg>
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-11 h-11 md:w-14 md:h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0">
+              <img
+                src="/images/sunlife_logo.png"
+                alt=""
+                className="w-full h-full object-contain p-1"
+                loading="eager"
+                width="56"
+                height="56"
+              />
             </div>
             <div className="hidden sm:block">
-              <p className="text-[0.625rem] md:text-xs text-gold-dark uppercase tracking-[0.2em] leading-tight">
+              <p className="text-xs md:text-sm text-gold-dark uppercase tracking-[0.2em] leading-tight">
                 фотослужба
               </p>
-              <p className="text-sm md:text-base font-display font-semibold text-gold-primary uppercase tracking-wider leading-tight">
+              <p className="text-base md:text-lg font-display font-semibold text-gold-primary uppercase tracking-wider leading-tight">
                 САН ЛАЙФ
               </p>
             </div>
@@ -103,7 +100,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`px-4 py-2 rounded-2xl text-sm font-display uppercase tracking-[0.2em] transition-all duration-300 ${
+                className={`px-4 py-2 rounded-2xl text-sm md:text-base font-display uppercase tracking-[0.2em] transition-all duration-300 ${
                   location.pathname === link.href
                     ? 'bg-gold-primary/15 text-gold-dark shadow-gold'
                     : 'text-gold-dark hover:bg-white/60 hover:shadow-gold'
@@ -163,7 +160,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`px-4 py-3 rounded-xl text-sm font-display uppercase tracking-[0.2em] transition-all duration-300 ${
+                  className={`px-4 py-3 rounded-xl text-base font-display uppercase tracking-[0.2em] transition-all duration-300 ${
                     location.pathname === link.href
                       ? 'bg-gold-primary/15 text-gold-dark'
                       : 'text-gold-dark hover:bg-white/60'

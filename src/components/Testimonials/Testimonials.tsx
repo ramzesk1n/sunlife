@@ -62,7 +62,7 @@ export default function Testimonials() {
     >
       <div className="max-w-6xl mx-auto">
         <motion.h2
-          className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -71,7 +71,7 @@ export default function Testimonials() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center max-w-xl mx-auto mb-12"
+          className="text-text-muted text-center text-base md:text-lg max-w-xl mx-auto mb-12"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -119,26 +119,26 @@ export default function Testimonials() {
                 {visibleReviews.map((review) => (
                   <article
                     key={review.id}
-                    className="glass rounded-2xl p-6 h-full flex flex-col"
+                    className="glass rounded-2xl p-8 h-full flex flex-col"
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-dark font-display text-sm flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-dark font-display text-base flex-shrink-0">
                         {review.author.charAt(0)}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-display font-semibold text-gold-dark text-sm uppercase tracking-wider truncate">
+                        <h3 className="font-display font-semibold text-gold-dark text-base uppercase tracking-wider truncate">
                           {review.author}
                         </h3>
                         {review.city && (
-                          <p className="text-xs text-text-light">{review.city}</p>
+                          <p className="text-sm text-text-light">{review.city}</p>
                         )}
                       </div>
                     </div>
-                    <p className="text-text-dark text-sm leading-relaxed flex-grow">
+                    <p className="text-text-dark text-base leading-relaxed flex-grow">
                       "{review.text}"
                     </p>
                     {review.date && (
-                      <p className="text-xs text-text-light mt-4 pt-4 border-t border-gold-primary/10">
+                      <p className="text-sm text-text-light mt-4 pt-4 border-t border-gold-primary/10">
                         {review.date}
                       </p>
                     )}

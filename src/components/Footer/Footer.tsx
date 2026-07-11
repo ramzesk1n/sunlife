@@ -13,56 +13,68 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
           {/* Бренд */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-10 h-10 rounded-full border border-gold-primary/40 flex items-center justify-center text-gold-primary bg-cream">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="5" />
-                  <path d="M12 1v2" />
-                  <path d="M12 21v2" />
-                  <path d="M4.22 4.22l1.42 1.42" />
-                  <path d="M18.36 18.36l1.42 1.42" />
-                </svg>
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0">
+                <img
+                  src="/images/sunlife_logo.png"
+                  alt=""
+                  className="w-full h-full object-contain p-1"
+                  loading="lazy"
+                  width="44"
+                  height="44"
+                />
               </div>
               <div>
-                <p className="text-[0.625rem] text-gold-dark uppercase tracking-[0.2em]">фотослужба</p>
-                <p className="text-sm font-display font-semibold text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
+                <p className="text-xs text-gold-dark uppercase tracking-[0.2em]">фотослужба</p>
+                <p className="text-base font-display font-semibold text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
               </div>
             </div>
-            <p className="text-text-muted text-sm leading-relaxed">
+            <p className="text-text-muted text-base leading-relaxed">
               Профессиональная фотосъёмка выписки новорождённых
             </p>
           </div>
 
           {/* Навигация */}
           <div>
-            <h4 className="font-display font-semibold text-gold-dark uppercase tracking-wider text-sm mb-4">
+            <h4 className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base mb-4">
               Навигация
             </h4>
             <nav className="space-y-2">
-              <Link to="/price" className="block text-text-muted hover:text-gold-primary text-sm transition-colors uppercase tracking-wider">
+              <Link to="/price" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Цены
               </Link>
-              <Link to="/galery" className="block text-text-muted hover:text-gold-primary text-sm transition-colors uppercase tracking-wider">
+              <Link to="/galery" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Портфолио
               </Link>
-              <Link to="/partnership" className="block text-text-muted hover:text-gold-primary text-sm transition-colors uppercase tracking-wider">
+              <Link to="/partnership" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Партнёрство
               </Link>
-              <a href="#" className="block text-text-muted hover:text-gold-primary text-sm transition-colors uppercase tracking-wider">
+              <Link to="/privacy" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Политика конфиденциальности
-              </a>
+              </Link>
             </nav>
           </div>
 
           {/* Контакты */}
           <div>
-            <h4 className="font-display font-semibold text-gold-dark uppercase tracking-wider text-sm mb-4">
+            <h4 className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base mb-4">
               Контакты
             </h4>
-            <div className="space-y-2 text-sm">
-              <p className="text-text-muted">+7 (999) 123-45-67</p>
+            <div className="space-y-2 text-base">
+              <a href="tel:+79279363606" className="block text-text-muted hover:text-gold-primary transition-colors">
+                +7 (927) 936-36-06
+              </a>
               <p className="text-text-muted">hello@sunlife-ufa.ru</p>
               <div className="flex gap-3 pt-2">
+                <a
+                  href="tel:+79279363606"
+                  className="w-9 h-9 rounded-xl bg-cream border border-gold-primary/30 flex items-center justify-center text-gold-primary hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                  aria-label="Позвонить"
+                >
+                  <svg className="w-[1.125rem] h-[1.125rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </a>
                 <a
                   href="https://wa.me/79279363606"
                   target="_blank"
@@ -102,8 +114,8 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gold-primary/10 pt-6 text-center">
-          <p className="text-text-light text-xs">
-            © 2025 Студия Рамзеса Мифтахова. Все права защищены.
+          <p className="text-text-light text-sm">
+            © 2025 ИП Чанышев Тагир Амирович. Все права защищены.
           </p>
         </div>
       </div>

@@ -3,7 +3,7 @@ import PuppeteerRenderer from '@prerenderer/renderer-puppeteer';
 import fs from 'fs/promises';
 import path from 'path';
 
-const routes = ['/', '/price', '/galery', '/partnership'];
+const routes = ['/', '/price', '/galery', '/partnership', '/privacy'];
 
 async function prerender() {
   const prerenderer = new Prerenderer({

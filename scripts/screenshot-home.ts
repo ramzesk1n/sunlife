@@ -1,0 +1,25 @@
+import puppeteer from 'puppeteer';
+import path from 'path';
+
+const BASE_URL = 'http://localhost:4173';
+const outDir = path.resolve(process.cwd(), 'dist');
+
+async function capture() {
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
+  await page.goto(`${BASE_URL}/?nocache=${Date.now()}`, { waitUntil: 'networkidle0' });
+  await page.screenshot({ path: path.join(outDir, 'home-desktop.png'), fullPage: true });
+
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2 });
+  await page.goto(`${BASE_URL}/?nocache=${Date.now()}`, { waitUntil: 'networkidle0' });
+  await page.screenshot({ path: path.join(outDir, 'home-mobile.png'), fullPage: true });
+
+  await browser.close();
+  console.log('Screenshots saved to dist/home-desktop.png and dist/home-mobile.png');
+}
+
+capture().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

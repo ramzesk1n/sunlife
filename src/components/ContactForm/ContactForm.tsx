@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 interface FormData {
   name: string;
@@ -57,10 +58,10 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
     <>
       {status === 'success' ? (
         <div className="glass rounded-2xl p-8 text-center">
-          <p className="font-display text-xl text-gold-primary-80 mb-2 uppercase tracking-wider">
+          <p className="font-display text-2xl text-gold-primary-80 mb-2 uppercase tracking-wider">
             Спасибо! Ваша заявка получена!
           </p>
-          <p className="text-text-muted text-sm">
+          <p className="text-text-muted text-base">
             Мы свяжемся с вами в ближайшее время.
           </p>
         </div>
@@ -71,7 +72,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
         >
           {formData.package && (
             <div>
-              <label className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1">
+              <label className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1">
                 Выбранный пакет
               </label>
               <input
@@ -87,7 +88,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-name' : 'name'}
-              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Как к вам обращаться?
             </label>
@@ -106,7 +107,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-phone' : 'phone'}
-              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Телефон
             </label>
@@ -118,14 +119,14 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
               onChange={handleChange}
               required
               className={inputClasses}
-              placeholder="+7 (999) 123-45-67"
+              placeholder="+7 (927) 936-36-06"
             />
           </div>
 
           <div>
             <label
               htmlFor={inline ? 'inline-contactMethod' : 'contactMethod'}
-              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Как вам удобнее получить ответ?
             </label>
@@ -145,7 +146,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-hospital' : 'hospital'}
-              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Роддом (номер или город)
             </label>
@@ -163,7 +164,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-date' : 'date'}
-              className="block text-sm font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
             >
               Дата выписки (если знаете)
             </label>
@@ -189,13 +190,12 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
             />
             <label
               htmlFor={inline ? 'inline-consent' : 'consent'}
-              className="text-sm text-text-muted"
+              className="text-base text-text-muted"
             >
-              Я даю своё согласие на обработку персональных данных и
-              соглашаюсь с условиями{' '}
-              <a href="#" className="text-gold-primary hover:underline">
-                политики конфиденциальности
-              </a>
+              Я согласен(на) на обработку моих персональных данных (имя, телефон) в целях обработки заявки на фотосъёмку и связи со мной в соответствии с{' '}
+              <Link to="/privacy" className="text-gold-primary hover:underline" target="_blank">
+                Политикой обработки персональных данных
+              </Link>
             </label>
           </div>
 
@@ -227,10 +227,10 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-xl mx-auto">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider">
           Оставить заявку
         </h2>
-        <p className="text-text-muted text-center mb-10">
+        <p className="text-text-muted text-center text-base md:text-lg mb-10">
           Заполните форму, и мы свяжемся с вами в ближайшее время
         </p>
         {formContent}

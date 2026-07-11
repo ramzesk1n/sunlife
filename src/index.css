@@ -107,4 +107,30 @@
     border: 0.0625rem solid var(--color-glass-border-gold);
     box-shadow: var(--shadow-gold);
   }
+
+  /* Interactive Russia Map overrides */
+  #russia-map .map-region {
+    transition: fill 0.25s ease;
+  }
+
+  #russia-map .map-region.is-active {
+    fill: #dba973 !important;
+    filter: drop-shadow(0 0 0.5rem rgba(202, 138, 71, 0.5));
+  }
+
+  #russia-map .map-city-dot {
+    cursor: pointer;
+    transition: fill 0.2s ease;
+    stroke-width: 0.125rem;
+  }
+
+  #russia-map .map-city-dot:hover,
+  #russia-map .map-city-dot.is-active {
+    fill: #ca8a47 !important;
+  }
+
+  #russia-map .map-city-label {
+    font-size: 0.8125rem;
+    stroke-width: 0.1875rem;
+  }
 }

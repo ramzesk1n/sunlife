@@ -87,12 +87,12 @@ export default function Hero() {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="order-2 lg:order-1"
             >
-              <div className="glass rounded-3xl p-6 sm:p-8 lg:p-10">
-                <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-gold-primary-80 uppercase tracking-[0.1em] mb-6 text-balance">
+              <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12">
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-medium text-gold-primary-80 uppercase tracking-[0.1em] mb-6 text-balance">
                   Фотограф на выписку из роддома
                 </h1>
 
-                <div className="space-y-3 text-base sm:text-lg text-text-dark mb-8">
+                <div className="space-y-4 text-lg sm:text-xl text-text-dark mb-8">
                   <p>Этот день не повторить!</p>
                   <p>Как сохранить в памяти это важное событие?</p>
                   <p>Какие воспоминания оставить детям, когда они вырастут?</p>
@@ -105,7 +105,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={openModal}
-                  className="inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary font-display font-semibold uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                  className="inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-semibold uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
                 >
                   Забронировать дату
                 </button>
@@ -166,7 +166,7 @@ export default function Hero() {
             </button>
 
             <div className="p-6 md:p-8">
-              <h2 className="font-display text-2xl md:text-3xl text-gold-primary-80 mb-2 uppercase tracking-wider">
+              <h2 className="font-display text-3xl md:text-4xl text-gold-primary-80 mb-2 uppercase tracking-wider">
                 Оставить заявку
               </h2>
               <p className="text-text-muted mb-6">
