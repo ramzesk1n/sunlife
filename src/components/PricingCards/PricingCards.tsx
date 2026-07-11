@@ -28,7 +28,7 @@ const itemVariants = {
 
 export default function PricingCards() {
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -115,7 +115,7 @@ export default function PricingCards() {
                         className="flex items-start gap-2 text-sm text-text-dark"
                       >
                         <span className="text-gold-primary mt-0.5 flex-shrink-0" aria-hidden="true">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="3 8 6 11 13 4" />
                           </svg>
                         </span>

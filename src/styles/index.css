@@ -1,8 +1,8 @@
 /* Base styles — дополнение к index.css */
 @layer base {
   :focus-visible {
-    outline: 2px solid var(--color-gold-primary);
-    outline-offset: 2px;
+    outline: 0.125rem solid var(--color-gold-primary);
+    outline-offset: 0.125rem;
   }
 
   ::selection {
@@ -11,7 +11,7 @@
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem;
   }
 
   ::-webkit-scrollbar-track {
@@ -20,7 +20,7 @@
 
   ::-webkit-scrollbar-thumb {
     background: var(--color-gold-light);
-    border-radius: 4px;
+    border-radius: 0.25rem;
   }
 
   ::-webkit-scrollbar-thumb:hover {

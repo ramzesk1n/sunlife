@@ -6,7 +6,7 @@ const VISIBLE_COUNT = 3;
 
 const slideVariants = {
   enter: (dir: number) => ({
-    x: dir > 0 ? 300 : -300,
+    x: dir > 0 ? '18.75rem' : '-18.75rem',
     opacity: 0,
   }),
   center: {
@@ -14,14 +14,14 @@ const slideVariants = {
     opacity: 1,
   },
   exit: (dir: number) => ({
-    x: dir > 0 ? -300 : 300,
+    x: dir > 0 ? '-18.75rem' : '18.75rem',
     opacity: 0,
   }),
 };
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -87,7 +87,7 @@ export default function Testimonials() {
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-10 h-10 rounded-xl glass flex items-center justify-center text-gold-dark disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-gold transition-all duration-300"
             aria-label="Предыдущие отзывы"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
@@ -99,7 +99,7 @@ export default function Testimonials() {
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-10 h-10 rounded-xl glass flex items-center justify-center text-gold-dark disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-gold transition-all duration-300"
             aria-label="Следующие отзывы"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>

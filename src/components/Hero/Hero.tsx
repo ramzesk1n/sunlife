@@ -82,7 +82,7 @@ export default function Hero() {
             {/* Text content */}
             <motion.div
               ref={contentRef}
-              initial={prefersReducedMotion ? false : { opacity: 0, x: -40 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, x: '-2.5rem' }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="order-2 lg:order-1"
@@ -114,7 +114,7 @@ export default function Hero() {
 
             {/* Hero image */}
             <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, x: 40 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, x: '2.5rem' }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
               className="order-1 lg:order-2"
@@ -126,7 +126,7 @@ export default function Hero() {
                 {/* Placeholder: заменить на реальное фото newborn foots */}
                 <div className="absolute inset-0 flex items-center justify-center text-gold-primary/40">
                   <div className="text-center">
-                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 w-20 h-20">
                       <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
                       <path d="M4 16s1.5-2 5-2 5 2 5 2" />
                       <path d="M4 12s1.5-2 5-2 5 2 5 2" />

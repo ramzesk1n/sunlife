@@ -34,10 +34,10 @@
   --font-serif: 'Cormorant Garamond', Georgia, serif;
 
   /* === Тени === */
-  --shadow-glass: 0 8px 32px 0 rgba(3, 3, 3, 0.1);
-  --shadow-gold: 0 2px 5px 0 rgba(191, 163, 124, 0.33);
-  --shadow-card: 0 2px 16px rgba(191, 163, 124, 0.12);
-  --shadow-soft: 0 4px 24px rgba(3, 3, 3, 0.06);
+  --shadow-glass: 0 0.5rem 2rem 0 rgba(3, 3, 3, 0.1);
+  --shadow-gold: 0 0.125rem 0.3125rem 0 rgba(191, 163, 124, 0.33);
+  --shadow-card: 0 0.125rem 1rem rgba(191, 163, 124, 0.12);
+  --shadow-soft: 0 0.25rem 1.5rem rgba(3, 3, 3, 0.06);
 }
 
 @layer base {
@@ -97,14 +97,14 @@
   /* Liquid Glass utility */
   .glass {
     background: var(--color-glass-bg-solid);
-    border: 1px solid var(--color-glass-border);
+    border: 0.0625rem solid var(--color-glass-border);
     box-shadow: var(--shadow-glass);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(1.25rem);
+    backdrop-filter: blur(1.25rem);
   }
 
   .glass-border-gold {
-    border: 1px solid var(--color-glass-border-gold);
+    border: 0.0625rem solid var(--color-glass-border-gold);
     box-shadow: var(--shadow-gold);
   }
 }

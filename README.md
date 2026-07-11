@@ -65,3 +65,4 @@ npm run build
 - Обязательно `prefers-reduced-motion: reduce`
 - Cleanup GSAP в `useEffect` return
 - Изображения: AVIF/WebP, `width/height` обязательны
+- **Все размеры — только относительные единицы (rem, em, vh, vw, %). Пиксели (px) запрещены.**
