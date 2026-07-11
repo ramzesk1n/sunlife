@@ -1,7 +1,6 @@
 import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { PricingData } from '../../types/content';
+import pricingData from '../../content/pricing.json';
 import ContactForm from '../ContactForm/ContactForm';
 
 const containerVariants = {
@@ -28,8 +27,6 @@ const itemVariants = {
 };
 
 export default function PricingCards() {
-  const { data, loading, error } = useContent<PricingData>('pricing');
-  const packages = data?.packages ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -47,7 +44,7 @@ export default function PricingCards() {
   }, []);
 
   const selectedPackageName = selectedPackage
-    ? packages.find((p) => p.id === selectedPackage)?.name ?? ''
+    ? pricingData.packages.find((p) => p.id === selectedPackage)?.name ?? ''
     : '';
 
   return (
@@ -76,22 +73,13 @@ export default function PricingCards() {
             6 пакетов под любой бюджет и пожелания
           </motion.p>
 
-          {loading && (
-            <div className="text-center py-12 text-text-muted">Загрузка...</div>
-          )}
-          {error && (
-            <div className="text-center py-12 text-red-500">Ошибка загрузки цен</div>
-          )}
-          {!loading && !error && packages.length === 0 && (
-            <div className="text-center py-12 text-text-muted">Нет доступных пакетов</div>
-          )}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             variants={shouldReduceMotion ? undefined : containerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
           >
-            {packages.map((pkg) => (
+            {pricingData.packages.map((pkg) => (
               <motion.article
                 key={pkg.id}
                 variants={shouldReduceMotion ? undefined : itemVariants}

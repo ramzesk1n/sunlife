@@ -1,7 +1,6 @@
 import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { GalleryData } from '../../types/content';
+import galleryData from '../../content/gallery.json';
 import Lightbox from '../Lightbox/Lightbox';
 
 const containerVariants = {
@@ -26,8 +25,6 @@ const itemVariants = {
 };
 
 export default function Gallery() {
-  const { data, loading, error } = useContent<GalleryData>('gallery');
-  const galleryImages = data ?? { images: [] };
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -42,6 +39,8 @@ export default function Gallery() {
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
   }, []);
+
+  const images = galleryData.images;
 
   return (
     <section
@@ -68,22 +67,13 @@ export default function Gallery() {
           Реальные моменты счастья из наших съёмок
         </motion.p>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки галереи</div>
-        )}
-        {!loading && !error && galleryImages.images.length === 0 && (
-          <div className="text-center py-12 text-text-muted">Нет фотографий</div>
-        )}
         <motion.div
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
           variants={shouldReduceMotion ? undefined : containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {galleryImages.images.map((img, i) => (
+          {images.map((img, i) => (
             <motion.button
               key={i}
               variants={shouldReduceMotion ? undefined : itemVariants}
@@ -109,7 +99,7 @@ export default function Gallery() {
       </div>
 
       <Lightbox
-        images={galleryImages.images.map((img) => ({ src: img.src, alt: img.alt }))}
+        images={images.map((img) => ({ src: img.src, alt: img.alt }))}
         open={lightboxOpen}
         index={lightboxIndex}
         onClose={closeLightbox}

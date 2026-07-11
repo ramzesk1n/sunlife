@@ -2,8 +2,7 @@ import { useRef, useEffect } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useContent } from '../../hooks/useContent';
-import type { StepsData } from '../../types/content';
+import stepsData from '../../content/steps.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,12 +33,11 @@ const itemVariants = {
 };
 
 export default function ExperienceSteps() {
-  const { data, loading, error } = useContent<StepsData>('steps');
-  const steps = data?.steps ?? [];
-  const introText = data?.introText ?? '';
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
+  const steps = stepsData.steps;
+  const introText = stepsData.introText;
 
   useEffect(() => {
     if (prefersReducedMotion || !sectionRef.current) return;
@@ -120,17 +118,6 @@ export default function ExperienceSteps() {
         </motion.p>
       </div>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-        )}
-        {!loading && !error && steps.length === 0 && (
-          <div className="text-center py-12 text-text-muted">Нет данных</div>
-        )}
-        {!loading && !error && steps.length > 0 && (
-        <>
       {/* Desktop stacking cards */}
       <div className="about-cards-container relative hidden lg:block h-[420vh]">
         <div className="about-cards-pinned h-screen w-full flex items-center justify-center px-4">
@@ -207,8 +194,6 @@ export default function ExperienceSteps() {
           </motion.article>
         ))}
       </motion.div>
-        </>
-        )}
     </section>
   );
 }

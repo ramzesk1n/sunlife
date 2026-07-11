@@ -1,7 +1,6 @@
 import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { PartnershipData } from '../../types/content';
+import partnershipData from '../../content/partnership.json';
 import Lightbox from '../Lightbox/Lightbox';
 
 const containerVariants = {
@@ -26,8 +25,6 @@ const itemVariants = {
 };
 
 export default function PartnershipGallery() {
-  const { data, loading, error } = useContent<PartnershipData>('partnership');
-  const projects = data?.projects ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -42,6 +39,8 @@ export default function PartnershipGallery() {
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
   }, []);
+
+  const projects = partnershipData.projects;
 
   return (
     <section
@@ -68,15 +67,6 @@ export default function PartnershipGallery() {
           Реальные проекты для медицинских учреждений и организаций
         </motion.p>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-        )}
-        {!loading && !error && projects.length === 0 && (
-          <div className="text-center py-12 text-text-muted">Нет проектов</div>
-        )}
         <motion.div
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
           variants={shouldReduceMotion ? undefined : containerVariants}

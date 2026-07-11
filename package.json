@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && tsx scripts/prerender.ts",
+    "sync-content": "cp public/content/*.json src/content/",
+    "build": "npm run sync-content && tsc -b && vite build && tsx scripts/prerender.ts",
     "lint": "oxlint",
     "preview": "vite preview"
   },

@@ -1,12 +1,9 @@
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { GeographyData } from '../../types/content';
+import geographyData from '../../content/geography.json';
 import RussiaMap from '../RussiaMap/RussiaMap';
 
 export default function Geography() {
-  const { data, loading, error } = useContent<GeographyData>('geography');
-  const geographyText = data?.geographyText ?? '';
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -44,22 +41,14 @@ export default function Geography() {
           <RussiaMap />
         </motion.div>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-        )}
-        {!loading && !error && (
         <motion.p
           className="text-text-muted text-base md:text-lg max-w-3xl mx-auto mt-10 md:mt-14 text-center"
           initial={shouldReduceMotion ? false : { opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
         >
-          {geographyText}
+          {geographyData.geographyText}
         </motion.p>
-        )}
       </div>
     </section>
   );

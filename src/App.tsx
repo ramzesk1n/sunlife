@@ -1,8 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useContent } from './hooks/useContent';
-import type { MetaData } from './types/content';
+import { useEffect } from 'react';
+import metaData from './content/meta.json';
 
 /* Components */
 import Header from './components/Header/Header';
@@ -95,17 +94,9 @@ function PrivacyPageWrapper() {
 /* SEO updater */
 function SeoUpdater() {
   const location = useLocation();
-  const { data } = useContent<MetaData>('meta');
-  const [meta, setMeta] = useState<MetaData['pages'][0] | null>(null);
 
   useEffect(() => {
-    if (!data) return;
-    const found = data.pages.find((p) => p.path === location.pathname) ?? data.pages[0];
-    setMeta(found);
-  }, [data, location.pathname]);
-
-  useEffect(() => {
-    if (!meta) return;
+    const meta = metaData.pages.find((p) => p.path === location.pathname) ?? metaData.pages[0];
     document.title = meta.title;
 
     const updateMeta = (name: string, content: string) => {
@@ -124,15 +115,11 @@ function SeoUpdater() {
     updateMeta('og:title', meta.ogTitle);
     updateMeta('og:description', meta.ogDescription);
     updateMeta('og:image', meta.ogImage);
-    updateMeta('description', meta.description);
-    updateMeta('og:title', meta.ogTitle);
-    updateMeta('og:description', meta.ogDescription);
-    updateMeta('og:image', meta.ogImage);
     updateMeta('og:url', meta.canonical);
     updateMeta('og:type', 'website');
 
     window.scrollTo(0, 0);
-  }, [meta]);
+  }, [location.pathname]);
 
   return null;
 }

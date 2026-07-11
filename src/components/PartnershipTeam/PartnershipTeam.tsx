@@ -1,16 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { PartnershipData } from '../../types/content';
+import partnershipData from '../../content/partnership.json';
 
 export default function PartnershipTeam() {
-  const { data, loading, error } = useContent<PartnershipData>('partnership');
-  const team = data?.team ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
   const [isPaused, setIsPaused] = useState(false);
+  const team = partnershipData.team;
 
   useEffect(() => {
     if (shouldReduceMotion || !trackRef.current || team.length === 0) return;
@@ -71,49 +69,38 @@ export default function PartnershipTeam() {
         </motion.p>
       </div>
 
-      {loading && (
-        <div className="text-center py-12 text-text-muted">Загрузка...</div>
-      )}
-      {error && (
-        <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-      )}
-      {!loading && !error && team.length === 0 && (
-        <div className="text-center py-12 text-text-muted">Нет данных</div>
-      )}
-      {!loading && !error && team.length > 0 && (
-        <div
-          className="relative"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onFocus={() => setIsPaused(true)}
-          onBlur={() => setIsPaused(false)}
-        >
-          {/* fade edges */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-cream-2 to-transparent z-10" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-cream-2 to-transparent z-10" />
+      <div
+        className="relative"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocus={() => setIsPaused(true)}
+        onBlur={() => setIsPaused(false)}
+      >
+        {/* fade edges */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-cream-2 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-cream-2 to-transparent z-10" />
 
-          <div ref={trackRef} className="flex gap-6 will-change-transform">
-            {duplicatedTeam.map((member, idx) => (
-              <div
-                key={`${member.id}-${idx}`}
-                className="flex-shrink-0 w-56 md:w-64"
-              >
-                <div className="glass rounded-2xl p-4 text-center hover:shadow-glass transition-all duration-300">
-                  <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gold-pale mb-4">
-                    <div className="w-full h-full flex items-center justify-center text-gold-primary/40">
-                      <span className="text-4xl font-display uppercase">{member.name.charAt(0)}</span>
-                    </div>
+        <div ref={trackRef} className="flex gap-6 will-change-transform">
+          {duplicatedTeam.map((member, idx) => (
+            <div
+              key={`${member.id}-${idx}`}
+              className="flex-shrink-0 w-56 md:w-64"
+            >
+              <div className="glass rounded-2xl p-4 text-center hover:shadow-glass transition-all duration-300">
+                <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gold-pale mb-4">
+                  <div className="w-full h-full flex items-center justify-center text-gold-primary/40">
+                    <span className="text-4xl font-display uppercase">{member.name.charAt(0)}</span>
                   </div>
-                  <h3 className="font-display text-lg md:text-xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-text-muted text-base">{member.role}</p>
                 </div>
+                <h3 className="font-display text-lg md:text-xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-1">
+                  {member.name}
+                </h3>
+                <p className="text-text-muted text-base">{member.role}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </section>
   );
 }

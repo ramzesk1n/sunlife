@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { BenefitsData } from '../../types/content';
+import benefitsData from '../../content/benefits.json';
 
 const containerVariants = {
   hidden: {},
@@ -55,8 +54,6 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default function Benefits() {
-  const { data, loading, error } = useContent<BenefitsData>('benefits');
-  const benefits = data?.benefits ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -77,22 +74,13 @@ export default function Benefits() {
           Гильдия фотографов САН ЛАЙФ - это
         </motion.h2>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-        )}
-        {!loading && !error && benefits.length === 0 && (
-          <div className="text-center py-12 text-text-muted">Нет данных</div>
-        )}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12"
           variants={shouldReduceMotion ? undefined : containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {benefits.map((benefit) => (
+          {benefitsData.benefits.map((benefit) => (
             <motion.article
               key={benefit.id}
               variants={shouldReduceMotion ? undefined : itemVariants}

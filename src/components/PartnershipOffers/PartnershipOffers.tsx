@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { PartnershipData } from '../../types/content';
+import partnershipData from '../../content/partnership.json';
 
 const containerVariants = {
   hidden: {},
@@ -25,8 +24,6 @@ const itemVariants = {
 };
 
 export default function PartnershipOffers() {
-  const { data, loading, error } = useContent<PartnershipData>('partnership');
-  const offers = data?.offers ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -56,15 +53,6 @@ export default function PartnershipOffers() {
           Работаем как часть вашей экосистемы: инвестируем в интерьер, помогаем персоналу и создаём контент
         </motion.p>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-        )}
-        {!loading && !error && offers.length === 0 && (
-          <div className="text-center py-12 text-text-muted">Нет данных</div>
-        )}
         <motion.div
           className="relative"
           variants={shouldReduceMotion ? undefined : containerVariants}
@@ -75,7 +63,7 @@ export default function PartnershipOffers() {
           <div className="absolute left-6 md:left-8 top-4 bottom-4 w-0.5 bg-gold-primary/20 hidden md:block" />
 
           <div className="space-y-8 md:space-y-10">
-            {offers.map((offer) => (
+            {partnershipData.offers.map((offer) => (
               <motion.div
                 key={offer.id}
                 variants={shouldReduceMotion ? undefined : itemVariants}

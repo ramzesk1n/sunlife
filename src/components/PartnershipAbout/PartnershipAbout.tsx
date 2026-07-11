@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useContent } from '../../hooks/useContent';
-import type { PartnershipData } from '../../types/content';
+import partnershipData from '../../content/partnership.json';
 
 const containerVariants = {
   hidden: {},
@@ -25,8 +24,6 @@ const itemVariants = {
 };
 
 export default function PartnershipAbout() {
-  const { data, loading, error } = useContent<PartnershipData>('partnership');
-  const aboutItems = data?.about ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -47,22 +44,13 @@ export default function PartnershipAbout() {
           Коротко о нас
         </motion.h2>
 
-        {loading && (
-          <div className="text-center py-12 text-text-muted">Загрузка...</div>
-        )}
-        {error && (
-          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
-        )}
-        {!loading && !error && aboutItems.length === 0 && (
-          <div className="text-center py-12 text-text-muted">Нет данных</div>
-        )}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           variants={shouldReduceMotion ? undefined : containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {aboutItems.map((item) => (
+          {partnershipData.about.map((item) => (
             <motion.div
               key={item.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
