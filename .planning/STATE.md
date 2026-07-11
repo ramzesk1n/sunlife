@@ -10,7 +10,13 @@
 5. ✅ Cookie-баннер с 3 категориями (necessary/analytics/marketing)
 6. ✅ Телефон обновлён на +7 (927) 936-36-06
 7. ✅ Форма согласия ссылается на политику
-8. ✅ Git commit + push
+8. ✅ Кастомный Lightbox взамен yet-another-react-lightbox
+9. ✅ Пересобрана страница /partnership по контенту Webflow:
+   - PartnershipHero, PartnershipAbout, PartnershipOffers
+   - PartnershipBeforeAfter, PartnershipPricing, PartnershipFAQ
+   - PartnershipTeam, PartnershipGallery
+   - Весь контент вынесен в src/content/partnership.ts
+10. ✅ Git commit + push
 
 ### Открытые задачи (todo)
 - [ ] Bundle size: animation 88kB → <60kB gzip
