@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход в админку - САН ЛАЙФ CMS</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-box">
+      <h1>САН ЛАЙФ CMS</h1>
+      <p class="subtitle">Управление контентом сайта</p>
+      
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+      </form>
+      
+      <p id="errorMsg" class="error-msg"></p>
+    </div>
+  </div>
+  
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+      
+      try {
+        const res = await fetch('api/index.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password }),
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          window.location.href = 'dashboard.html';
+        } else {
+          errorMsg.textContent = 'Неверный пароль';
+        }
+      } catch (err) {
+        errorMsg.textContent = 'Ошибка соединения';
+      }
+    });
+  </script>
+</body>
+</html>

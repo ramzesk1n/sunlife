@@ -1,10 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import {
-  partnershipPrices,
-  partnershipNewborn,
-  partnershipNewbornExtras,
-} from '../../content/partnership';
+import { useContent } from '../../hooks/useContent';
+import type { PartnershipData } from '../../types/content';
 
 const containerVariants = {
   hidden: {},
@@ -28,6 +25,10 @@ const itemVariants = {
 };
 
 export default function PartnershipPricing() {
+  const { data, loading, error } = useContent<PartnershipData>('partnership');
+  const prices = data?.prices ?? [];
+  const newborn = data?.newborn ?? [];
+  const newbornExtras = data?.newbornExtras ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -57,65 +58,75 @@ export default function PartnershipPricing() {
           5 пакетов от 2300 до 7500 рублей
         </motion.p>
 
-        <motion.div
-          className="glass rounded-2xl p-6 md:p-8 mb-8"
-          variants={shouldReduceMotion ? undefined : containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          {partnershipPrices.map((item) => (
+        {loading && (
+          <div className="text-center py-12 text-text-muted">Загрузка...</div>
+        )}
+        {error && (
+          <div className="text-center py-12 text-red-500">Ошибка загрузки</div>
+        )}
+        {!loading && !error && (
+          <>
             <motion.div
-              key={item.id}
-              variants={shouldReduceMotion ? undefined : itemVariants}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-4 border-b border-gold-primary/10 last:border-b-0"
+              className="glass rounded-2xl p-6 md:p-8 mb-8"
+              variants={shouldReduceMotion ? undefined : containerVariants}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
             >
-              <span className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base md:text-lg">
-                {item.title}
-              </span>
-              <span className="font-display text-xl md:text-2xl text-gold-primary whitespace-nowrap">
-                {item.price}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          className="glass rounded-2xl p-6 md:p-8"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
-        >
-          <h3 className="text-xl md:text-2xl font-display font-semibold text-gold-primary-80 text-center mb-6 uppercase tracking-wider">
-            Ньюборн фотосессия
-          </h3>
-
-          <div className="space-y-3 mb-6">
-            {partnershipNewborn.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border-b border-gold-primary/10 last:border-b-0"
-              >
-                <span className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base">
-                  {item.title}
-                </span>
-                <span className="font-display text-lg text-gold-primary whitespace-nowrap">
-                  {item.price}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="bg-gold-pale rounded-xl p-4 md:p-5">
-            <p className="font-display font-semibold text-gold-dark uppercase tracking-wider text-sm mb-2">
-              Дополнительная печать:
-            </p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-text-muted text-base">
-              {partnershipNewbornExtras.map((extra, idx) => (
-                <li key={idx}>{extra}</li>
+              {prices.map((item) => (
+                <motion.div
+                  key={item.id}
+                  variants={shouldReduceMotion ? undefined : itemVariants}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-4 border-b border-gold-primary/10 last:border-b-0"
+                >
+                  <span className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base md:text-lg">
+                    {item.title}
+                  </span>
+                  <span className="font-display text-xl md:text-2xl text-gold-primary whitespace-nowrap">
+                    {item.price}
+                  </span>
+                </motion.div>
               ))}
-            </ul>
-          </div>
-        </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="glass rounded-2xl p-6 md:p-8"
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+            >
+              <h3 className="text-xl md:text-2xl font-display font-semibold text-gold-primary-80 text-center mb-6 uppercase tracking-wider">
+                Ньюборн фотосессия
+              </h3>
+
+              <div className="space-y-3 mb-6">
+                {newborn.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border-b border-gold-primary/10 last:border-b-0"
+                  >
+                    <span className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base">
+                      {item.title}
+                    </span>
+                    <span className="font-display text-lg text-gold-primary whitespace-nowrap">
+                      {item.price}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-gold-pale rounded-xl p-4 md:p-5">
+                <p className="font-display font-semibold text-gold-dark uppercase tracking-wider text-sm mb-2">
+                  Дополнительная печать:
+                </p>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-text-muted text-base">
+                  {newbornExtras.map((extra, idx) => (
+                    <li key={idx}>{extra}</li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
     </section>
   );

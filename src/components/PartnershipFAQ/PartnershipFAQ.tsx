@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
-import { partnershipFaqItems } from '../../content/partnership';
+import { useContent } from '../../hooks/useContent';
+import type { FAQData } from '../../types/content';
 
 const containerVariants = {
   hidden: {},
@@ -24,6 +25,8 @@ const itemVariants = {
 };
 
 export default function PartnershipFAQ() {
+  const { data, loading, error } = useContent<FAQData>('faq');
+  const faqItems = data?.categories?.partnership ?? [];
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -58,13 +61,22 @@ export default function PartnershipFAQ() {
           Ответы на ключевые вопросы руководителей и главных врачей
         </motion.p>
 
+        {loading && (
+          <div className="text-center py-12 text-text-muted">Загрузка...</div>
+        )}
+        {error && (
+          <div className="text-center py-12 text-red-500">Ошибка загрузки FAQ</div>
+        )}
+        {!loading && !error && faqItems.length === 0 && (
+          <div className="text-center py-12 text-text-muted">Нет вопросов</div>
+        )}
         <motion.div
           className="space-y-3"
           variants={shouldReduceMotion ? undefined : containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {partnershipFaqItems.map((item) => (
+          {faqItems.map((item) => (
             <motion.div
               key={item.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
