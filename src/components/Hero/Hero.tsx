@@ -97,7 +97,7 @@ export default function Hero() {
                   <p>Как сохранить в памяти это важное событие?</p>
                   <p>Какие воспоминания оставить детям, когда они вырастут?</p>
                   <p className="text-balance">
-                    Улыбки, слезы, объятия, поздравления — такие моменты счастья можно
+                    Улыбки, слезы, объятия, поздравления - такие моменты счастья можно
                     поймать на камеру!
                   </p>
                 </div>
@@ -123,19 +123,12 @@ export default function Hero() {
                 ref={imageRef}
                 className="relative aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
               >
-                {/* Placeholder: заменить на реальное фото newborn foots */}
-                <div className="absolute inset-0 flex items-center justify-center text-gold-primary/40">
-                  <div className="text-center">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 w-20 h-20">
-                      <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
-                      <path d="M4 16s1.5-2 5-2 5 2 5 2" />
-                      <path d="M4 12s1.5-2 5-2 5 2 5 2" />
-                      <path d="M19 12v8" />
-                      <circle cx="12" cy="5" r="3" />
-                    </svg>
-                    <span className="text-sm uppercase tracking-widest">Hero Image</span>
-                  </div>
-                </div>
+                <img
+                  src="/images/hero-image-main.jpg"
+                  alt="Фотограф на выписку из роддома"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                />
               </div>
             </motion.div>
           </div>

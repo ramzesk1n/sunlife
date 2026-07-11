@@ -71,7 +71,7 @@ export default function Benefits() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Гильдия фотографов САН ЛАЙФ — это
+          Гильдия фотографов САН ЛАЙФ - это
         </motion.h2>
 
         <motion.div

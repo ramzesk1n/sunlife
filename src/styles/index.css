@@ -1,4 +1,4 @@
-/* Base styles — дополнение к index.css */
+/* Base styles - дополнение к index.css */
 @layer base {
   :focus-visible {
     outline: 0.125rem solid var(--color-gold-primary);

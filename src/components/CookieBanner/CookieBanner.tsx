@@ -69,7 +69,7 @@ export default function CookieBanner() {
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex-1">
               <p className="text-text-dark text-base leading-relaxed">
-                Мы используем файлы cookie, чтобы сайт работал корректно и мы могли анализировать посещаемость. Вы можете принять все cookie или настроить их по категориям. Подробнее — в{' '}
+                Мы используем файлы cookie, чтобы сайт работал корректно и мы могли анализировать посещаемость. Вы можете принять все cookie или настроить их по категориям. Подробнее - в{' '}
                 <Link to="/privacy#cookies" className="text-gold-primary hover:underline" target="_blank">
                   Политике cookie
                 </Link>

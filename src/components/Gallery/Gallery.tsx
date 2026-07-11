@@ -3,7 +3,7 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Lightbox from '../Lightbox/Lightbox';
 
 const galleryImages = [
-  { src: '/images/placeholder-1.jpg', alt: 'Выписка из роддома — мама с малышом', width: 800, height: 1000 },
+  { src: '/images/placeholder-1.jpg', alt: 'Выписка из роддома - мама с малышом', width: 800, height: 1000 },
   { src: '/images/placeholder-2.jpg', alt: 'Папа держит новорождённого', width: 800, height: 1000 },
   { src: '/images/placeholder-3.jpg', alt: 'Первая семейная фотография', width: 800, height: 1000 },
   { src: '/images/placeholder-4.jpg', alt: 'Малыш в пелёнке', width: 800, height: 1000 },

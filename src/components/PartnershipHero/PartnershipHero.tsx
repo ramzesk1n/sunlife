@@ -35,12 +35,12 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
           >
             <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12">
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium text-gold-primary-80 uppercase tracking-[0.08em] mb-6 text-balance leading-tight">
-                Фотослужба САН ЛАЙФ — предложение о сотрудничестве
+                Фотослужба САН ЛАЙФ - предложение о сотрудничестве
               </h1>
 
               <div className="space-y-4 text-lg sm:text-xl text-text-dark mb-8">
                 <p>
-                  Фотослужба «Санлайф» — команда профессиональных фотографов, операторов и дизайнеров. Основной профиль — съёмка выписок из роддома.
+                  Фотослужба «Санлайф» - команда профессиональных фотографов, операторов и дизайнеров. Основной профиль - съёмка выписок из роддома.
                 </p>
                 <p>
                   Ищем партнёров в вашем городе. Предлагаем лучшие условия сотрудничества.
@@ -64,18 +64,12 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             className="order-1 lg:order-2"
           >
             <div className="relative aspect-[4/3] lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-glass bg-gold-pale">
-              <div className="absolute inset-0 flex items-center justify-center text-gold-primary/40">
-                <div className="text-center">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 w-20 h-20">
-                    <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
-                    <path d="M4 16s1.5-2 5-2 5 2 5 2" />
-                    <path d="M4 12s1.5-2 5-2 5 2 5 2" />
-                    <path d="M19 12v8" />
-                    <circle cx="12" cy="5" r="3" />
-                  </svg>
-                  <span className="text-sm uppercase tracking-widest">Hero Partnership</span>
-                </div>
-              </div>
+              <img
+                src="/images/hero-image-partership-1600.jpg"
+                alt="Партнёрство с роддомами"
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="eager"
+              />
             </div>
           </motion.div>
         </div>

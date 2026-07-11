@@ -3,13 +3,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 const SVG_URL = '/images/russia-map.svg';
 
 const CITY_LABELS: Record<string, string> = {
-  ufa: 'Уфа — Республика Башкортостан',
-  sterlitamak: 'Стерлитамак — Республика Башкортостан',
-  kumertau: 'Кумертау — Республика Башкортостан',
-  salavat: 'Салават — Республика Башкортостан',
-  'nizhny-novgorod': 'Нижний Новгород — Нижегородская область',
-  irkutsk: 'Иркутск — Иркутская область',
-  orsk: 'Орск — Оренбургская область',
+  ufa: 'Уфа - Республика Башкортостан',
+  sterlitamak: 'Стерлитамак - Республика Башкортостан',
+  kumertau: 'Кумертау - Республика Башкортостан',
+  salavat: 'Салават - Республика Башкортостан',
+  'nizhny-novgorod': 'Нижний Новгород - Нижегородская область',
+  irkutsk: 'Иркутск - Иркутская область',
+  orsk: 'Орск - Оренбургская область',
 };
 
 interface TooltipState {
