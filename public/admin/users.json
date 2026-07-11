@@ -1,0 +1,29 @@
+{
+  "ramzes": {
+    "name": "Ramzes",
+    "password_hash": "$2y$10$vMKKU1B2iC5eVrDrlApgFe0.IR6Az8jx/RQmykcqjG4OhBaR3ysbS",
+    "role": "admin",
+    "permissions": [
+      "pricing",
+      "faq",
+      "gallery",
+      "benefits",
+      "reviews",
+      "steps",
+      "geography",
+      "partnership",
+      "meta",
+      "users"
+    ]
+  },
+  "tagir": {
+    "name": "Tagir",
+    "password_hash": "$2y$10$gpLA2QBotIScD5WH71gb9uqxmXFYe4R7CAhpbscnL3LfQXhz2pfIa",
+    "role": "editor",
+    "permissions": [
+      "gallery",
+      "benefits",
+      "reviews"
+    ]
+  }
+}

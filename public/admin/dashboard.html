@@ -11,19 +11,12 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <h2>САН ЛАЙФ CMS</h2>
+        <p id="userName" class="user-name"></p>
       </div>
       
       <nav>
-        <ul class="sidebar-nav">
-          <li><a href="#" data-file="pricing" class="active"><span class="icon">💰</span> Цены</a></li>
-          <li><a href="#" data-file="faq"><span class="icon">❓</span> FAQ</a></li>
-          <li><a href="#" data-file="gallery"><span class="icon">🖼</span> Галерея</a></li>
-          <li><a href="#" data-file="benefits"><span class="icon">⭐</span> Преимущества</a></li>
-          <li><a href="#" data-file="reviews"><span class="icon">💬</span> Отзывы</a></li>
-          <li><a href="#" data-file="steps"><span class="icon">👶</span> Почему мы</a></li>
-          <li><a href="#" data-file="geography"><span class="icon">🗺</span> География</a></li>
-          <li><a href="#" data-file="partnership"><span class="icon">🤝</span> Партнёрство</a></li>
-          <li><a href="#" data-file="meta"><span class="icon">🔎</span> SEO</a></li>
+        <ul class="sidebar-nav" id="sidebarNav">
+          <!-- Menu items injected by JS based on permissions -->
         </ul>
       </nav>
       
@@ -36,7 +29,7 @@
     
     <main class="main-content">
       <div class="page-header">
-        <h1>Редактор контента</h1>
+        <h1 id="pageTitle">Редактор контента</h1>
       </div>
       
       <div id="editorContainer">

@@ -63,38 +63,44 @@ export default function CookieBanner() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6">
-      <div className="max-w-4xl mx-auto glass rounded-2xl border border-gold-primary/20 shadow-glass p-5 md:p-6">
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-3 md:p-5">
+      <div className="max-w-5xl mx-auto glass rounded-2xl border border-gold-primary/20 shadow-glass p-5 md:p-6">
         {!showSettings ? (
-          <div className="flex flex-col md:flex-row md:items-center gap-4">
-            <div className="flex-1">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-5">
+            {/* Текст слева */}
+            <div className="flex-1 min-w-0">
               <p className="text-text-dark text-base leading-relaxed">
-                Мы используем файлы cookie, чтобы сайт работал корректно и мы могли анализировать посещаемость. Вы можете принять все cookie или настроить их по категориям. Подробнее - в{' '}
-                <Link to="/privacy#cookies" className="text-gold-primary hover:underline" target="_blank">
+                Мы используем файлы cookie, чтобы сайт работал корректно и мы могли анализировать посещаемость.
+              </p>
+              <p className="text-text-muted text-sm mt-2 leading-relaxed">
+                Вы можете принять все cookie или настроить их по категориям.
+                {' '}Подробнее - в{' '}
+                <Link to="/privacy#cookies" className="text-gold-primary hover:underline font-medium" target="_blank">
                   Политике cookie
                 </Link>
                 .
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 shrink-0">
+            {/* Кнопки справа */}
+            <div className="flex flex-wrap gap-2.5 shrink-0 lg:pt-1">
               <button
                 type="button"
                 onClick={acceptNecessaryOnly}
-                className="px-4 py-2.5 rounded-xl border border-gold-primary/40 text-gold-dark font-display text-sm uppercase tracking-wider hover:bg-gold-primary/10 transition-colors"
+                className="px-5 py-2.5 rounded-xl border border-gold-primary/40 text-gold-dark font-display text-sm uppercase tracking-wider hover:bg-gold-primary/10 transition-colors whitespace-nowrap"
               >
                 Только необходимые
               </button>
               <button
                 type="button"
                 onClick={() => setShowSettings(true)}
-                className="px-4 py-2.5 rounded-xl border border-gold-primary/40 text-gold-dark font-display text-sm uppercase tracking-wider hover:bg-gold-primary/10 transition-colors"
+                className="px-5 py-2.5 rounded-xl border border-gold-primary/40 text-gold-dark font-display text-sm uppercase tracking-wider hover:bg-gold-primary/10 transition-colors whitespace-nowrap"
               >
                 Настроить
               </button>
               <button
                 type="button"
                 onClick={acceptAll}
-                className="px-4 py-2.5 rounded-xl bg-gold-primary text-cream font-display text-sm uppercase tracking-wider hover:bg-gold-dark transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-gold-primary text-cream font-display text-sm uppercase tracking-wider hover:bg-gold-dark transition-colors whitespace-nowrap"
               >
                 Принять все
               </button>
