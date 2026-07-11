@@ -1,64 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { partnershipProjects } from '../../content/partnership';
 import Lightbox from '../Lightbox/Lightbox';
-
-interface PartnershipImage {
-  id: string;
-  src: string;
-  alt: string;
-  title: string;
-}
-
-const partnershipImages: PartnershipImage[] = [
-  {
-    id: 'artem',
-    src: '/images/placeholder-1.jpg',
-    alt: 'Авторская фотовыставка Тагира Чанышева «Герои красной зоны»',
-    title: 'АВТОРСКАЯ ФОТОВЫСТАВКА ТАГИРА ЧАНЫШЕВА «ГЕРОИ КРАСНОЙ ЗОНЫ»',
-  },
-  {
-    id: 'rkb',
-    src: '/images/placeholder-2.jpg',
-    alt: '30 лет ОУЗД РКБ им. Куватова Уфа',
-    title: '30 ЛЕТ ОУЗД РКБ ИМ. КУВАТОВА УФА',
-  },
-  {
-    id: 'aero',
-    src: '/images/placeholder-3.jpg',
-    alt: 'Аэросъёмка медучреждений',
-    title: 'АЭРОСЪЕМКА МЕДУЧРЕЖДЕНИЙ',
-  },
-  {
-    id: 'blood',
-    src: '/images/placeholder-4.jpg',
-    alt: 'Форум службы крови',
-    title: 'ФОРУМ СЛУЖБЫ КРОВИ',
-  },
-  {
-    id: 'covid',
-    src: '/images/placeholder-5.jpg',
-    alt: 'Ковид-госпиталь',
-    title: 'КОВИД-ГОСПИТАЛЬ',
-  },
-  {
-    id: 'naski',
-    src: '/images/placeholder-6.jpg',
-    alt: 'Конференция НАСКИ',
-    title: 'КОНФЕРЕНЦИЯ НАСКИ',
-  },
-  {
-    id: 'bgmu',
-    src: '/images/placeholder-7.jpg',
-    alt: 'Фотогалерея в симуляционном центре БГМУ',
-    title: 'ФОТОГАЛЕРЕЯ В СИМУЛЯЦИОННОМ ЦЕНТРЕ БГМУ',
-  },
-  {
-    id: 'medday',
-    src: '/images/placeholder-8.jpg',
-    alt: 'Церемония награждения в День медработника',
-    title: 'ЦЕРЕМОНИЯ НАГРАЖДЕНИЯ В ДЕНЬ МЕДРАБОТНИКА',
-  },
-];
 
 const containerVariants = {
   hidden: {},
@@ -128,7 +71,7 @@ export default function PartnershipGallery() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {partnershipImages.map((img, i) => (
+          {partnershipProjects.map((img, i) => (
             <motion.button
               key={img.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
@@ -149,7 +92,6 @@ export default function PartnershipGallery() {
                 </span>
               </div>
 
-              {/* Title overlay on hover */}
               <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p className="text-cream text-xs font-display uppercase tracking-wider text-center leading-tight">
                   {img.title}
@@ -161,7 +103,7 @@ export default function PartnershipGallery() {
       </div>
 
       <Lightbox
-        images={partnershipImages.map((img) => ({ src: img.src, alt: img.alt }))}
+        images={partnershipProjects.map((img) => ({ src: img.src, alt: img.alt }))}
         open={lightboxOpen}
         index={lightboxIndex}
         onClose={closeLightbox}
