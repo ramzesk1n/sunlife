@@ -13,7 +13,6 @@ const prefersReducedMotion =
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = useCallback(() => setIsModalOpen(true), []);
@@ -78,16 +77,15 @@ export default function Hero() {
         className="relative min-h-[100dvh] flex items-center pt-24 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden"
       >
         <div className="max-w-7xl mx-auto w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             {/* Text content */}
             <motion.div
-              ref={contentRef}
               initial={prefersReducedMotion ? false : { opacity: 0, x: '-2.5rem' }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="order-2 lg:order-1"
+              className="order-2 lg:order-1 flex"
             >
-              <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12">
+              <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12 flex flex-col justify-center w-full">
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-medium text-gold-primary-80 uppercase tracking-[0.1em] mb-6 text-balance">
                   Фотограф на выписку из роддома
                 </h1>
@@ -105,7 +103,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={openModal}
-                  className="inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-semibold uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                  className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-semibold uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
                 >
                   Забронировать дату
                 </button>
@@ -117,11 +115,11 @@ export default function Hero() {
               initial={prefersReducedMotion ? false : { opacity: 0, x: '2.5rem' }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-              className="order-1 lg:order-2"
+              className="order-1 lg:order-2 flex"
             >
               <div
                 ref={imageRef}
-                className="relative aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
+                className="relative w-full rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
               >
                 <img
                   src="/images/hero-image-main.jpg"

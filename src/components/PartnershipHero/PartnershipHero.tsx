@@ -26,16 +26,19 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
       className="relative min-h-[100dvh] flex items-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
           <motion.div
             initial={shouldReduceMotion ? false : { opacity: 0, x: '-2.5rem' }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="order-2 lg:order-1"
+            className="order-2 lg:order-1 flex"
           >
-            <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12">
-              <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-medium text-gold-primary-80 uppercase tracking-[0.06em] mb-6 text-balance">
-                Фотослужба САН ЛАЙФ - предложение о сотрудничестве
+            <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12 flex flex-col justify-center w-full">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-gold-primary-80 uppercase tracking-[0.06em] mb-6 text-balance">
+                <span className="block">Фотослужба</span>
+                <span className="block">САН ЛАЙФ</span>
+                <span className="block">- предложение</span>
+                <span className="block">о сотрудничестве</span>
               </h1>
 
               <div className="space-y-4 text-base sm:text-lg text-text-dark mb-8">
@@ -50,7 +53,7 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
               <button
                 type="button"
                 onClick={scrollToForm}
-                className="inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-semibold uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-semibold uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
               >
                 Стать партнёром
               </button>
@@ -61,9 +64,9 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             initial={shouldReduceMotion ? false : { opacity: 0, x: '2.5rem' }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="order-1 lg:order-2"
+            className="order-1 lg:order-2 flex"
           >
-            <div className="relative aspect-[4/3] lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-glass bg-gold-pale">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-glass bg-gold-pale">
               <img
                 src="/images/hero-image-partership-1600.jpg"
                 alt="Партнёрство с роддомами"
