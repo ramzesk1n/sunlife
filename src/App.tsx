@@ -16,6 +16,7 @@ import Testimonials from './components/Testimonials/Testimonials';
 import FAQ from './components/FAQ/FAQ';
 import ContactForm from './components/ContactForm/ContactForm';
 import Footer from './components/Footer/Footer';
+import PartnershipGallery from './components/PartnershipGallery/PartnershipGallery';
 import PrivacyPage from './pages/PrivacyPage';
 
 /* Page wrappers */
@@ -65,6 +66,7 @@ function PartnershipPage() {
     <>
       <Header />
       <Benefits />
+      <PartnershipGallery />
       <ContactForm />
       <Footer />
     </>

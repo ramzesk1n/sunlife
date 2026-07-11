@@ -2,15 +2,62 @@ import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Lightbox from '../Lightbox/Lightbox';
 
-const galleryImages = [
-  { src: '/images/placeholder-1.jpg', alt: 'Выписка из роддома — мама с малышом', width: 800, height: 1000 },
-  { src: '/images/placeholder-2.jpg', alt: 'Папа держит новорождённого', width: 800, height: 1000 },
-  { src: '/images/placeholder-3.jpg', alt: 'Первая семейная фотография', width: 800, height: 1000 },
-  { src: '/images/placeholder-4.jpg', alt: 'Малыш в пелёнке', width: 800, height: 1000 },
-  { src: '/images/placeholder-5.jpg', alt: 'Объятия родителей', width: 800, height: 1000 },
-  { src: '/images/placeholder-6.jpg', alt: 'Счастливые моменты', width: 800, height: 1000 },
-  { src: '/images/placeholder-7.jpg', alt: 'Встреча с родными', width: 800, height: 1000 },
-  { src: '/images/placeholder-8.jpg', alt: 'Первый путь домой', width: 800, height: 1000 },
+interface PartnershipImage {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+}
+
+const partnershipImages: PartnershipImage[] = [
+  {
+    id: 'artem',
+    src: '/images/placeholder-1.jpg',
+    alt: 'Авторская фотовыставка Тагира Чанышева «Герои красной зоны»',
+    title: 'АВТОРСКАЯ ФОТОВЫСТАВКА ТАГИРА ЧАНЫШЕВА «ГЕРОИ КРАСНОЙ ЗОНЫ»',
+  },
+  {
+    id: 'rkb',
+    src: '/images/placeholder-2.jpg',
+    alt: '30 лет ОУЗД РКБ им. Куватова Уфа',
+    title: '30 ЛЕТ ОУЗД РКБ ИМ. КУВАТОВА УФА',
+  },
+  {
+    id: 'aero',
+    src: '/images/placeholder-3.jpg',
+    alt: 'Аэросъёмка медучреждений',
+    title: 'АЭРОСЪЕМКА МЕДУЧРЕЖДЕНИЙ',
+  },
+  {
+    id: 'blood',
+    src: '/images/placeholder-4.jpg',
+    alt: 'Форум службы крови',
+    title: 'ФОРУМ СЛУЖБЫ КРОВИ',
+  },
+  {
+    id: 'covid',
+    src: '/images/placeholder-5.jpg',
+    alt: 'Ковид-госпиталь',
+    title: 'КОВИД-ГОСПИТАЛЬ',
+  },
+  {
+    id: 'naski',
+    src: '/images/placeholder-6.jpg',
+    alt: 'Конференция НАСКИ',
+    title: 'КОНФЕРЕНЦИЯ НАСКИ',
+  },
+  {
+    id: 'bgmu',
+    src: '/images/placeholder-7.jpg',
+    alt: 'Фотогалерея в симуляционном центре БГМУ',
+    title: 'ФОТОГАЛЕРЕЯ В СИМУЛЯЦИОННОМ ЦЕНТРЕ БГМУ',
+  },
+  {
+    id: 'medday',
+    src: '/images/placeholder-8.jpg',
+    alt: 'Церемония награждения в День медработника',
+    title: 'ЦЕРЕМОНИЯ НАГРАЖДЕНИЯ В ДЕНЬ МЕДРАБОТНИКА',
+  },
 ];
 
 const containerVariants = {
@@ -34,7 +81,7 @@ const itemVariants = {
   },
 };
 
-export default function Gallery() {
+export default function PartnershipGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -53,7 +100,7 @@ export default function Gallery() {
   return (
     <section
       ref={sectionRef}
-      id="gallery"
+      id="partnership-gallery"
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
@@ -63,7 +110,7 @@ export default function Gallery() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Галерея эмоций
+          Портфолио партнёрских проектов
         </motion.h2>
 
         <motion.p
@@ -72,7 +119,7 @@ export default function Gallery() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         >
-          Реальные моменты счастья из наших съёмок
+          Реальные проекты для медицинских учреждений и организаций
         </motion.p>
 
         <motion.div
@@ -81,9 +128,9 @@ export default function Gallery() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {galleryImages.map((img, i) => (
+          {partnershipImages.map((img, i) => (
             <motion.button
-              key={i}
+              key={img.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
               whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
@@ -101,13 +148,20 @@ export default function Gallery() {
                   🔍
                 </span>
               </div>
+
+              {/* Title overlay on hover */}
+              <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-cream text-xs font-display uppercase tracking-wider text-center leading-tight">
+                  {img.title}
+                </p>
+              </div>
             </motion.button>
           ))}
         </motion.div>
       </div>
 
       <Lightbox
-        images={galleryImages.map((img) => ({ src: img.src, alt: img.alt }))}
+        images={partnershipImages.map((img) => ({ src: img.src, alt: img.alt }))}
         open={lightboxOpen}
         index={lightboxIndex}
         onClose={closeLightbox}
