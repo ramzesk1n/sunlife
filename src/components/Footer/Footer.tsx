@@ -36,20 +36,20 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
           {/* Бренд */}
           <div>
-            <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0">
                 <img
                   src="/images/sunlife_logo.png"
                   alt=""
                   className="w-full h-full object-contain p-1"
                   loading="lazy"
-                  width="44"
-                  height="44"
+                  width="56"
+                  height="56"
                 />
               </div>
               <div>
                 <p className="text-xs text-gold-dark uppercase tracking-[0.2em]">фотослужба</p>
-                <p className="text-base font-display font-semibold text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
+                <p className="text-sm font-display font-semibold text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
               </div>
             </div>
             <p className="text-text-muted text-base leading-relaxed">

@@ -34,11 +34,11 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             className="order-2 lg:order-1"
           >
             <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12">
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium text-gold-primary-80 uppercase tracking-[0.08em] mb-6 text-balance leading-tight">
+              <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-medium text-gold-primary-80 uppercase tracking-[0.06em] mb-6 text-balance">
                 Фотослужба САН ЛАЙФ - предложение о сотрудничестве
               </h1>
 
-              <div className="space-y-4 text-lg sm:text-xl text-text-dark mb-8">
+              <div className="space-y-4 text-base sm:text-lg text-text-dark mb-8">
                 <p>
                   Фотослужба «Санлайф» - команда профессиональных фотографов, операторов и дизайнеров. Основной профиль - съёмка выписок из роддома.
                 </p>

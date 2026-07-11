@@ -91,7 +91,7 @@ export default function Benefits() {
                   <span className="text-2xl" aria-hidden="true">✦</span>
                 )}
               </div>
-              <h3 className="font-display text-xl md:text-2xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-3">
+              <h3 className="font-display text-lg md:text-xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-3">
                 {benefit.title}
               </h3>
               <p className="text-text-muted text-base leading-relaxed">
