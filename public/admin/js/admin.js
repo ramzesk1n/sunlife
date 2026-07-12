@@ -812,19 +812,19 @@ function renderPartnershipTeam(items) {
 function renderPartnershipProjects(items) {
   let html = '';
   items.forEach((project, i) => {
+    const photos = project.photos || [];
     html += `<div class="card" style="margin-bottom:1rem">
-      <div class="card-header"><h4>Проект: ${escapeHtml(project.title || 'Без названия')}</h4></div>
-      <div class="form-group"><label>Название проекта</label><input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(project.title || '')}" placeholder="Название проекта"></div>
-      <div class="form-group"><label>Обложка</label><img src="${project.cover || project.images?.[0]?.src || ''}" alt="" style="max-width:12rem;border-radius:var(--radius);margin-bottom:0.5rem;display:block"></div>
-      <div class="form-group"><label>Фото проекта (${project.images?.length || 0})</label>`;
+      <div class="card-header"><h4>${escapeHtml(project.title || 'Без названия')}</h4></div>
+      <div class="form-group"><label>Название</label><input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(project.title || '')}"></div>
+      <div class="form-group"><label>Фото проекта (${photos.length})</label>`;
     
-    // Gallery of project images
+    // Gallery of photos
     html += '<div class="image-grid">';
-    (project.images || []).forEach((img, j) => {
+    photos.forEach((img, j) => {
       html += `<div class="image-card" style="max-width:10rem">
         <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
-        <div class="image-info"><input type="text" class="project-img-alt" data-proj="${i}" data-img="${j}" value="${escapeHtml(img.alt)}" placeholder="Alt"></div>
-        <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectImage(${i}, ${j})">🗑</button></div>
+        <div class="image-info"><input type="text" class="project-photo-alt" data-proj="${i}" data-photo="${j}" value="${escapeHtml(img.alt)}" placeholder="Описание"></div>
+        <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectPhoto(${i}, ${j})">🗑</button></div>
       </div>`;
     });
     html += '</div>';
@@ -835,7 +835,6 @@ function renderPartnershipProjects(items) {
     html += '</div>';
   });
   
-  // Add new project button
   html += `<button class="btn btn-secondary btn-sm" onclick="addProjectItem()">+ Добавить проект</button>`;
   return html;
 }
@@ -939,19 +938,15 @@ async function savePartnershipTeam() {
 async function savePartnershipProjects() {
   const projects = [];
   document.querySelectorAll('.project-title').forEach((el, i) => {
-    const proj = currentData.partnership.projects[i] || { id: 'proj-' + Date.now(), images: [] };
+    const proj = currentData.partnership.projects[i] || { id: 'proj-' + Date.now(), photos: [] };
     proj.title = el.value;
-    // Update image alts
-    document.querySelectorAll(`.project-img-alt[data-proj="${i}"]`).forEach(altInput => {
-      const imgIdx = parseInt(altInput.dataset.img);
-      if (proj.images[imgIdx]) {
-        proj.images[imgIdx].alt = altInput.value;
+    // Update photo alts
+    document.querySelectorAll(`.project-photo-alt[data-proj="${i}"]`).forEach(altInput => {
+      const photoIdx = parseInt(altInput.dataset.photo);
+      if (proj.photos[photoIdx]) {
+        proj.photos[photoIdx].alt = altInput.value;
       }
     });
-    // Ensure cover exists
-    if (!proj.cover && proj.images?.length > 0) {
-      proj.cover = proj.images[0].src;
-    }
     projects.push(proj);
   });
   currentData.partnership.projects = projects;
@@ -974,9 +969,9 @@ function addPriceItem() { currentData.partnership.prices.push({ id: 'price-' + D
 function deletePriceItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.prices.splice(i, 1); loadSection('partnership'); }
 function addTeamItem() { currentData.partnership.team.push({ id: 'team-' + Date.now(), name: '', role: '', src: '/images/placeholder-team-1.jpg' }); loadSection('partnership'); }
 function deleteTeamItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.team.splice(i, 1); loadSection('partnership'); }
-function addProjectItem() { currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', cover: '', images: [] }); loadSection('partnership'); }
+function addProjectItem() { currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', photos: [] }); loadSection('partnership'); }
 function deleteProjectItem(i) { if (!confirm('Удалить проект?')) return; currentData.partnership.projects.splice(i, 1); loadSection('partnership'); }
-function deleteProjectImage(projIdx, imgIdx) { if (!confirm('Удалить фото?')) return; currentData.partnership.projects[projIdx].images.splice(imgIdx, 1); loadSection('partnership'); }
+function deleteProjectPhoto(projIdx, photoIdx) { if (!confirm('Удалить фото?')) return; currentData.partnership.projects[projIdx].photos.splice(photoIdx, 1); loadSection('partnership'); }
 function deleteGalleryImage(i) { if (!confirm('Удалить фото?')) return; currentData.gallery.images.splice(i, 1); loadSection(currentSection); }
 
 // ===== PHOTO UPLOAD HANDLERS =====
@@ -990,7 +985,7 @@ async function handleProjectUpload(projectIdx, event) {
   const files = event.target.files;
   if (!files.length) return;
   const project = currentData.partnership.projects[projectIdx];
-  if (!project.images) project.images = [];
+  if (!project.photos) project.photos = [];
   
   for (const file of files) {
     const formData = new FormData();
@@ -999,14 +994,10 @@ async function handleProjectUpload(projectIdx, event) {
     
     const res = await apiFormData('upload', formData);
     if (res.success) {
-      project.images.push({
+      project.photos.push({
         src: res.image.src,
         alt: file.name.replace(/\.[^.]+$/, ''),
       });
-      // Set cover if not set
-      if (!project.cover) {
-        project.cover = res.image.src;
-      }
       showToast(`${file.name} ✓`, 'success');
     } else {
       showToast(res.error || 'Ошибка', 'error');

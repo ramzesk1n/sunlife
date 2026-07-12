@@ -32,8 +32,8 @@ export default function PartnershipGallery() {
   const [lightboxImages, setLightboxImages] = useState<{ src: string; alt: string }[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const openLightbox = useCallback((projectImages: { src: string; alt: string }[], index: number) => {
-    setLightboxImages(projectImages);
+  const openLightbox = useCallback((photos: { src: string; alt: string }[], index: number) => {
+    setLightboxImages(photos);
     setLightboxIndex(index);
     setLightboxOpen(true);
   }, []);
@@ -76,7 +76,8 @@ export default function PartnershipGallery() {
           animate={isInView ? 'visible' : 'hidden'}
         >
           {projects.map((project) => {
-            const projectImages = project.images || [{ src: project.cover, alt: project.title }];
+            const photos = project.photos || [];
+            const cover = photos[0]?.src || '/images/placeholder-1.jpg';
             return (
               <motion.button
                 key={project.id}
@@ -84,13 +85,13 @@ export default function PartnershipGallery() {
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                 transition={{ duration: 0.3 }}
-                onClick={() => openLightbox(projectImages, 0)}
+                onClick={() => openLightbox(photos, 0)}
                 className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300"
                 aria-label={`Открыть галерею: ${project.title}`}
               >
                 {/* Cover image */}
                 <img
-                  src={project.cover}
+                  src={cover}
                   alt={project.title}
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
@@ -104,9 +105,9 @@ export default function PartnershipGallery() {
                 </div>
 
                 {/* Photo count badge */}
-                {projectImages.length > 1 && (
+                {photos.length > 1 && (
                   <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-cream text-xs font-display px-2 py-1 rounded-full">
-                    {projectImages.length} фото
+                    {photos.length} фото
                   </div>
                 )}
 
