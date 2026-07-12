@@ -1007,8 +1007,11 @@ function deleteGalleryImage(i) { if (!confirm('Удалить фото?')) retur
 async function handleGalleryUpload(event) {
   await handlePhotoUpload(event, currentData.gallery.images, 'gallery');
 }
-async function handleTeamMemberUpload(memberIdx, event) {
-  const file = event.target.files[0];
+
+async function handleTeamUploadFromInput(event) {
+  const input = event.target;
+  const memberIdx = parseInt(input.dataset.teamUpload);
+  const file = input.files[0];
   if (!file) return;
   const formData = new FormData();
   formData.append('image', file);
@@ -1023,8 +1026,11 @@ async function handleTeamMemberUpload(memberIdx, event) {
     showToast(res.error || 'Ошибка', 'error');
   }
 }
-async function handleProjectUpload(projectIdx, event) {
-  const files = event.target.files;
+
+async function handleProjectUploadFromInput(event) {
+  const input = event.target;
+  const projectIdx = parseInt(input.dataset.projectUpload);
+  const files = input.files;
   if (!files.length) return;
   const project = currentData.partnership.projects[projectIdx];
   if (!project.photos) project.photos = [];
