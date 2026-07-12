@@ -1020,7 +1020,9 @@ async function handleTeamUploadFromInput(event) {
   const res = await apiFormData('upload', formData);
   if (res.success) {
     currentData.partnership.team[memberIdx].src = res.image.src;
-    showToast(`${file.name} ✓`, 'success');
+    // Save immediately
+    await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
+    showToast(`${file.name} ✓ Сохранено!`, 'success');
     loadSection('partnership');
   } else {
     showToast(res.error || 'Ошибка', 'error');
@@ -1051,6 +1053,9 @@ async function handleProjectUploadFromInput(event) {
       showToast(res.error || 'Ошибка', 'error');
     }
   }
+  // Save all uploaded photos
+  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
+  showToast('Проект сохранён!', 'success');
   loadSection('partnership');
 }
 
