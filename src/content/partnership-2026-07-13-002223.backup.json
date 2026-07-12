@@ -137,37 +137,37 @@
             "id": "team-natalia",
             "name": "Наталья",
             "role": "фотограф",
-            "src": "\/images\/cms\/nataliya_fotograf-6a54058f8d0a0-orig.webp"
+            "src": "\/images\/placeholder-team-5.jpg"
         },
         {
             "id": "team-olesya",
             "name": "Олеся",
             "role": "видеооператор",
-            "src": "\/images\/cms\/olesya_videooperator-6a54059ce7a1a-orig.webp"
+            "src": "\/images\/placeholder-team-6.jpg"
         },
         {
             "id": "team-shakhnoza",
             "name": "Шахноза",
             "role": "фотограф",
-            "src": "\/images\/cms\/shahnoza_fotograf-6a5405adbf107-orig.webp"
+            "src": "\/images\/placeholder-team-7.jpg"
         },
         {
             "id": "team-yulia",
             "name": "Юлия",
             "role": "фотограф",
-            "src": "\/images\/cms\/yuliya_fotograf-6a5405b6abc43-orig.webp"
+            "src": "\/images\/placeholder-team-8.jpg"
         },
         {
             "id": "team-yana",
             "name": "Яна",
             "role": "видеооператор",
-            "src": "\/images\/cms\/yana_videooperator-6a5405bc5a0ca-orig.webp"
+            "src": "\/images\/placeholder-team-9.jpg"
         },
         {
             "id": "team-anastasia",
             "name": "Анастасия",
             "role": "дизайнер",
-            "src": "\/images\/cms\/anastasiya_disigner-6a5405c75ea6f-orig.webp"
+            "src": "\/images\/placeholder-team-10.jpg"
         }
     ],
     "projects": [

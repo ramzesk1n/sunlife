@@ -155,19 +155,19 @@
             "id": "team-yulia",
             "name": "Юлия",
             "role": "фотограф",
-            "src": "\/images\/cms\/yuliya_fotograf-6a5405b6abc43-orig.webp"
+            "src": "\/images\/placeholder-team-8.jpg"
         },
         {
             "id": "team-yana",
             "name": "Яна",
             "role": "видеооператор",
-            "src": "\/images\/cms\/yana_videooperator-6a5405bc5a0ca-orig.webp"
+            "src": "\/images\/placeholder-team-9.jpg"
         },
         {
             "id": "team-anastasia",
             "name": "Анастасия",
             "role": "дизайнер",
-            "src": "\/images\/cms\/anastasiya_disigner-6a5405c75ea6f-orig.webp"
+            "src": "\/images\/placeholder-team-10.jpg"
         }
     ],
     "projects": [
