@@ -659,11 +659,15 @@ async function editUser(login) {
 
 // ===== PHOTO MANAGEMENT =====
 function renderPhotoUploader(id, onUpload, multiple = true) {
+  // For upload handlers that need an index, use data-upload attribute
+  const uploadAttr = onUpload.startsWith('handle') && onUpload.includes('Upload') 
+    ? `data-upload="${onUpload}"` 
+    : '';
   return `
     <div class="upload-zone" onclick="document.getElementById('${id}').click()">
       <p>📁 Нажмите или перетащите фото</p>
       <p style="font-size:0.75rem;color:var(--text-light)">JPG, PNG, GIF → WebP (400/800/1200/1600px)</p>
-      <input type="file" id="${id}" accept="image/*" ${multiple ? 'multiple' : ''} onchange="${onUpload}(event)">
+      <input type="file" id="${id}" accept="image/*" ${multiple ? 'multiple' : ''} onchange="${onUpload}(event)" ${uploadAttr}>
     </div>
   `;
 }
@@ -795,7 +799,7 @@ function renderPartnershipPrices(items) {
 function renderPartnershipTeam(items) {
   let html = '<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">';
   items.forEach((item, i) => {
-    html += `<div class="card" style="flex:1;min-width:16rem;max-width:20rem">
+    html += `<div class="card" style="flex:1;min-width:16rem;max-width:20rem" data-team-idx="${i}">
       <div style="text-align:center;margin-bottom:0.75rem">
         <div style="width:8rem;height:8rem;margin:0 auto;border-radius:50%;overflow:hidden;background:var(--gold-pale);display:flex;align-items:center;justify-content:center">
           ${item.src && !item.src.includes('placeholder') 
@@ -807,7 +811,11 @@ function renderPartnershipTeam(items) {
       <div class="form-group"><label>Имя</label><input type="text" class="team-name" data-idx="${i}" value="${escapeHtml(item.name)}" placeholder="Имя"></div>
       <div class="form-group"><label>Роль</label><input type="text" class="team-role" data-idx="${i}" value="${escapeHtml(item.role)}" placeholder="Роль"></div>
       <div class="form-group"><label>Фото</label><input type="text" class="team-src" data-idx="${i}" value="${escapeHtml(item.src)}" placeholder="URL фото" readonly style="background:var(--cream-2);font-size:0.75rem"></div>
-      ${renderPhotoUploader(`teamUpload-${i}`, `handleTeamMemberUpload(${i})`, false)}
+      <div class="upload-zone" onclick="document.getElementById('teamUpload-${i}').click()">
+        <p>📁 Нажмите или перетащите фото</p>
+        <p style="font-size:0.75rem;color:var(--text-light)">JPG, PNG, GIF → WebP</p>
+        <input type="file" id="teamUpload-${i}" accept="image/*" data-team-upload="${i}" onchange="handleTeamUploadFromInput(event)">
+      </div>
       <div style="margin-top:0.75rem"><button class="btn btn-danger btn-sm" onclick="deleteTeamItem(${i})">🗑 Удалить сотрудника</button></div>
     </div>`;
   });
@@ -820,7 +828,7 @@ function renderPartnershipProjects(items) {
   let html = '<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">';
   items.forEach((project, i) => {
     const photos = project.photos || [];
-    html += `<div class="card" style="flex:1;min-width:20rem;max-width:30rem">
+    html += `<div class="card" style="flex:1;min-width:20rem;max-width:30rem" data-project-idx="${i}">
       <div class="card-header"><h4>${escapeHtml(project.title || 'Без названия')}</h4></div>
       <div class="form-group"><label>Название проекта</label><input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(project.title || '')}" placeholder="Название"></div>
       <div class="form-group"><label>Фото (${photos.length})</label>`;
@@ -842,7 +850,11 @@ function renderPartnershipProjects(items) {
     
     html += '</div>';
     // Upload to this project
-    html += renderPhotoUploader(`projectUpload-${i}`, `handleProjectUpload(${i})`, true);
+    html += `<div class="upload-zone" onclick="document.getElementById('projectUpload-${i}').click()">
+      <p>📁 Нажмите или перетащите фото</p>
+      <p style="font-size:0.75rem;color:var(--text-light)">JPG, PNG, GIF → WebP</p>
+      <input type="file" id="projectUpload-${i}" accept="image/*" multiple data-project-upload="${i}" onchange="handleProjectUploadFromInput(event)">
+    </div>`;
     html += `<div style="margin-top:0.75rem"><button class="btn btn-danger btn-sm" onclick="deleteProjectItem(${i})">🗑 Удалить проект</button></div>`;
     html += '</div>';
   });
