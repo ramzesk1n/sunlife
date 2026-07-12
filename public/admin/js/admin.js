@@ -793,48 +793,60 @@ function renderPartnershipPrices(items) {
 }
 
 function renderPartnershipTeam(items) {
-  let html = renderPhotoUploader('teamUpload', 'handleTeamUpload', true);
-  html += '<div class="image-grid" style="margin-top:1rem">';
+  let html = '<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">';
   items.forEach((item, i) => {
-    html += `<div class="image-card">
-      <img src="${item.src}" alt="${escapeHtml(item.name)}" loading="lazy">
-      <div class="image-info">
-        <input type="text" class="team-name" data-idx="${i}" value="${escapeHtml(item.name)}" placeholder="Имя">
-        <input type="text" class="team-role" data-idx="${i}" value="${escapeHtml(item.role)}" placeholder="Роль" style="margin-top:0.25rem">
+    html += `<div class="card" style="flex:1;min-width:16rem;max-width:20rem">
+      <div style="text-align:center;margin-bottom:0.75rem">
+        <div style="width:8rem;height:8rem;margin:0 auto;border-radius:50%;overflow:hidden;background:var(--gold-pale);display:flex;align-items:center;justify-content:center">
+          ${item.src && !item.src.includes('placeholder') 
+            ? `<img src="${item.src}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover">` 
+            : `<span style="font-size:2.5rem;color:var(--gold-primary);font-family:var(--font-display)">${item.name.charAt(0)}</span>`
+          }
+        </div>
       </div>
-      <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteTeamItem(${i})">🗑</button></div>
+      <div class="form-group"><label>Имя</label><input type="text" class="team-name" data-idx="${i}" value="${escapeHtml(item.name)}" placeholder="Имя"></div>
+      <div class="form-group"><label>Роль</label><input type="text" class="team-role" data-idx="${i}" value="${escapeHtml(item.role)}" placeholder="Роль"></div>
+      <div class="form-group"><label>Фото</label><input type="text" class="team-src" data-idx="${i}" value="${escapeHtml(item.src)}" placeholder="URL фото" readonly style="background:var(--cream-2);font-size:0.75rem"></div>
+      ${renderPhotoUploader(`teamUpload-${i}`, `handleTeamMemberUpload(${i})`, false)}
+      <div style="margin-top:0.75rem"><button class="btn btn-danger btn-sm" onclick="deleteTeamItem(${i})">🗑 Удалить сотрудника</button></div>
     </div>`;
   });
   html += '</div>';
+  html += `<button class="btn btn-secondary btn-sm" onclick="addTeamItem()">+ Добавить сотрудника</button>`;
   return html;
 }
 
 function renderPartnershipProjects(items) {
-  let html = '';
+  let html = '<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">';
   items.forEach((project, i) => {
     const photos = project.photos || [];
-    html += `<div class="card" style="margin-bottom:1rem">
+    html += `<div class="card" style="flex:1;min-width:20rem;max-width:30rem">
       <div class="card-header"><h4>${escapeHtml(project.title || 'Без названия')}</h4></div>
-      <div class="form-group"><label>Название</label><input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(project.title || '')}"></div>
-      <div class="form-group"><label>Фото проекта (${photos.length})</label>`;
+      <div class="form-group"><label>Название проекта</label><input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(project.title || '')}" placeholder="Название"></div>
+      <div class="form-group"><label>Фото (${photos.length})</label>`;
     
-    // Gallery of photos
-    html += '<div class="image-grid">';
-    photos.forEach((img, j) => {
-      html += `<div class="image-card" style="max-width:10rem">
-        <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
-        <div class="image-info"><input type="text" class="project-photo-alt" data-proj="${i}" data-photo="${j}" value="${escapeHtml(img.alt)}" placeholder="Описание"></div>
-        <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectPhoto(${i}, ${j})">🗑</button></div>
-      </div>`;
-    });
+    // Photos grid
+    if (photos.length > 0) {
+      html += '<div class="image-grid">';
+      photos.forEach((img, j) => {
+        html += `<div class="image-card" style="max-width:8rem">
+          <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
+          <div class="image-info"><input type="text" class="project-photo-alt" data-proj="${i}" data-photo="${j}" value="${escapeHtml(img.alt)}" placeholder="Описание" style="font-size:0.75rem"></div>
+          <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectPhoto(${i}, ${j})">🗑</button></div>
+        </div>`;
+      });
+      html += '</div>';
+    } else {
+      html += '<p class="text-text-muted">Нет фото. Загрузите ниже.</p>';
+    }
+    
     html += '</div>';
-    
-    // Upload more photos to this project
+    // Upload to this project
     html += renderPhotoUploader(`projectUpload-${i}`, `handleProjectUpload(${i})`, true);
-    html += `<div style="margin-top:0.5rem"><button class="btn btn-danger btn-sm" onclick="deleteProjectItem(${i})">🗑 Удалить проект</button></div>`;
+    html += `<div style="margin-top:0.75rem"><button class="btn btn-danger btn-sm" onclick="deleteProjectItem(${i})">🗑 Удалить проект</button></div>`;
     html += '</div>';
   });
-  
+  html += '</div>';
   html += `<button class="btn btn-secondary btn-sm" onclick="addProjectItem()">+ Добавить проект</button>`;
   return html;
 }
@@ -928,7 +940,12 @@ async function savePartnershipPrices() {
 async function savePartnershipTeam() {
   const team = [];
   document.querySelectorAll('.team-name').forEach((el, i) => {
-    team.push({ id: currentData.partnership.team[i]?.id || 'team-' + Date.now(), name: el.value, role: document.querySelectorAll('.team-role')[i].value, src: currentData.partnership.team[i]?.src || '/images/placeholder-team-1.jpg' });
+    team.push({ 
+      id: currentData.partnership.team[i]?.id || 'team-' + Date.now(), 
+      name: el.value, 
+      role: document.querySelectorAll('.team-role')[i].value, 
+      src: document.querySelectorAll('.team-src')[i]?.value || currentData.partnership.team[i]?.src || '/images/placeholder-team-1.jpg' 
+    });
   });
   currentData.partnership.team = team;
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
@@ -978,8 +995,21 @@ function deleteGalleryImage(i) { if (!confirm('Удалить фото?')) retur
 async function handleGalleryUpload(event) {
   await handlePhotoUpload(event, currentData.gallery.images, 'gallery');
 }
-async function handleTeamUpload(event) {
-  await handlePhotoUpload(event, currentData.partnership.team, 'team');
+async function handleTeamMemberUpload(memberIdx, event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const formData = new FormData();
+  formData.append('image', file);
+  showToast(`Загрузка ${file.name}...`, 'info');
+  
+  const res = await apiFormData('upload', formData);
+  if (res.success) {
+    currentData.partnership.team[memberIdx].src = res.image.src;
+    showToast(`${file.name} ✓`, 'success');
+    loadSection('partnership');
+  } else {
+    showToast(res.error || 'Ошибка', 'error');
+  }
 }
 async function handleProjectUpload(projectIdx, event) {
   const files = event.target.files;
