@@ -29,11 +29,15 @@ body {
 
 /* ===== Login Page ===== */
 .login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--cream) 0%, var(--gold-pale) 100%);
+}
+
+.login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--cream) 0%, var(--gold-pale) 100%);
 }
 
 .login-box {
@@ -501,8 +505,100 @@ tbody tr:hover {
   to { transform: rotate(360deg); }
 }
 
-/* ===== Mobile ===== */
+
+/* ===== Section Groups ===== */
+.section-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ===== City Tags ===== */
+.city-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--cream-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.city-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  color: var(--text-dark);
+}
+
+.city-tag small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+/* ===== Info List ===== */
+.info-list {
+  list-style: none;
+  padding: 0.75rem;
+  background: var(--cream-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.info-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+
+.info-list li:last-child {
+  border-bottom: none;
+}
+
+/* ===== Collection Items ===== */
+.collection-item {
+  background: var(--cream-2);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
+}
+
+.collection-item:hover {
+  border-color: var(--gold-primary);
+}
+
+/* ===== Text Muted / Small ===== */
+.text-sm {
+  font-size: 0.8125rem;
+}
+
+.text-text-muted {
+  color: var(--text-muted);
+}
+
+/* ===== Responsive Sidebar Nav ===== */
 @media (max-width: 768px) {
+  .sidebar-nav a {
+    padding: 0.75rem;
+    font-size: 0.9375rem;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+  
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  }
+  
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
   .sidebar {
     width: 100%;
     height: auto;

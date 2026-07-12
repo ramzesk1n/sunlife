@@ -1,7 +1,7 @@
 {
   "ramzes": {
     "name": "Ramzes",
-    "password_hash": "$2y$10$vMKKU1B2iC5eVrDrlApgFe0.IR6Az8jx/RQmykcqjG4OhBaR3ysbS",
+    "password_hash": "$2y$10$hZjpUsDpIFwdAV1onWzZ.uB0QZ5LS/01ylwSJAMwSk35UlWqAJhtO",
     "role": "admin",
     "permissions": [
       "pricing",
@@ -13,12 +13,14 @@
       "geography",
       "partnership",
       "meta",
-      "users"
+      "users",
+      "shared",
+      "contacts"
     ]
   },
   "tagir": {
     "name": "Tagir",
-    "password_hash": "$2y$10$gpLA2QBotIScD5WH71gb9uqxmXFYe4R7CAhpbscnL3LfQXhz2pfIa",
+    "password_hash": "$2y$10$qgucETnUnz4iYSraynx3IO6HI/idymorKsJmN./YbRVZlYkALDSee",
     "role": "editor",
     "permissions": [
       "gallery",
