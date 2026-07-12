@@ -98,7 +98,7 @@ export default function ExperienceSteps() {
       id="about"
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-cream"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.h2
           className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: '1.25rem' }}
@@ -109,7 +109,7 @@ export default function ExperienceSteps() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center text-base md:text-lg max-w-2xl mx-auto mb-14 md:mb-16"
+          className="text-text-muted text-center text-base md:text-lg max-w-3xl mx-auto mb-14 md:mb-16"
           initial={shouldReduceMotion ? false : { opacity: 0, y: '1.25rem' }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}

@@ -34,7 +34,7 @@ export default function PartnershipAbout() {
       id="partnership-about"
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.h2
           className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-12 md:mb-16 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}

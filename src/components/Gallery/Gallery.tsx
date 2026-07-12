@@ -48,7 +48,7 @@ export default function Gallery() {
       id="gallery"
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.h2
           className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
@@ -59,7 +59,7 @@ export default function Gallery() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center text-base md:text-lg max-w-xl mx-auto mb-12"
+          className="text-text-muted text-center text-base md:text-lg max-w-3xl mx-auto mb-12"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
