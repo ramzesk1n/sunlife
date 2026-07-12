@@ -685,10 +685,7 @@ async function handlePhotoUpload(event, collection, type = 'gallery') {
         width: res.image.width,
         height: res.image.height,
       };
-      if (type === 'project') {
-        newItem.id = 'proj-' + Date.now();
-        newItem.title = file.name.replace(/\.[^.]+$/, '');
-      } else if (type === 'team') {
+      if (type === 'team') {
         newItem.id = 'team-' + Date.now();
         newItem.name = '';
         newItem.role = '';
@@ -813,19 +810,33 @@ function renderPartnershipTeam(items) {
 }
 
 function renderPartnershipProjects(items) {
-  let html = renderPhotoUploader('projectUpload', 'handleProjectUpload', true);
-  html += '<div class="image-grid" style="margin-top:1rem">';
-  items.forEach((item, i) => {
-    html += `<div class="image-card">
-      <img src="${item.src}" alt="${escapeHtml(item.alt)}" loading="lazy">
-      <div class="image-info">
-        <input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(item.title)}" placeholder="Заголовок проекта">
-        <input type="text" class="project-alt" data-idx="${i}" value="${escapeHtml(item.alt)}" placeholder="SEO alt описание" style="margin-top:0.25rem">
-      </div>
-      <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectItem(${i})">🗑</button></div>
-    </div>`;
+  let html = '';
+  items.forEach((project, i) => {
+    html += `<div class="card" style="margin-bottom:1rem">
+      <div class="card-header"><h4>Проект: ${escapeHtml(project.title || 'Без названия')}</h4></div>
+      <div class="form-group"><label>Название проекта</label><input type="text" class="project-title" data-idx="${i}" value="${escapeHtml(project.title || '')}" placeholder="Название проекта"></div>
+      <div class="form-group"><label>Обложка</label><img src="${project.cover || project.images?.[0]?.src || ''}" alt="" style="max-width:12rem;border-radius:var(--radius);margin-bottom:0.5rem;display:block"></div>
+      <div class="form-group"><label>Фото проекта (${project.images?.length || 0})</label>`;
+    
+    // Gallery of project images
+    html += '<div class="image-grid">';
+    (project.images || []).forEach((img, j) => {
+      html += `<div class="image-card" style="max-width:10rem">
+        <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
+        <div class="image-info"><input type="text" class="project-img-alt" data-proj="${i}" data-img="${j}" value="${escapeHtml(img.alt)}" placeholder="Alt"></div>
+        <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectImage(${i}, ${j})">🗑</button></div>
+      </div>`;
+    });
+    html += '</div>';
+    
+    // Upload more photos to this project
+    html += renderPhotoUploader(`projectUpload-${i}`, `handleProjectUpload(${i})`, true);
+    html += `<div style="margin-top:0.5rem"><button class="btn btn-danger btn-sm" onclick="deleteProjectItem(${i})">🗑 Удалить проект</button></div>`;
+    html += '</div>';
   });
-  html += '</div>';
+  
+  // Add new project button
+  html += `<button class="btn btn-secondary btn-sm" onclick="addProjectItem()">+ Добавить проект</button>`;
   return html;
 }
 
@@ -928,7 +939,20 @@ async function savePartnershipTeam() {
 async function savePartnershipProjects() {
   const projects = [];
   document.querySelectorAll('.project-title').forEach((el, i) => {
-    projects.push({ id: currentData.partnership.projects[i]?.id || 'proj-' + Date.now(), title: el.value, alt: document.querySelectorAll('.project-alt')[i].value, src: currentData.partnership.projects[i]?.src || '/images/placeholder-1.jpg' });
+    const proj = currentData.partnership.projects[i] || { id: 'proj-' + Date.now(), images: [] };
+    proj.title = el.value;
+    // Update image alts
+    document.querySelectorAll(`.project-img-alt[data-proj="${i}"]`).forEach(altInput => {
+      const imgIdx = parseInt(altInput.dataset.img);
+      if (proj.images[imgIdx]) {
+        proj.images[imgIdx].alt = altInput.value;
+      }
+    });
+    // Ensure cover exists
+    if (!proj.cover && proj.images?.length > 0) {
+      proj.cover = proj.images[0].src;
+    }
+    projects.push(proj);
   });
   currentData.partnership.projects = projects;
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
@@ -950,8 +974,9 @@ function addPriceItem() { currentData.partnership.prices.push({ id: 'price-' + D
 function deletePriceItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.prices.splice(i, 1); loadSection('partnership'); }
 function addTeamItem() { currentData.partnership.team.push({ id: 'team-' + Date.now(), name: '', role: '', src: '/images/placeholder-team-1.jpg' }); loadSection('partnership'); }
 function deleteTeamItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.team.splice(i, 1); loadSection('partnership'); }
-function addProjectItem() { currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', alt: '', src: '/images/placeholder-1.jpg' }); loadSection('partnership'); }
-function deleteProjectItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.projects.splice(i, 1); loadSection('partnership'); }
+function addProjectItem() { currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', cover: '', images: [] }); loadSection('partnership'); }
+function deleteProjectItem(i) { if (!confirm('Удалить проект?')) return; currentData.partnership.projects.splice(i, 1); loadSection('partnership'); }
+function deleteProjectImage(projIdx, imgIdx) { if (!confirm('Удалить фото?')) return; currentData.partnership.projects[projIdx].images.splice(imgIdx, 1); loadSection('partnership'); }
 function deleteGalleryImage(i) { if (!confirm('Удалить фото?')) return; currentData.gallery.images.splice(i, 1); loadSection(currentSection); }
 
 // ===== PHOTO UPLOAD HANDLERS =====
@@ -961,8 +986,33 @@ async function handleGalleryUpload(event) {
 async function handleTeamUpload(event) {
   await handlePhotoUpload(event, currentData.partnership.team, 'team');
 }
-async function handleProjectUpload(event) {
-  await handlePhotoUpload(event, currentData.partnership.projects, 'project');
+async function handleProjectUpload(projectIdx, event) {
+  const files = event.target.files;
+  if (!files.length) return;
+  const project = currentData.partnership.projects[projectIdx];
+  if (!project.images) project.images = [];
+  
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append('image', file);
+    showToast(`Загрузка ${file.name}...`, 'info');
+    
+    const res = await apiFormData('upload', formData);
+    if (res.success) {
+      project.images.push({
+        src: res.image.src,
+        alt: file.name.replace(/\.[^.]+$/, ''),
+      });
+      // Set cover if not set
+      if (!project.cover) {
+        project.cover = res.image.src;
+      }
+      showToast(`${file.name} ✓`, 'success');
+    } else {
+      showToast(res.error || 'Ошибка', 'error');
+    }
+  }
+  loadSection('partnership');
 }
 
 // ===== FAQ LIST RENDERER =====

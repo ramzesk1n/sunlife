@@ -29,9 +29,11 @@ export default function PartnershipGallery() {
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImages, setLightboxImages] = useState<{ src: string; alt: string }[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const openLightbox = useCallback((index: number) => {
+  const openLightbox = useCallback((projectImages: { src: string; alt: string }[], index: number) => {
+    setLightboxImages(projectImages);
     setLightboxIndex(index);
     setLightboxOpen(true);
   }, []);
@@ -73,39 +75,55 @@ export default function PartnershipGallery() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {projects.map((img, i) => (
-            <motion.button
-              key={img.id}
-              variants={shouldReduceMotion ? undefined : itemVariants}
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => openLightbox(i)}
-              className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300"
-              aria-label={`Открыть фото: ${img.alt}`}
-            >
-              <div className="w-full h-full flex items-center justify-center text-gold-primary/40 group-hover:scale-105 transition-transform duration-500">
-                <span className="text-sm font-display uppercase tracking-widest">{i + 1}</span>
-              </div>
+          {projects.map((project) => {
+            const projectImages = project.images || [{ src: project.cover, alt: project.title }];
+            return (
+              <motion.button
+                key={project.id}
+                variants={shouldReduceMotion ? undefined : itemVariants}
+                whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => openLightbox(projectImages, 0)}
+                className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300"
+                aria-label={`Открыть галерею: ${project.title}`}
+              >
+                {/* Cover image */}
+                <img
+                  src={project.cover}
+                  alt={project.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
 
-              <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-lg">
-                  🔍
-                </span>
-              </div>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-lg">
+                    🔍
+                  </span>
+                </div>
 
-              <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <p className="text-cream text-xs font-display uppercase tracking-wider text-center leading-tight">
-                  {img.title}
-                </p>
-              </div>
-            </motion.button>
-          ))}
+                {/* Photo count badge */}
+                {projectImages.length > 1 && (
+                  <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-cream text-xs font-display px-2 py-1 rounded-full">
+                    {projectImages.length} фото
+                  </div>
+                )}
+
+                {/* Title */}
+                <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
+                  <p className="text-cream text-xs font-display uppercase tracking-wider text-center leading-tight">
+                    {project.title}
+                  </p>
+                </div>
+              </motion.button>
+            );
+          })}
         </motion.div>
       </div>
 
       <Lightbox
-        images={projects.map((img) => ({ src: img.src, alt: img.alt }))}
+        images={lightboxImages}
         open={lightboxOpen}
         index={lightboxIndex}
         onClose={closeLightbox}

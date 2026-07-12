@@ -173,51 +173,67 @@
   "projects": [
     {
       "id": "artem",
-      "src": "/images/placeholder-1.jpg",
-      "alt": "Авторская фотовыставка Тагира Чанышева «Герои красной зоны»",
-      "title": "АВТОРСКАЯ ФОТОВЫСТАВКА ТАГИРА ЧАНЫШЕВА «ГЕРОИ КРАСНОЙ ЗОНЫ»"
+      "title": "АВТОРСКАЯ ФОТОВЫСТАВКА ТАГИРА ЧАНЫШЕВА «ГЕРОИ КРАСНОЙ ЗОНЫ»",
+      "cover": "/images/placeholder-1.jpg",
+      "images": [
+        { "src": "/images/placeholder-1.jpg", "alt": "Авторская фотовыставка Тагира Чанышева «Герои красной зоны»" }
+      ]
     },
     {
       "id": "rkb",
-      "src": "/images/placeholder-2.jpg",
-      "alt": "30 лет ОУЗД РКБ им. Куватова Уфа",
-      "title": "30 ЛЕТ ОУЗД РКБ ИМ. КУВАТОВА УФА"
+      "title": "30 ЛЕТ ОУЗД РКБ ИМ. КУВАТОВА УФА",
+      "cover": "/images/placeholder-2.jpg",
+      "images": [
+        { "src": "/images/placeholder-2.jpg", "alt": "30 лет ОУЗД РКБ им. Куватова Уфа" }
+      ]
     },
     {
       "id": "aero",
-      "src": "/images/placeholder-3.jpg",
-      "alt": "Аэросъёмка медучреждений",
-      "title": "АЭРОСЪЁМКА МЕДУЧРЕЖДЕНИЙ"
+      "title": "АЭРОСЪЁМКА МЕДУЧРЕЖДЕНИЙ",
+      "cover": "/images/placeholder-3.jpg",
+      "images": [
+        { "src": "/images/placeholder-3.jpg", "alt": "Аэросъёмка медучреждений" }
+      ]
     },
     {
       "id": "blood",
-      "src": "/images/placeholder-4.jpg",
-      "alt": "Форум службы крови",
-      "title": "ФОРУМ СЛУЖБЫ КРОВИ"
+      "title": "ФОРУМ СЛУЖБЫ КРОВИ",
+      "cover": "/images/placeholder-4.jpg",
+      "images": [
+        { "src": "/images/placeholder-4.jpg", "alt": "Форум службы крови" }
+      ]
     },
     {
       "id": "covid",
-      "src": "/images/placeholder-5.jpg",
-      "alt": "Ковид-госпиталь",
-      "title": "КОВИД-ГОСПИТАЛЬ"
+      "title": "КОВИД-ГОСПИТАЛЬ",
+      "cover": "/images/placeholder-5.jpg",
+      "images": [
+        { "src": "/images/placeholder-5.jpg", "alt": "Ковид-госпиталь" }
+      ]
     },
     {
       "id": "naski",
-      "src": "/images/placeholder-6.jpg",
-      "alt": "Конференция НАСКИ",
-      "title": "КОНФЕРЕНЦИЯ НАСКИ"
+      "title": "КОНФЕРЕНЦИЯ НАСКИ",
+      "cover": "/images/placeholder-6.jpg",
+      "images": [
+        { "src": "/images/placeholder-6.jpg", "alt": "Конференция НАСКИ" }
+      ]
     },
     {
       "id": "bgmu",
-      "src": "/images/placeholder-7.jpg",
-      "alt": "Фотогалерея в симуляционном центре БГМУ",
-      "title": "ФОТОГАЛЕРЕЯ В СИМУЛЯЦИОННОМ ЦЕНТРЕ БГМУ"
+      "title": "ФОТОГАЛЕРЕЯ В СИМУЛЯЦИОННОМ ЦЕНТРЕ БГМУ",
+      "cover": "/images/placeholder-7.jpg",
+      "images": [
+        { "src": "/images/placeholder-7.jpg", "alt": "Фотогалерея в симуляционном центре БГМУ" }
+      ]
     },
     {
       "id": "medday",
-      "src": "/images/placeholder-8.jpg",
-      "alt": "Церемония награждения в День медработника",
-      "title": "ЦЕРЕМОНИЯ НАГРАЖДЕНИЯ В ДЕНЬ МЕДРАБОТНИКА"
+      "title": "ЦЕРЕМОНИЯ НАГРАЖДЕНИЯ В ДЕНЬ МЕДРАБОТНИКА",
+      "cover": "/images/placeholder-8.jpg",
+      "images": [
+        { "src": "/images/placeholder-8.jpg", "alt": "Церемония награждения в День медработника" }
+      ]
     }
   ]
 }

@@ -88,9 +88,18 @@ export default function PartnershipTeam() {
             >
               <div className="glass rounded-2xl p-4 text-center hover:shadow-glass transition-all duration-300">
                 <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gold-pale mb-4">
-                  <div className="w-full h-full flex items-center justify-center text-gold-primary/40">
-                    <span className="text-4xl font-display uppercase">{member.name.charAt(0)}</span>
-                  </div>
+                  {member.src && !member.src.includes('placeholder') ? (
+                    <img
+                      src={member.src}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gold-primary/40">
+                      <span className="text-4xl font-display uppercase">{member.name.charAt(0)}</span>
+                    </div>
+                  )}
                 </div>
                 <h3 className="font-display text-lg md:text-xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-1">
                   {member.name}
