@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import metaData from './content/meta.json';
 
 /* Components */
@@ -15,15 +14,29 @@ import Gallery from './components/Gallery/Gallery';
 import Testimonials from './components/Testimonials/Testimonials';
 import FAQ from './components/FAQ/FAQ';
 import Footer from './components/Footer/Footer';
-import PartnershipHero from './components/PartnershipHero/PartnershipHero';
-import PartnershipAbout from './components/PartnershipAbout/PartnershipAbout';
-import PartnershipOffers from './components/PartnershipOffers/PartnershipOffers';
-import PartnershipBeforeAfter from './components/PartnershipBeforeAfter/PartnershipBeforeAfter';
-import PartnershipPricing from './components/PartnershipPricing/PartnershipPricing';
-import PartnershipFAQ from './components/PartnershipFAQ/PartnershipFAQ';
-import PartnershipTeam from './components/PartnershipTeam/PartnershipTeam';
-import PartnershipGallery from './components/PartnershipGallery/PartnershipGallery';
 import PrivacyPage from './pages/PrivacyPage';
+
+/* Lazy loaded components for code splitting */
+const PartnershipHero = lazy(() => import('./components/PartnershipHero/PartnershipHero'));
+const PartnershipAbout = lazy(() => import('./components/PartnershipAbout/PartnershipAbout'));
+const PartnershipOffers = lazy(() => import('./components/PartnershipOffers/PartnershipOffers'));
+const PartnershipBeforeAfter = lazy(() => import('./components/PartnershipBeforeAfter/PartnershipBeforeAfter'));
+const PartnershipPricing = lazy(() => import('./components/PartnershipPricing/PartnershipPricing'));
+const PartnershipFAQ = lazy(() => import('./components/PartnershipFAQ/PartnershipFAQ'));
+const PartnershipTeam = lazy(() => import('./components/PartnershipTeam/PartnershipTeam'));
+const PartnershipGallery = lazy(() => import('./components/PartnershipGallery/PartnershipGallery'));
+
+/* Loading fallback */
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-cream">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-gold-primary/20 border-t-gold-primary rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-text-muted font-display">Загрузка...</p>
+      </div>
+    </div>
+  );
+}
 
 /* Page wrappers */
 function HomePage() {
@@ -66,7 +79,7 @@ function GalleryPage() {
 
 function PartnershipPage() {
   return (
-    <>
+    <Suspense fallback={<PageLoader />}>
       <Header />
       <PartnershipHero onOpenForm={() => {}} />
       <PartnershipAbout />
@@ -77,7 +90,7 @@ function PartnershipPage() {
       <PartnershipTeam />
       <PartnershipGallery />
       <Footer />
-    </>
+    </Suspense>
   );
 }
 
@@ -132,15 +145,13 @@ export default function App() {
     <>
       <SeoUpdater />
       <CookieBanner />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/price" element={<PricePage />} />
-          <Route path="/galery" element={<GalleryPage />} />
-          <Route path="/partnership" element={<PartnershipPage />} />
-          <Route path="/privacy" element={<PrivacyPageWrapper />} />
-        </Routes>
-      </AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/price" element={<PricePage />} />
+        <Route path="/galery" element={<GalleryPage />} />
+        <Route path="/partnership" element={<PartnershipPage />} />
+        <Route path="/privacy" element={<PrivacyPageWrapper />} />
+      </Routes>
     </>
   );
 }

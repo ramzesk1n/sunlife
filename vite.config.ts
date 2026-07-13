@@ -12,16 +12,22 @@ export default defineConfig({
   build: {
     target: 'es2022',
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false, // Disabled for production (saves ~1.2MB per chunk)
     cssMinify: 'lightningcss',
     rollupOptions: {
       output: {
         manualChunks(id: string) {
+          // React ecosystem
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
             return 'vendor';
           }
-          if (id.includes('node_modules/framer-motion') || id.includes('node_modules/gsap')) {
-            return 'animation';
+          // Framer Motion - separate from GSAP
+          if (id.includes('node_modules/framer-motion')) {
+            return 'framer-motion';
+          }
+          // GSAP - separate chunk
+          if (id.includes('node_modules/gsap')) {
+            return 'gsap';
           }
           return undefined;
         },
