@@ -1,52 +1,23 @@
 {
   "images": [
-    {
-      "src": "/images/placeholder-1.jpg",
-      "alt": "Выписка из роддома - мама с малышом",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-2.jpg",
-      "alt": "Папа держит новорождённого",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-3.jpg",
-      "alt": "Первая семейная фотография",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-4.jpg",
-      "alt": "Малыш в пелёнке",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-5.jpg",
-      "alt": "Объятия родителей",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-6.jpg",
-      "alt": "Счастливые моменты",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-7.jpg",
-      "alt": "Встреча с родными",
-      "width": 800,
-      "height": 1000
-    },
-    {
-      "src": "/images/placeholder-8.jpg",
-      "alt": "Первый путь домой",
-      "width": 800,
-      "height": 1000
-    }
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-01.webp", "alt": "Счастливая мама с новорождённым на выписке из роддома" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-02.webp", "alt": "Папа держит малыша на руках, первая встреча" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-03.webp", "alt": "Семейная фотография с новорождённым в роддоме" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-04.webp", "alt": "Мама и папа с малышом на выписке, счастливые моменты" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-05.webp", "alt": "Первая фотосессия новорождённого в роддоме" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-06.webp", "alt": "Объятия родителей с малышом на выписке" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-07.webp", "alt": "Встреча малыша с родными в роддоме" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-08.webp", "alt": "Счастливые родители с новорождённым, фото на память" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-09.webp", "alt": "Мама с малышом в роддоме, первые моменты вместе" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-10.webp", "alt": "Папа с новорождённым, нежные моменты отцовства" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-11.webp", "alt": "Семья в полном составе на выписке из роддома" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-12.webp", "alt": "Первая улыбка малыша, фотосъёмка в роддоме" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-13.webp", "alt": "Мама с малышом на руках, счастливый момент выписки" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-14.webp", "alt": "Родители с новорождённым, первая семейная фотография" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-15.webp", "alt": "Малыш в пелёнке, профессиональная фотосъёмка в роддоме" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-16.webp", "alt": "Счастливые моменты выписки из роддома, семейное фото" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-17.webp", "alt": "Встреча с бабушкой и дедушкой, радость в семье" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-18.webp", "alt": "Первый путь домой, мама с малышом на выписке" },
+    { "src": "/images/slider/fotos-emotsii-vypiska-iz-roddoma-19.webp", "alt": "Новорождённый малыш, первая фотосессия в роддоме" }
   ]
 }

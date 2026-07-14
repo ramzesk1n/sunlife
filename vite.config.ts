@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import fs from 'fs';
+import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -8,6 +10,17 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    {
+      name: 'exclude-content',
+      writeBundle() {
+        // Remove content/ from dist to prevent overwriting server data
+        const contentDir = path.resolve('dist/content');
+        if (fs.existsSync(contentDir)) {
+          fs.rmSync(contentDir, { recursive: true, force: true });
+          console.log('Excluded dist/content from build');
+        }
+      },
+    },
   ],
   build: {
     target: 'es2022',

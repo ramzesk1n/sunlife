@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import ContactsPage from './pages/ContactsPage';import TeamSlider from './components/TeamSlider/TeamSlider';import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, Suspense, lazy } from 'react';
 import metaData from './content/meta.json';
 
@@ -21,10 +21,12 @@ const PartnershipHero = lazy(() => import('./components/PartnershipHero/Partners
 const PartnershipAbout = lazy(() => import('./components/PartnershipAbout/PartnershipAbout'));
 const PartnershipOffers = lazy(() => import('./components/PartnershipOffers/PartnershipOffers'));
 const PartnershipBeforeAfter = lazy(() => import('./components/PartnershipBeforeAfter/PartnershipBeforeAfter'));
+const PartnershipTestimonial = lazy(() => import('./components/PartnershipTestimonial/PartnershipTestimonial'));
 const PartnershipPricing = lazy(() => import('./components/PartnershipPricing/PartnershipPricing'));
 const PartnershipFAQ = lazy(() => import('./components/PartnershipFAQ/PartnershipFAQ'));
 const PartnershipTeam = lazy(() => import('./components/PartnershipTeam/PartnershipTeam'));
 const PartnershipGallery = lazy(() => import('./components/PartnershipGallery/PartnershipGallery'));
+const PartnershipExamples = lazy(() => import('./components/PartnershipExamples/PartnershipExamples'));
 
 /* Loading fallback */
 function PageLoader() {
@@ -46,11 +48,11 @@ function HomePage() {
       <Hero />
       <Benefits />
       <ExperienceSteps />
-      <Geography />
-      <PricingCards />
       <Gallery />
       <Testimonials />
       <FAQ />
+      <TeamSlider />
+      <Geography />
       <Footer />
     </>
   );
@@ -61,6 +63,7 @@ function PricePage() {
     <>
       <Header />
       <PricingCards />
+      <Geography />
       <FAQ />
       <Footer />
     </>
@@ -84,8 +87,10 @@ function PartnershipPage() {
       <PartnershipHero onOpenForm={() => {}} />
       <PartnershipAbout />
       <PartnershipOffers />
+      <PartnershipTestimonial />
       <PartnershipBeforeAfter />
       <PartnershipPricing />
+      <PartnershipExamples />
       <PartnershipFAQ />
       <PartnershipTeam />
       <PartnershipGallery />
@@ -150,6 +155,7 @@ export default function App() {
         <Route path="/price" element={<PricePage />} />
         <Route path="/galery" element={<GalleryPage />} />
         <Route path="/partnership" element={<PartnershipPage />} />
+        <Route path="/contacts" element={<ContactsPage />} />
         <Route path="/privacy" element={<PrivacyPageWrapper />} />
       </Routes>
     </>

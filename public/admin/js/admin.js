@@ -487,6 +487,27 @@ async function loadPartnershipPage(container) {
   html += `<div class="mt-2 text-right"><button class="btn btn-primary" onclick="savePartnershipProjects()">💾 Сохранить</button></div>`;
   html += '</div>';
   
+  // Examples (with photos) - for partnership page examples section
+  const defaultExamples = [
+    { id: 'roddom3', title: 'ГБУЗ Родильный дом №3 г. Уфа', photos: [] },
+    { id: 'gkb8', title: 'ГБУЗ РБ ГКБ № 8 г. Уфа', photos: [] },
+    { id: 'rkb', title: 'ГУЗ РКБ им. Г.Г. Куватова, родильный дом', photos: [] },
+    { id: 'perinatal', title: 'ГБУЗ Республиканский клинический перинатальный центр', photos: [] },
+    { id: 'bgmu', title: 'Родильный дом клиники БГМУ', photos: [] },
+    { id: 'sterlitamak', title: 'Перинатальный центр (роддом СК), Стерлитамак', photos: [] },
+    { id: 'kumertau', title: 'Межрайонный перинатальный центр г. Кумертау', photos: [] },
+    { id: 'ompc', title: 'ГАУЗ ОМПЦ г. Орск', photos: [] }
+  ];
+  // Ensure examples exists in currentData for uploads to work
+  if (!currentData.partnership.examples) {
+    currentData.partnership.examples = defaultExamples;
+  }
+  const examples = currentData.partnership.examples;
+  html += `<div class="card" style="margin-top:1rem"><div class="card-header"><h3>📸 Примеры работ (роддомы)</h3></div>`;
+  html += renderPartnershipExamples(examples);
+  html += `<div class="mt-2 text-right"><button class="btn btn-primary" onclick="savePartnershipExamples()">💾 Сохранить</button></div>`;
+  html += '</div>';
+  
   html += '</div>';
   container.innerHTML = html;
 }
@@ -861,6 +882,106 @@ function renderPartnershipProjects(items) {
   html += '</div>';
   html += `<button class="btn btn-secondary btn-sm" onclick="addProjectItem()">+ Добавить проект</button>`;
   return html;
+}
+
+function renderPartnershipExamples(items) {
+  let html = '<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">';
+  items.forEach((project, i) => {
+    const photos = project.photos || [];
+    html += `<div class="card" style="flex:1;min-width:20rem;max-width:30rem" data-example-idx="${i}">
+      <div class="card-header"><h4>${escapeHtml(project.title || 'Без названия')}</h4></div>
+      <div class="form-group"><label>Название роддома</label><input type="text" class="example-title" data-idx="${i}" value="${escapeHtml(project.title || '')}" placeholder="Название"></div>
+      <div class="form-group"><label>Фото (${photos.length})</label>`;
+    
+    if (photos.length > 0) {
+      html += '<div class="image-grid">';
+      photos.forEach((img, j) => {
+        html += `<div class="image-card" style="max-width:8rem">
+          <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
+          <div class="image-info"><input type="text" class="example-photo-alt" data-proj="${i}" data-photo="${j}" value="${escapeHtml(img.alt)}" placeholder="Описание" style="font-size:0.75rem"></div>
+          <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteExamplePhoto(${i}, ${j})">🗑</button></div>
+        </div>`;
+      });
+      html += '</div>';
+    } else {
+      html += '<p class="text-text-muted">Нет фото. Загрузите ниже.</p>';
+    }
+    
+    html += '</div>';
+    html += `<div class="upload-zone" onclick="document.getElementById('exampleUpload-${i}').click()">
+      <p>📁 Нажмите или перетащите фото</p>
+      <p style="font-size:0.75rem;color:var(--text-light)">JPG, PNG, GIF → WebP</p>
+      <input type="file" id="exampleUpload-${i}" accept="image/*" multiple data-example-upload="${i}" onchange="handleExampleUploadFromInput(event)">
+    </div>`;
+    html += `<div style="margin-top:0.75rem"><button class="btn btn-danger btn-sm" onclick="deleteExampleItem(${i})">🗑 Удалить проект</button></div>`;
+    html += '</div>';
+  });
+  html += '</div>';
+  html += `<button class="btn btn-secondary btn-sm" onclick="addExampleItem()">+ Добавить роддом</button>`;
+  return html;
+}
+
+async function savePartnershipExamples() {
+  // Only update titles and alts, don't recreate examples array
+  document.querySelectorAll('.example-title').forEach((el, i) => {
+    if (currentData.partnership.examples[i]) {
+      currentData.partnership.examples[i].title = el.value;
+    }
+  });
+  document.querySelectorAll('.example-photo-alt').forEach(altInput => {
+    const projIdx = parseInt(altInput.dataset.proj);
+    const photoIdx = parseInt(altInput.dataset.photo);
+    if (currentData.partnership.examples[projIdx]?.photos[photoIdx]) {
+      currentData.partnership.examples[projIdx].photos[photoIdx].alt = altInput.value;
+    }
+  });
+  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
+  showToast('Сохранено!', 'success');
+}
+
+function addExampleItem() { currentData.partnership.examples.push({ id: 'ex-' + Date.now(), title: '', photos: [] }); loadSection('partnership'); }
+function deleteExampleItem(i) { if (!confirm('Удалить роддом?')) return; currentData.partnership.examples.splice(i, 1); loadSection('partnership'); }
+function deleteExamplePhoto(projIdx, photoIdx) { if (!confirm('Удалить фото?')) return; currentData.partnership.examples[projIdx].photos.splice(photoIdx, 1); loadSection('partnership'); }
+
+async function handleExampleUploadFromInput(event) {
+  const input = event.target;
+  const exampleIdx = parseInt(input.dataset.exampleUpload);
+  const files = input.files;
+  if (!files.length) return;
+  
+  console.log('Upload started for example', exampleIdx, 'files:', files.length);
+  console.log('Current examples:', currentData.partnership.examples);
+  
+  const example = currentData.partnership.examples[exampleIdx];
+  if (!example) {
+    showToast('Ошибка: роддом не найден', 'error');
+    console.error('Example not found at index', exampleIdx);
+    return;
+  }
+  if (!example.photos) example.photos = [];
+  
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append('image', file);
+    showToast(`Загрузка ${file.name}...`, 'info');
+    
+    const res = await apiFormData('upload', formData);
+    console.log('Upload response:', res);
+    if (res.success) {
+      example.photos.push({
+        src: res.image.src,
+        alt: file.name.replace(/\.[^.]+$/, ''),
+      });
+      showToast(`${file.name} ✓`, 'success');
+    } else {
+      showToast(res.error || 'Ошибка загрузки', 'error');
+      console.error('Upload failed:', res.error);
+    }
+  }
+  console.log('Saving partnership with examples:', currentData.partnership.examples);
+  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
+  showToast('Сохранено!', 'success');
+  loadSection('partnership');
 }
 
 // ===== SAVE ACTIONS =====

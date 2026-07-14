@@ -43,7 +43,7 @@ export default function FAQ() {
     >
       <div className="max-w-3xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -78,7 +78,7 @@ export default function FAQ() {
                 className="w-full flex items-center justify-between p-5 text-left hover:bg-cream-2/50 transition-colors duration-200"
                 aria-expanded={openId === item.id}
               >
-                <span className="font-display font-semibold text-gold-dark pr-4 text-left uppercase tracking-wider text-base md:text-lg">
+                <span className="font-display font-light text-gold-dark pr-4 text-left uppercase tracking-wider text-base md:text-lg">
                   {item.question}
                 </span>
                 <motion.span

@@ -5,6 +5,7 @@ const navLinks = [
   { label: 'Услуги', href: '/price' },
   { label: 'Портфолио', href: '/galery' },
   { label: 'Партнёрство', href: '/partnership' },
+  { label: 'Контакты', href: '/contacts' },
 ];
 
 const socialLinks = [
@@ -60,7 +61,7 @@ export default function Header() {
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="w-11 h-11 md:w-14 md:h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0">
               <img
-                src="/images/sunlife_logo.png"
+                src="/images/sunlife_logo.webp"
                 alt=""
                 className="w-full h-full object-contain p-1"
                 loading="eager"
@@ -72,7 +73,7 @@ export default function Header() {
               <p className="text-xs md:text-sm text-gold-dark uppercase tracking-[0.2em] leading-tight">
                 фотослужба
               </p>
-              <p className="text-base md:text-lg font-display font-semibold text-gold-primary uppercase tracking-wider leading-tight">
+              <p className="text-base md:text-lg font-display font-light text-gold-primary uppercase tracking-wider leading-tight">
                 САН ЛАЙФ
               </p>
             </div>

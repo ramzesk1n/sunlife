@@ -36,7 +36,7 @@ export default function PartnershipOffers() {
     >
       <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -78,12 +78,12 @@ export default function PartnershipOffers() {
                     <span className="w-10 h-10 rounded-full bg-gold-primary text-cream font-display font-bold text-base flex items-center justify-center">
                       {offer.number}
                     </span>
-                    <h3 className="font-display text-lg md:text-xl font-semibold text-gold-primary-80 uppercase tracking-wider">
+                    <h3 className="font-display text-lg md:text-xl font-light text-gold-primary-80 uppercase tracking-wider">
                       {offer.title}
                     </h3>
                   </div>
 
-                  <h3 className="hidden md:block font-display text-xl md:text-2xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-3">
+                  <h3 className="hidden md:block font-display text-xl md:text-2xl font-light text-gold-primary-80 uppercase tracking-wider mb-3">
                     {offer.title}
                   </h3>
 

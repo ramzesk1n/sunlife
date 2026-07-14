@@ -28,5 +28,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Bot config
+public/api/config.local.php
+.rate_limit.json
+
 # OS
 Thumbs.db

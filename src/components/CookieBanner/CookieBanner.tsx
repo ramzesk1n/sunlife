@@ -114,7 +114,7 @@ export default function CookieBanner() {
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 rounded-xl bg-gold-pale/50">
                 <div>
-                  <p className="font-display font-semibold text-text-dark text-sm uppercase tracking-wider">
+                  <p className="font-display font-light text-text-dark text-sm uppercase tracking-wider">
                     Технические (функциональные)
                   </p>
                   <p className="text-text-muted text-sm">
@@ -128,7 +128,7 @@ export default function CookieBanner() {
 
               <div className="flex items-center justify-between p-3 rounded-xl bg-gold-pale/50">
                 <div>
-                  <p className="font-display font-semibold text-text-dark text-sm uppercase tracking-wider">
+                  <p className="font-display font-light text-text-dark text-sm uppercase tracking-wider">
                     Аналитические
                   </p>
                   <p className="text-text-muted text-sm">
@@ -153,7 +153,7 @@ export default function CookieBanner() {
 
               <div className="flex items-center justify-between p-3 rounded-xl bg-gold-pale/50">
                 <div>
-                  <p className="font-display font-semibold text-text-dark text-sm uppercase tracking-wider">
+                  <p className="font-display font-light text-text-dark text-sm uppercase tracking-wider">
                     Маркетинговые
                   </p>
                   <p className="text-text-muted text-sm">

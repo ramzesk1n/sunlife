@@ -51,7 +51,7 @@ export default function PartnershipTeam() {
     >
       <div className="max-w-7xl mx-auto mb-10 md:mb-14">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -101,7 +101,7 @@ export default function PartnershipTeam() {
                     </div>
                   )}
                 </div>
-                <h3 className="font-display text-lg md:text-xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-1">
+                <h3 className="font-display text-lg md:text-xl font-light text-gold-primary-80 uppercase tracking-wider mb-1">
                   {member.name}
                 </h3>
                 <p className="text-text-muted text-base">{member.role}</p>

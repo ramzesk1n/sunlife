@@ -36,7 +36,7 @@ export default function PartnershipAbout() {
     >
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-12 md:mb-16 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-12 md:mb-16 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -56,7 +56,7 @@ export default function PartnershipAbout() {
               variants={shouldReduceMotion ? undefined : itemVariants}
               className="glass rounded-2xl p-6 md:p-8 flex items-start gap-4 hover:shadow-glass transition-all duration-300"
             >
-              <span className="flex-shrink-0 w-10 h-10 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-primary font-display font-semibold text-lg">
+              <span className="flex-shrink-0 w-10 h-10 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-primary font-display font-light text-lg">
                 {item.number.replace('.', '')}
               </span>
               <p className="text-text-dark text-base md:text-lg leading-relaxed pt-1.5">

@@ -27,7 +27,8 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
     consent: false,
     package: prefillPackage ?? '',
   });
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (prefillPackage) {
@@ -46,9 +47,30 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('success');
+    setStatus('loading');
+    setErrorMessage('');
+    
+    try {
+      const response = await fetch('/api/send-form.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+        setErrorMessage(data.errors?.join(', ') || data.error || 'Ошибка отправки');
+      }
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage('Ошибка сети. Проверьте подключение и попробуйте снова.');
+    }
   };
 
   const inputClasses =
@@ -70,9 +92,20 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           onSubmit={handleSubmit}
           className={`space-y-5 ${inline ? '' : 'glass rounded-2xl p-6 md:p-8'}`}
         >
+          {/* Honeypot - hidden from users, bots will fill it */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', height: 0, width: 0 }}
+            value=""
+            onChange={() => {}}
+          />
+
           {formData.package && (
             <div>
-              <label className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1">
+              <label className="block text-base font-display font-light text-gold-dark uppercase tracking-wider mb-1">
                 Выбранный пакет
               </label>
               <input
@@ -88,7 +121,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-name' : 'name'}
-              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-light text-gold-dark uppercase tracking-wider mb-1"
             >
               Как к вам обращаться?
             </label>
@@ -107,7 +140,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-phone' : 'phone'}
-              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-light text-gold-dark uppercase tracking-wider mb-1"
             >
               Телефон
             </label>
@@ -126,7 +159,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-contactMethod' : 'contactMethod'}
-              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-light text-gold-dark uppercase tracking-wider mb-1"
             >
               Как вам удобнее получить ответ?
             </label>
@@ -146,7 +179,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-hospital' : 'hospital'}
-              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-light text-gold-dark uppercase tracking-wider mb-1"
             >
               Роддом (номер или город)
             </label>
@@ -164,7 +197,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
           <div>
             <label
               htmlFor={inline ? 'inline-date' : 'date'}
-              className="block text-base font-display font-semibold text-gold-dark uppercase tracking-wider mb-1"
+              className="block text-base font-display font-light text-gold-dark uppercase tracking-wider mb-1"
             >
               Дата выписки (если знаете)
             </label>
@@ -201,14 +234,15 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
 
           <button
             type="submit"
-            className="w-full py-4 border border-gold-primary text-gold-primary font-display font-semibold uppercase tracking-wider rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
+            disabled={status === 'loading'}
+            className="w-full py-4 border border-gold-primary text-gold-primary font-display font-light uppercase tracking-wider rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Оставить заявку
+            {status === 'loading' ? 'Отправка...' : 'Оставить заявку'}
           </button>
 
           {status === 'error' && (
             <p className="text-sm text-red-600 text-center">
-              Упс! Что-то пошло не так при отправке формы.
+              {errorMessage || 'Упс! Что-то пошло не так при отправке формы.'}
             </p>
           )}
         </form>
@@ -227,7 +261,7 @@ export default function ContactForm({ inline = false, prefillPackage }: ContactF
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-xl mx-auto">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider">
           Оставить заявку
         </h2>
         <p className="text-text-muted text-center text-base md:text-lg mb-10">

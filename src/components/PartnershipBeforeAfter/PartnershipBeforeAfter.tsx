@@ -1,6 +1,53 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 
+const beforeImages = [
+  '/images/remont_do_1.webp',
+  '/images/remont_do_2.webp',
+  '/images/remont_do_3.webp',
+];
+
+const afterImages = [
+  '/images/remont_posle_1.webp',
+  '/images/remont_posle_2.webp',
+  '/images/remont_posle_3.webp',
+];
+
+function PhotoGrid({ images, label }: { images: string[]; label: string }) {
+  return (
+    <div className="absolute inset-0 p-1.5 sm:p-2 md:p-3 flex flex-col gap-1.5 sm:gap-2 md:gap-3">
+      {/* Top photo */}
+      <div className="relative flex-1 rounded-lg sm:rounded-xl overflow-hidden">
+        <img
+          src={images[0]}
+          alt={`${label} — фото 1`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      {/* Bottom row — 2 photos */}
+      <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-1">
+        <div className="relative flex-1 rounded-lg sm:rounded-xl overflow-hidden">
+          <img
+            src={images[1]}
+            alt={`${label} — фото 2`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div className="relative flex-1 rounded-lg sm:rounded-xl overflow-hidden">
+          <img
+            src={images[2]}
+            alt={`${label} — фото 3`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PartnershipBeforeAfter() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -51,15 +98,17 @@ export default function PartnershipBeforeAfter() {
     };
   }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove]);
 
+  const afterOpacity = position > 95 ? 0 : 1;
+
   return (
     <section
       ref={sectionRef}
       id="partnership-before-after"
-      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
+      className="h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4 sm:py-6"
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full max-w-5xl flex flex-col items-center">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-light text-gold-primary-80 text-center mb-2 uppercase tracking-wider shrink-0"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -68,7 +117,7 @@ export default function PartnershipBeforeAfter() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center text-base md:text-lg max-w-xl mx-auto mb-10 md:mb-14"
+          className="text-text-muted text-center text-sm sm:text-base max-w-xl mx-auto mb-3 sm:mb-4 md:mb-6 shrink-0"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
@@ -78,7 +127,7 @@ export default function PartnershipBeforeAfter() {
 
         <motion.div
           ref={containerRef}
-          className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize select-none shadow-glass"
+          className="relative w-full aspect-[3/4] sm:aspect-[4/3] md:aspect-[16/10] lg:aspect-[16/9] rounded-2xl overflow-hidden cursor-ew-resize select-none shadow-glass bg-cream-3 shrink-0"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
@@ -92,44 +141,46 @@ export default function PartnershipBeforeAfter() {
           }}
         >
           {/* After layer */}
-          <div className="absolute inset-0 bg-gold-pale">
-            <div className="absolute inset-0 flex items-center justify-center text-gold-primary/40">
-              <span className="text-sm uppercase tracking-widest">После</span>
-            </div>
-            <div className="absolute top-4 left-4 px-3 py-1.5 bg-gold-primary text-cream text-xs font-display uppercase tracking-wider rounded-full">
+          <div 
+            className="absolute inset-0 transition-opacity duration-200"
+            style={{ opacity: afterOpacity }}
+          >
+            <PhotoGrid images={afterImages} label="После" />
+            <div 
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-gold-primary text-cream text-[10px] sm:text-xs font-display uppercase tracking-wider rounded-full z-10 transition-opacity duration-200"
+              style={{ opacity: position > 90 ? 0 : 1 }}
+            >
               После
             </div>
           </div>
 
           {/* Before layer */}
           <div
-            className="absolute inset-0 bg-cream-3 overflow-hidden"
+            className="absolute inset-0 overflow-hidden bg-cream-3"
             style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
           >
-            <div className="absolute inset-0 flex items-center justify-center text-gold-primary/40">
-              <span className="text-sm uppercase tracking-widest">До</span>
-            </div>
-            <div className="absolute top-4 left-4 px-3 py-1.5 bg-text-dark/70 text-cream text-xs font-display uppercase tracking-wider rounded-full">
+            <PhotoGrid images={beforeImages} label="До" />
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-text-dark/70 text-cream text-[10px] sm:text-xs font-display uppercase tracking-wider rounded-full z-10">
               До
             </div>
           </div>
 
           {/* Handle */}
           <div
-            className="absolute top-0 bottom-0 w-1 bg-cream cursor-ew-resize"
+            className="absolute top-0 bottom-0 w-1 bg-cream cursor-ew-resize z-20"
             style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
           >
             <button
               type="button"
               onMouseDown={handleMouseDown}
               onTouchStart={handleMouseDown}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-cream border-2 border-gold-primary shadow-gold flex items-center justify-center text-gold-primary hover:bg-gold-pale transition-colors"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cream border-2 border-gold-primary shadow-gold flex items-center justify-center text-gold-primary hover:bg-gold-pale transition-colors"
               aria-label="Ползунок до/после"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
-              <svg className="w-5 h-5 -ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 -ml-1.5 sm:-ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </button>
@@ -137,7 +188,7 @@ export default function PartnershipBeforeAfter() {
         </motion.div>
 
         <motion.p
-          className="text-text-muted text-center text-base md:text-lg mt-6"
+          className="text-text-muted text-center text-sm sm:text-base mt-3 sm:mt-4 md:mt-6 shrink-0"
           initial={shouldReduceMotion ? false : { opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}

@@ -1,4 +1,10 @@
-export interface PartnershipAboutItem {
+export interface PartnershipExample {
+  id: string;
+  title: string;
+  photos: { src: string; alt: string }[];
+}
+
+export const partnershipExamples: PartnershipExample[] = [];export interface PartnershipAboutItem {
   id: string;
   number: string;
   text: string;

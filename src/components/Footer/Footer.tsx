@@ -39,7 +39,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-3">
               <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0">
                 <img
-                  src="/images/sunlife_logo.png"
+                  src="/images/sunlife_logo.webp"
                   alt=""
                   className="w-full h-full object-contain p-1"
                   loading="lazy"
@@ -49,7 +49,7 @@ export default function Footer() {
               </div>
               <div>
                 <p className="text-xs text-gold-dark uppercase tracking-[0.2em]">фотослужба</p>
-                <p className="text-sm font-display font-semibold text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
+                <p className="text-sm font-display font-light text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
               </div>
             </div>
             <p className="text-text-muted text-base leading-relaxed">
@@ -59,7 +59,7 @@ export default function Footer() {
 
           {/* Навигация */}
           <div>
-            <h4 className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base mb-4">
+            <h4 className="font-display font-light text-gold-dark uppercase tracking-wider text-base mb-4">
               Навигация
             </h4>
             <nav className="space-y-2">
@@ -80,7 +80,7 @@ export default function Footer() {
 
           {/* Контакты */}
           <div>
-            <h4 className="font-display font-semibold text-gold-dark uppercase tracking-wider text-base mb-4">
+            <h4 className="font-display font-light text-gold-dark uppercase tracking-wider text-base mb-4">
               Контакты
             </h4>
             <div className="space-y-2 text-base">

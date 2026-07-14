@@ -63,7 +63,7 @@ export default function Testimonials() {
     >
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+          className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -123,15 +123,24 @@ export default function Testimonials() {
                     className="glass rounded-2xl p-8 h-full flex flex-col"
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-dark font-display text-base flex-shrink-0">
-                        {review.author.charAt(0)}
-                      </div>
+                      {review.avatar ? (
+                        <img
+                          src={review.avatar}
+                          alt={review.author}
+                          className="w-12 h-12 rounded-full object-cover border border-gold-primary/20 flex-shrink-0"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-dark font-display text-base flex-shrink-0">
+                          {review.author.charAt(0)}
+                        </div>
+                      )}
                       <div className="min-w-0">
-                        <h3 className="font-display font-semibold text-gold-dark text-base uppercase tracking-wider truncate">
+                        <h3 className="font-display font-light text-gold-dark text-base uppercase tracking-wider truncate">
                           {review.author}
                         </h3>
-                        {review.city && (
-                          <p className="text-sm text-text-light">{review.city}</p>
+                        {(review as any).city && (
+                          <p className="text-sm text-text-light">{(review as any).city}</p>
                         )}
                       </div>
                     </div>

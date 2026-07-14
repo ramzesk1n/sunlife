@@ -2,6 +2,23 @@ import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import pricingData from '../../content/pricing.json';
 import ContactForm from '../ContactForm/ContactForm';
+import BookCarousel from '../BookCarousel/BookCarousel';
+
+const bookImages = [
+  '/images/fotokniga_1.webp',
+  '/images/fotokniga_2.webp',
+  '/images/fotokniga_3.webp',
+  '/images/fotokniga_4.webp',
+  '/images/fotokniga_5.webp',
+];
+
+const bookLabels = [
+  '20×20 см',
+  '15×15 см',
+  'Рамки',
+  'Электронный',
+  'Отдельно',
+];
 
 const containerVariants = {
   hidden: {},
@@ -52,11 +69,11 @@ export default function PricingCards() {
       <section
         ref={sectionRef}
         id="pricing"
-        className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
+        className="py-16 md:py-20 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-7xl mx-auto">
           <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
+            className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-2 uppercase tracking-wider"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -65,13 +82,20 @@ export default function PricingCards() {
           </motion.h2>
 
           <motion.p
-            className="text-text-muted text-center text-base md:text-lg max-w-3xl mx-auto mb-12"
+            className="text-text-muted text-center text-base md:text-lg max-w-3xl mx-auto mb-8 md:mb-10"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
           >
             6 пакетов под любой бюджет и пожелания
           </motion.p>
+
+          {/* Book Carousel */}
+          <BookCarousel
+            bookImages={bookImages}
+            bookLabels={bookLabels}
+            className="mb-10 md:mb-12"
+          />
 
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -96,7 +120,7 @@ export default function PricingCards() {
                 )}
 
                 <div className="flex-grow">
-                  <h3 className="font-display text-xl md:text-2xl font-semibold text-gold-primary-80 uppercase tracking-wider mb-2">
+                  <h3 className="font-display text-xl md:text-2xl font-light text-gold-primary-80 uppercase tracking-wider mb-2">
                     {pkg.name}
                   </h3>
                   <p className="text-text-muted text-base mb-4">{pkg.description}</p>
@@ -134,7 +158,7 @@ export default function PricingCards() {
                 <button
                   type="button"
                   onClick={() => openModal(pkg.id)}
-                  className={`w-full py-4 px-4 rounded-2xl font-display font-semibold uppercase tracking-wider transition-all duration-300 ${
+                  className={`w-full py-4 px-4 rounded-2xl font-display font-light uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
                       ? 'border border-gold-primary text-gold-primary hover:bg-gold-primary hover:text-cream'
                       : 'border border-gold-primary/40 text-gold-dark hover:bg-gold-primary hover:text-cream hover:border-gold-primary'
