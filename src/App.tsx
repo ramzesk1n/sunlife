@@ -1,5 +1,9 @@
-import ContactsPage from './pages/ContactsPage';import TeamSlider from './components/TeamSlider/TeamSlider';import { Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, Suspense, lazy } from 'react';
+import GalleryPage from './pages/GalleryPage';
+import ContactsPage from './pages/ContactsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TeamSlider from './components/TeamSlider/TeamSlider';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import metaData from './content/meta.json';
 
 /* Components */
@@ -14,7 +18,7 @@ import Gallery from './components/Gallery/Gallery';
 import Testimonials from './components/Testimonials/Testimonials';
 import FAQ from './components/FAQ/FAQ';
 import Footer from './components/Footer/Footer';
-import PrivacyPage from './pages/PrivacyPage';
+import FloatingCallBubble from './components/FloatingCallBubble/FloatingCallBubble';
 
 /* Lazy loaded components for code splitting */
 const PartnershipHero = lazy(() => import('./components/PartnershipHero/PartnershipHero'));
@@ -27,6 +31,7 @@ const PartnershipFAQ = lazy(() => import('./components/PartnershipFAQ/Partnershi
 const PartnershipTeam = lazy(() => import('./components/PartnershipTeam/PartnershipTeam'));
 const PartnershipGallery = lazy(() => import('./components/PartnershipGallery/PartnershipGallery'));
 const PartnershipExamples = lazy(() => import('./components/PartnershipExamples/PartnershipExamples'));
+const PartnershipPopupForm = lazy(() => import('./components/PartnershipPopupForm/PartnershipPopupForm'));
 
 /* Loading fallback */
 function PageLoader() {
@@ -49,11 +54,13 @@ function HomePage() {
       <Benefits />
       <ExperienceSteps />
       <Gallery />
+      <PricingCards />
       <Testimonials />
       <FAQ />
       <TeamSlider />
       <Geography />
       <Footer />
+      <FloatingCallBubble />
     </>
   );
 }
@@ -66,25 +73,29 @@ function PricePage() {
       <Geography />
       <FAQ />
       <Footer />
+      <FloatingCallBubble />
     </>
   );
 }
 
-function GalleryPage() {
+function GalleryPageRoute() {
   return (
     <>
       <Header />
-      <Gallery />
+      <GalleryPage />
       <Footer />
+      <FloatingCallBubble />
     </>
   );
 }
 
 function PartnershipPage() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />
-      <PartnershipHero onOpenForm={() => {}} />
+      <PartnershipHero onOpenForm={() => setIsPopupOpen(true)} />
       <PartnershipAbout />
       <PartnershipOffers />
       <PartnershipTestimonial />
@@ -95,6 +106,8 @@ function PartnershipPage() {
       <PartnershipTeam />
       <PartnershipGallery />
       <Footer />
+      <PartnershipPopupForm isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
+      <FloatingCallBubble />
     </Suspense>
   );
 }
@@ -105,6 +118,18 @@ function PrivacyPageWrapper() {
       <Header />
       <PrivacyPage />
       <Footer />
+      <FloatingCallBubble />
+    </>
+  );
+}
+
+function ContactsPageRoute() {
+  return (
+    <>
+      <Header />
+      <ContactsPage />
+      <Footer />
+      <FloatingCallBubble />
     </>
   );
 }
@@ -153,9 +178,9 @@ export default function App() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<HomePage />} />
         <Route path="/price" element={<PricePage />} />
-        <Route path="/galery" element={<GalleryPage />} />
+        <Route path="/galery" element={<GalleryPageRoute />} />
         <Route path="/partnership" element={<PartnershipPage />} />
-        <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/contacts" element={<ContactsPageRoute />} />
         <Route path="/privacy" element={<PrivacyPageWrapper />} />
       </Routes>
     </>

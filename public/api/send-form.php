@@ -91,6 +91,10 @@ $contactMethod = $input['contactMethod'] ?? 'phone';
 $hospital = trim($input['hospital'] ?? '');
 $date = trim($input['date'] ?? '');
 $package = trim($input['package'] ?? '');
+$email = trim($input['email'] ?? '');
+$volume = trim($input['volume'] ?? '');
+$messageText = trim($input['message'] ?? '');
+$formType = $input['formType'] ?? 'contact';
 $consent = filter_var($input['consent'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
 // Validation
@@ -114,19 +118,38 @@ if (!empty($errors)) {
 // Format message
 $methodLabels = ['telegram' => 'Telegram', 'whatsapp' => 'WhatsApp', 'phone' => 'Телефон'];
 
-$message = "🔔 <b>Новая заявка с сайта САН ЛАЙФ</b>\n\n";
-$message .= "👤 <b>Имя:</b> " . htmlspecialchars($name) . "\n";
-$message .= "📞 <b>Телефон:</b> " . htmlspecialchars($phone) . "\n";
-$message .= "💬 <b>Способ связи:</b> " . ($methodLabels[$contactMethod] ?? $contactMethod) . "\n";
+if ($formType === 'partnership') {
+    $message = "🤝 <b>Новая заявка на партнёрство</b>\n\n";
+    $message .= "👤 <b>ФИО:</b> " . htmlspecialchars($name) . "\n";
+    $message .= "📞 <b>Телефон:</b> " . htmlspecialchars($phone) . "\n";
+    if (!empty($email)) {
+        $message .= "📧 <b>Email:</b> " . htmlspecialchars($email) . "\n";
+    }
+    $message .= "💬 <b>Способ связи:</b> " . ($methodLabels[$contactMethod] ?? $contactMethod) . "\n";
+    if (!empty($hospital)) {
+        $message .= "🏥 <b>Клиника:</b> " . htmlspecialchars($hospital) . "\n";
+    }
+    if (!empty($volume)) {
+        $message .= "📊 <b>Объём:</b> " . htmlspecialchars($volume) . "\n";
+    }
+    if (!empty($messageText)) {
+        $message .= "📝 <b>Сообщение:</b> " . htmlspecialchars($messageText) . "\n";
+    }
+} else {
+    $message = "🔔 <b>Новая заявка с сайта САН ЛАЙФ</b>\n\n";
+    $message .= "👤 <b>Имя:</b> " . htmlspecialchars($name) . "\n";
+    $message .= "📞 <b>Телефон:</b> " . htmlspecialchars($phone) . "\n";
+    $message .= "💬 <b>Способ связи:</b> " . ($methodLabels[$contactMethod] ?? $contactMethod) . "\n";
 
-if (!empty($hospital)) {
-    $message .= "🏥 <b>Роддом:</b> " . htmlspecialchars($hospital) . "\n";
-}
-if (!empty($date)) {
-    $message .= "📅 <b>Дата выписки:</b> " . htmlspecialchars($date) . "\n";
-}
-if (!empty($package)) {
-    $message .= "📦 <b>Пакет:</b> " . htmlspecialchars($package) . "\n";
+    if (!empty($hospital)) {
+        $message .= "🏥 <b>Роддом:</b> " . htmlspecialchars($hospital) . "\n";
+    }
+    if (!empty($date)) {
+        $message .= "📅 <b>Дата выписки:</b> " . htmlspecialchars($date) . "\n";
+    }
+    if (!empty($package)) {
+        $message .= "📦 <b>Пакет:</b> " . htmlspecialchars($package) . "\n";
+    }
 }
 
 $message .= "\n🕐 <i>" . date('d.m.Y H:i:s') . "</i>\n";

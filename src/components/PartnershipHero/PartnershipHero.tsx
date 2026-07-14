@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 
 interface PartnershipHeroProps {
@@ -9,15 +9,6 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
-
-  const scrollToForm = useCallback(() => {
-    const el = document.getElementById('contact');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      onOpenForm();
-    }
-  }, [onOpenForm]);
 
   return (
     <section
@@ -52,7 +43,7 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
 
               <button
                 type="button"
-                onClick={scrollToForm}
+                onClick={onOpenForm}
                 className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-light uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
               >
                 Стать партнёром
