@@ -1,0 +1,14 @@
+cd /var/www/s273478/data/www
+unzip -o deploy-final.zip
+mv assets assets-old-$(date +%s)
+mv deploy-minimal/assets assets
+mv deploy-minimal/index.html index.html
+for d in partnership contacts price galery privacy; do
+  if [ -d "deploy-minimal/$d" ]; then
+    rm -rf "$d"
+    mv "deploy-minimal/$d" "$d"
+  fi
+done
+mv deploy-minimal/api/send-form.php api/send-form.php
+rm -rf deploy-minimal deploy-final.zip
+ls -la assets/ | head -5

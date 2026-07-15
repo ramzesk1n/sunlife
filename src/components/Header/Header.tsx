@@ -15,7 +15,7 @@ const socialLinks = [
     src: '/images/whatsapp.svg',
   },
   {
-    href: 'https://t.me/TigerSax',
+    href: 'https://telegram.me/TigerSax',
     label: 'Telegram',
     src: '/images/telegram.svg',
   },

@@ -1,6 +1,7 @@
 import GalleryPage from './pages/GalleryPage';
 import ContactsPage from './pages/ContactsPage';
 import PrivacyPage from './pages/PrivacyPage';
+import NotFoundPage from './pages/NotFoundPage';
 import TeamSlider from './components/TeamSlider/TeamSlider';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect, Suspense, lazy } from 'react';
@@ -182,6 +183,7 @@ export default function App() {
         <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/contacts" element={<ContactsPageRoute />} />
         <Route path="/privacy" element={<PrivacyPageWrapper />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
