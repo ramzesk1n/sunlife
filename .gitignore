@@ -38,6 +38,7 @@ Thumbs.db
 # Deploy artifacts
 deploy-minimal/
 deploy-final.zip
+deploy-final.tar.gz
 deploy-v*.zip
 dist.zip
 
