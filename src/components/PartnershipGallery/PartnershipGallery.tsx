@@ -84,7 +84,7 @@ export default function PartnershipGallery() {
           <p className="text-text-muted text-center">Проекты пока не добавлены</p>
         ) : (
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+            className="flex flex-wrap justify-center gap-6 md:gap-8"
             variants={shouldReduceMotion ? undefined : containerVariants}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
@@ -99,7 +99,7 @@ export default function PartnershipGallery() {
                   variants={shouldReduceMotion ? undefined : itemVariants}
                   whileHover={shouldReduceMotion ? undefined : { y: -5 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-cream rounded-2xl overflow-hidden shadow-card hover:shadow-glass transition-all duration-300 border border-gold-primary/10 group"
+                  className="bg-cream rounded-2xl overflow-hidden shadow-card hover:shadow-glass transition-all duration-300 border border-gold-primary/10 group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]"
                 >
                   <button
                     type="button"
@@ -132,17 +132,10 @@ export default function PartnershipGallery() {
                       {project.title}
                     </h3>
                     {project.description && (
-                      <p className="text-text-secondary text-sm leading-relaxed mb-4">
+                      <p className="text-text-secondary text-sm leading-relaxed">
                         {project.description}
                       </p>
                     )}
-                    <button
-                      type="button"
-                      onClick={() => openLightbox(photos, 0)}
-                      className="text-gold-primary text-sm font-display uppercase tracking-wider hover:underline transition-all"
-                    >
-                      Смотреть проект
-                    </button>
                   </div>
                 </motion.div>
               );
