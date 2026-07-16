@@ -310,7 +310,9 @@ switch ($action) {
 
     case 'upload':
         requireAuth();
-        requirePermission(PERM_GALLERY);
+        if (!hasPermission(PERM_GALLERY) && !hasPermission(PERM_PARTNERSHIP)) {
+            jsonResponse(['success' => false, 'error' => 'Permission denied: upload'], 403);
+        }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             jsonResponse(['success' => false, 'error' => 'Method not allowed'], 405);
@@ -353,7 +355,9 @@ switch ($action) {
 
     case 'list-images':
         requireAuth();
-        requirePermission(PERM_GALLERY);
+        if (!hasPermission(PERM_GALLERY) && !hasPermission(PERM_PARTNERSHIP)) {
+            jsonResponse(['success' => false, 'error' => 'Permission denied: list-images'], 403);
+        }
 
         if (!is_dir(IMAGES_DIR)) {
             jsonResponse(['success' => true, 'images' => []]);
@@ -375,6 +379,48 @@ switch ($action) {
         }
 
         jsonResponse(['success' => true, 'images' => $images]);
+        break;
+
+    case 'delete-image':
+        requireAuth();
+        if (!hasPermission(PERM_GALLERY) && !hasPermission(PERM_PARTNERSHIP)) {
+            jsonResponse(['success' => false, 'error' => 'Permission denied: delete-image'], 403);
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            jsonResponse(['success' => false, 'error' => 'Method not allowed'], 405);
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $src = $input['src'] ?? '';
+
+        if (!$src || !str_starts_with($src, '/images/cms/')) {
+            jsonResponse(['success' => false, 'error' => 'Invalid image src'], 400);
+        }
+
+        $basename = basename($src);
+        if (!str_ends_with($basename, '-orig.webp')) {
+            jsonResponse(['success' => false, 'error' => 'Invalid image filename'], 400);
+        }
+
+        $base = pathinfo($basename, PATHINFO_FILENAME); // e.g. foo-orig
+        $prefix = preg_replace('/-orig$/', '', $base);
+        if (!$prefix || preg_match('/[^a-zA-Z0-9_-]/', $prefix)) {
+            jsonResponse(['success' => false, 'error' => 'Invalid image prefix'], 400);
+        }
+
+        if (!is_dir(IMAGES_DIR)) {
+            jsonResponse(['success' => true, 'deleted' => []]);
+        }
+
+        $deleted = [];
+        foreach (glob(IMAGES_DIR . $prefix . '-*.webp') as $file) {
+            if (is_file($file) && unlink($file)) {
+                $deleted[] = basename($file);
+            }
+        }
+
+        jsonResponse(['success' => true, 'deleted' => $deleted]);
         break;
 
     case 'list-backups':

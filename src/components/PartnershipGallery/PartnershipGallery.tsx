@@ -7,22 +7,28 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    scale: 1,
+    y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.6,
       ease: 'easeOut' as const,
     },
   },
 };
+
+const PLACEHOLDER_REGEX = /placeholder-\d+\.(jpg|jpeg|png|webp)/i;
+
+function isValidPhoto(photo: { src?: string; alt?: string }) {
+  return photo?.src && !PLACEHOLDER_REGEX.test(photo.src);
+}
 
 export default function PartnershipGallery() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -42,13 +48,18 @@ export default function PartnershipGallery() {
     setLightboxOpen(false);
   }, []);
 
-  const projects = partnershipData.projects;
+  const projects = ((partnershipData as any).projects || [])
+    .map((project: any) => ({
+      ...project,
+      photos: (project.photos || []).filter(isValidPhoto),
+    }))
+    .filter((project: any) => project.photos.length > 0);
 
   return (
     <section
       ref={sectionRef}
-      id="partnership-gallery"
-      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
+      id="partnership-portfolio"
+      className="py-16 md:py-20 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">
         <motion.h2
@@ -61,66 +72,83 @@ export default function PartnershipGallery() {
         </motion.h2>
 
         <motion.p
-          className="text-text-muted text-center text-base md:text-lg max-w-3xl mx-auto mb-12"
+          className="text-text-muted text-center text-base md:text-lg max-w-3xl mx-auto mb-10 md:mb-14"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         >
-          Реальные проекты для медицинских учреждений и организаций
+          Реальные проекты для медицинских учреждений
         </motion.p>
 
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-          variants={shouldReduceMotion ? undefined : containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          {projects.map((project) => {
-            const photos = project.photos || [];
-            const cover = photos[0]?.src || '/images/placeholder-1.webp';
-            return (
-              <motion.button
-                key={project.id}
-                variants={shouldReduceMotion ? undefined : itemVariants}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
-                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => openLightbox(photos, 0)}
-                className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300"
-                aria-label={`Открыть галерею: ${project.title}`}
-              >
-                {/* Cover image */}
-                <img
-                  src={cover}
-                  alt={project.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="lazy"
-                />
+        {projects.length === 0 ? (
+          <p className="text-text-muted text-center">Проекты пока не добавлены</p>
+        ) : (
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+            variants={shouldReduceMotion ? undefined : containerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            {projects.map((project: any) => {
+              const photos = project.photos;
+              const cover = photos[0]?.src;
+              const photoCount = photos.length;
+              return (
+                <motion.div
+                  key={project.id}
+                  variants={shouldReduceMotion ? undefined : itemVariants}
+                  whileHover={shouldReduceMotion ? undefined : { y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-cream rounded-2xl overflow-hidden shadow-card hover:shadow-glass transition-all duration-300 border border-gold-primary/10 group"
+                >
+                  <button
+                    type="button"
+                    className="relative w-full aspect-[4/3] overflow-hidden block"
+                    onClick={() => openLightbox(photos, 0)}
+                    aria-label={`Открыть галерею: ${project.title}`}
+                  >
+                    <img
+                      src={cover}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-lg">
-                    🔍
-                  </span>
-                </div>
+                    <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-2xl">
+                        🔍
+                      </span>
+                    </div>
 
-                {/* Photo count badge */}
-                {photos.length > 1 && (
-                  <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-cream text-xs font-display px-2 py-1 rounded-full">
-                    {photos.length} фото
+                    {photoCount > 1 && (
+                      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-cream text-sm font-display px-3 py-1 rounded-full">
+                        {photoCount} фото
+                      </div>
+                    )}
+                  </button>
+
+                  <div className="p-6">
+                    <h3 className="text-xl font-display font-medium text-text-primary mb-2">
+                      {project.title}
+                    </h3>
+                    {project.description && (
+                      <p className="text-text-secondary text-sm leading-relaxed mb-4">
+                        {project.description}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => openLightbox(photos, 0)}
+                      className="text-gold-primary text-sm font-display uppercase tracking-wider hover:underline transition-all"
+                    >
+                      Смотреть проект
+                    </button>
                   </div>
-                )}
-
-                {/* Title */}
-                <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/70 to-transparent">
-                  <p className="text-cream text-xs font-display uppercase tracking-wider text-center leading-tight">
-                    {project.title}
-                  </p>
-                </div>
-              </motion.button>
-            );
-          })}
-        </motion.div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
       </div>
 
       <Lightbox

@@ -941,7 +941,6 @@ async function savePartnershipExamples() {
 
 function addExampleItem() { currentData.partnership.examples.push({ id: 'ex-' + Date.now(), title: '', photos: [] }); loadSection('partnership'); }
 function deleteExampleItem(i) { if (!confirm('Удалить роддом?')) return; currentData.partnership.examples.splice(i, 1); loadSection('partnership'); }
-function deleteExamplePhoto(projIdx, photoIdx) { if (!confirm('Удалить фото?')) return; currentData.partnership.examples[projIdx].photos.splice(photoIdx, 1); loadSection('partnership'); }
 
 async function handleExampleUploadFromInput(event) {
   const input = event.target;
@@ -1121,8 +1120,44 @@ function addTeamItem() { currentData.partnership.team.push({ id: 'team-' + Date.
 function deleteTeamItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.team.splice(i, 1); loadSection('partnership'); }
 function addProjectItem() { currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', photos: [] }); loadSection('partnership'); }
 function deleteProjectItem(i) { if (!confirm('Удалить проект?')) return; currentData.partnership.projects.splice(i, 1); loadSection('partnership'); }
-function deleteProjectPhoto(projIdx, photoIdx) { if (!confirm('Удалить фото?')) return; currentData.partnership.projects[projIdx].photos.splice(photoIdx, 1); loadSection('partnership'); }
+async function deleteProjectPhoto(projIdx, photoIdx) {
+  if (!confirm('Удалить фото?')) return;
+  const project = currentData.partnership.projects[projIdx];
+  if (!project) return;
+  const photo = project.photos[photoIdx];
+  if (!photo) return;
+  const src = photo.src;
+  await savePartnershipProjects();
+  project.photos.splice(photoIdx, 1);
+  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
+  if (src) await deleteImageFile(src);
+  showToast('Фото удалено', 'success');
+  loadSection('partnership');
+}
+async function deleteExamplePhoto(projIdx, photoIdx) {
+  if (!confirm('Удалить фото?')) return;
+  const example = currentData.partnership.examples[projIdx];
+  if (!example) return;
+  const photo = example.photos[photoIdx];
+  if (!photo) return;
+  const src = photo.src;
+  await savePartnershipExamples();
+  example.photos.splice(photoIdx, 1);
+  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
+  if (src) await deleteImageFile(src);
+  showToast('Фото удалено', 'success');
+  loadSection('partnership');
+}
 function deleteGalleryImage(i) { if (!confirm('Удалить фото?')) return; currentData.gallery.images.splice(i, 1); loadSection(currentSection); }
+async function deleteImageFile(src) {
+  if (!src || !src.startsWith('/images/cms/')) return;
+  try {
+    const res = await api('delete-image', 'POST', { src });
+    if (!res.success) console.warn('delete-image failed:', res.error);
+  } catch (e) {
+    console.warn('delete-image error:', e);
+  }
+}
 
 // ===== PHOTO UPLOAD HANDLERS =====
 async function handleGalleryUpload(event) {

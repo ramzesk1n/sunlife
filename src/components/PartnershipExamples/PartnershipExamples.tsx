@@ -24,6 +24,12 @@ const itemVariants = {
   },
 };
 
+const PLACEHOLDER_REGEX = /placeholder-\d+\.(jpg|jpeg|png|webp)/i;
+
+function isValidPhoto(photo: { src?: string; alt?: string }) {
+  return photo?.src && !PLACEHOLDER_REGEX.test(photo.src);
+}
+
 export default function PartnershipExamples() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
@@ -42,7 +48,12 @@ export default function PartnershipExamples() {
     setLightboxOpen(false);
   }, []);
 
-  const examples = (partnershipData as any).examples || [];
+  const examples = ((partnershipData as any).examples || [])
+    .map((project: any) => ({
+      ...project,
+      photos: (project.photos || []).filter(isValidPhoto),
+    }))
+    .filter((project: any) => project.photos.length > 0);
 
   return (
     <section
@@ -79,9 +90,9 @@ export default function PartnershipExamples() {
             animate={isInView ? 'visible' : 'hidden'}
           >
             {examples.map((project: any) => {
-              const photos = project.photos || [];
-              const hasPhotos = photos.length > 0;
-              const cover = photos[0]?.src || '/images/placeholder-1.webp';
+              const photos = project.photos;
+              const cover = photos[0]?.src;
+              const photoCount = photos.length;
               return (
                 <motion.button
                   key={project.id}
@@ -89,9 +100,9 @@ export default function PartnershipExamples() {
                   whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
                   whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                   transition={{ duration: 0.3 }}
-                  onClick={() => hasPhotos && openLightbox(photos, 0)}
-                  className={`relative aspect-square rounded-2xl overflow-hidden group bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300 ${hasPhotos ? 'cursor-pointer' : 'cursor-default'}`}
-                  aria-label={hasPhotos ? `Открыть галерею: ${project.title}` : project.title}
+                  onClick={() => openLightbox(photos, 0)}
+                  className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-300"
+                  aria-label={`Открыть галерею: ${project.title}`}
                 >
                   <img
                     src={cover}
@@ -100,17 +111,15 @@ export default function PartnershipExamples() {
                     loading="lazy"
                   />
 
-                  {hasPhotos && (
-                    <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-lg">
-                        🔍
-                      </span>
-                    </div>
-                  )}
+                  <div className="absolute inset-0 bg-gold-primary/0 group-hover:bg-gold-primary/10 transition-colors duration-300 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gold-primary text-lg">
+                      🔍
+                    </span>
+                  </div>
 
-                  {photos.length > 1 && (
+                  {photoCount > 1 && (
                     <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-cream text-xs font-display px-2 py-1 rounded-full">
-                      {photos.length} фото
+                      {photoCount} фото
                     </div>
                   )}
 

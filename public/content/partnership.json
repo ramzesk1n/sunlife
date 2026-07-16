@@ -113,61 +113,61 @@
             "id": "team-alina",
             "name": "Алина",
             "role": "администратор",
-            "src": "\/images\/cms\/alina_administrator-6a5405710306d-orig.webp"
+            "src": "/images/cms/alina_administrator-6a5405710306d-orig.webp"
         },
         {
             "id": "team-arina",
             "name": "Арина",
             "role": "фотограф",
-            "src": "\/images\/cms\/arina_fotograf-6a54057820a25-orig.webp"
+            "src": "/images/cms/arina_fotograf-6a54057820a25-orig.webp"
         },
         {
             "id": "team-gulnaz",
             "name": "Гульназ",
             "role": "дизайнер",
-            "src": "\/images\/cms\/gulnaz_designer-6a54057e8093e-orig.webp"
+            "src": "/images/cms/gulnaz_designer-6a54057e8093e-orig.webp"
         },
         {
             "id": "team-svetlana",
             "name": "Светлана",
             "role": "фотограф",
-            "src": "\/images\/cms\/svetlana_fotograf-6a540585b2013-orig.webp"
+            "src": "/images/cms/svetlana_fotograf-6a540585b2013-orig.webp"
         },
         {
             "id": "team-natalia",
             "name": "Наталья",
             "role": "фотограф",
-            "src": "\/images\/cms\/nataliya_fotograf-6a54058f8d0a0-orig.webp"
+            "src": "/images/cms/nataliya_fotograf-6a54058f8d0a0-orig.webp"
         },
         {
             "id": "team-olesya",
             "name": "Олеся",
             "role": "видеооператор",
-            "src": "\/images\/cms\/olesya_videooperator-6a54059ce7a1a-orig.webp"
+            "src": "/images/cms/olesya_videooperator-6a54059ce7a1a-orig.webp"
         },
         {
             "id": "team-shakhnoza",
             "name": "Шахноза",
             "role": "фотограф",
-            "src": "\/images\/cms\/shahnoza_fotograf-6a5405adbf107-orig.webp"
+            "src": "/images/cms/shahnoza_fotograf-6a5405adbf107-orig.webp"
         },
         {
             "id": "team-yulia",
             "name": "Юлия",
             "role": "фотограф",
-            "src": "\/images\/cms\/yuliya_fotograf-6a5405b6abc43-orig.webp"
+            "src": "/images/cms/yuliya_fotograf-6a5405b6abc43-orig.webp"
         },
         {
             "id": "team-yana",
             "name": "Яна",
             "role": "видеооператор",
-            "src": "\/images\/cms\/yana_videooperator-6a5405bc5a0ca-orig.webp"
+            "src": "/images/cms/yana_videooperator-6a5405bc5a0ca-orig.webp"
         },
         {
             "id": "team-anastasia",
             "name": "Анастасия",
             "role": "дизайнер",
-            "src": "\/images\/cms\/anastasiya_disigner-6a5405c75ea6f-orig.webp"
+            "src": "/images/cms/anastasiya_disigner-6a5405c75ea6f-orig.webp"
         }
     ],
     "projects": [
@@ -176,19 +176,15 @@
             "title": "АВТОРСКАЯ ФОТОВЫСТАВКА ТАГИРА ЧАНЫШЕВА «ГЕРОИ КРАСНОЙ ЗОНЫ»",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-1.jpg",
-                    "alt": "Авторская фотовыставка Тагира Чанышева «Герои красной зоны»"
-                },
-                {
-                    "src": "\/images\/cms\/1-6a541be96da68-orig.webp",
+                    "src": "/images/cms/1-6a541be96da68-orig.webp",
                     "alt": "Растр (1)"
                 },
                 {
-                    "src": "\/images\/cms\/2-6a541beb0a624-orig.webp",
+                    "src": "/images/cms/2-6a541beb0a624-orig.webp",
                     "alt": "Растр (2)"
                 },
                 {
-                    "src": "\/images\/cms\/-6a541becac8d2-orig.webp",
+                    "src": "/images/cms/-6a541becac8d2-orig.webp",
                     "alt": "Растр"
                 }
             ]
@@ -198,19 +194,15 @@
             "title": "30 ЛЕТ ОУЗД РКБ ИМ. КУВАТОВА УФА",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-2.jpg",
-                    "alt": "30 лет ОУЗД РКБ им. Куватова Уфа"
-                },
-                {
-                    "src": "\/images\/cms\/4-6a541c03630d1-orig.webp",
+                    "src": "/images/cms/4-6a541c03630d1-orig.webp",
                     "alt": "Растр (4)"
                 },
                 {
-                    "src": "\/images\/cms\/5-6a541c0491857-orig.webp",
+                    "src": "/images/cms/5-6a541c0491857-orig.webp",
                     "alt": "Растр (5)"
                 },
                 {
-                    "src": "\/images\/cms\/6-6a541c0614ee4-orig.webp",
+                    "src": "/images/cms/6-6a541c0614ee4-orig.webp",
                     "alt": "Растр (6)"
                 }
             ]
@@ -220,19 +212,15 @@
             "title": "АЭРОСЪЁМКА МЕДУЧРЕЖДЕНИЙ",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-3.jpg",
-                    "alt": "Аэросъёмка медучреждений"
-                },
-                {
-                    "src": "\/images\/cms\/1-6a541c1b427ed-orig.webp",
+                    "src": "/images/cms/1-6a541c1b427ed-orig.webp",
                     "alt": "Растр (1)"
                 },
                 {
-                    "src": "\/images\/cms\/2-6a541c1eb195e-orig.webp",
+                    "src": "/images/cms/2-6a541c1eb195e-orig.webp",
                     "alt": "Растр (2)"
                 },
                 {
-                    "src": "\/images\/cms\/3-6a541c2294463-orig.webp",
+                    "src": "/images/cms/3-6a541c2294463-orig.webp",
                     "alt": "Растр (3)"
                 }
             ]
@@ -242,19 +230,15 @@
             "title": "ФОРУМ СЛУЖБЫ КРОВИ",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-4.jpg",
-                    "alt": "Форум службы крови"
-                },
-                {
-                    "src": "\/images\/cms\/3-6a541c3a0151b-orig.webp",
+                    "src": "/images/cms/3-6a541c3a0151b-orig.webp",
                     "alt": "Растр (3)"
                 },
                 {
-                    "src": "\/images\/cms\/4-6a541c3c62d9d-orig.webp",
+                    "src": "/images/cms/4-6a541c3c62d9d-orig.webp",
                     "alt": "Растр (4)"
                 },
                 {
-                    "src": "\/images\/cms\/5-6a541c3f0c19c-orig.webp",
+                    "src": "/images/cms/5-6a541c3f0c19c-orig.webp",
                     "alt": "Растр (5)"
                 }
             ]
@@ -264,19 +248,15 @@
             "title": "КОВИД-ГОСПИТАЛЬ",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-5.jpg",
-                    "alt": "Ковид-госпиталь"
-                },
-                {
-                    "src": "\/images\/cms\/1-6a541c97e271c-orig.webp",
+                    "src": "/images/cms/1-6a541c97e271c-orig.webp",
                     "alt": "Растр (1)"
                 },
                 {
-                    "src": "\/images\/cms\/2-6a541c9b31d5a-orig.webp",
+                    "src": "/images/cms/2-6a541c9b31d5a-orig.webp",
                     "alt": "Растр (2)"
                 },
                 {
-                    "src": "\/images\/cms\/-6a541c9e9a282-orig.webp",
+                    "src": "/images/cms/-6a541c9e9a282-orig.webp",
                     "alt": "Растр"
                 }
             ]
@@ -286,19 +266,15 @@
             "title": "КОНФЕРЕНЦИЯ НАСКИ",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-6.jpg",
-                    "alt": "Конференция НАСКИ"
-                },
-                {
-                    "src": "\/images\/cms\/9-6a541cbb6ecc6-orig.webp",
+                    "src": "/images/cms/9-6a541cbb6ecc6-orig.webp",
                     "alt": "Растр (9)"
                 },
                 {
-                    "src": "\/images\/cms\/10-6a541cc003011-orig.webp",
+                    "src": "/images/cms/10-6a541cc003011-orig.webp",
                     "alt": "Растр (10)"
                 },
                 {
-                    "src": "\/images\/cms\/11-6a541cc3526a0-orig.webp",
+                    "src": "/images/cms/11-6a541cc3526a0-orig.webp",
                     "alt": "Растр (11)"
                 }
             ]
@@ -308,19 +284,15 @@
             "title": "ФОТОГАЛЕРЕЯ В СИМУЛЯЦИОННОМ ЦЕНТРЕ БГМУ",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-7.jpg",
-                    "alt": "Фотогалерея в симуляционном центре БГМУ"
-                },
-                {
-                    "src": "\/images\/cms\/6-6a541cd76b65e-orig.webp",
+                    "src": "/images/cms/6-6a541cd76b65e-orig.webp",
                     "alt": "Растр (6)"
                 },
                 {
-                    "src": "\/images\/cms\/7-6a541cd9c0a96-orig.webp",
+                    "src": "/images/cms/7-6a541cd9c0a96-orig.webp",
                     "alt": "Растр (7)"
                 },
                 {
-                    "src": "\/images\/cms\/8-6a541cdacfcfe-orig.webp",
+                    "src": "/images/cms/8-6a541cdacfcfe-orig.webp",
                     "alt": "Растр (8)"
                 }
             ]
@@ -330,32 +302,228 @@
             "title": "ЦЕРЕМОНИЯ НАГРАЖДЕНИЯ В ДЕНЬ МЕДРАБОТНИКА",
             "photos": [
                 {
-                    "src": "\/images\/placeholder-8.jpg",
-                    "alt": "Церемония награждения в День медработника"
-                },
-                {
-                    "src": "\/images\/cms\/3-6a541cf0ded69-orig.webp",
+                    "src": "/images/cms/3-6a541cf0ded69-orig.webp",
                     "alt": "Растр (3)"
                 },
                 {
-                    "src": "\/images\/cms\/4-6a541cf27ea3d-orig.webp",
+                    "src": "/images/cms/4-6a541cf27ea3d-orig.webp",
                     "alt": "Растр (4)"
                 },
                 {
-                    "src": "\/images\/cms\/5-6a541cf394b48-orig.webp",
+                    "src": "/images/cms/5-6a541cf394b48-orig.webp",
                     "alt": "Растр (5)"
                 }
             ]
         }
     ],
     "examples": [
-        { "id": "roddom3", "title": "ГБУЗ Родильный дом №3 г. Уфа", "photos": [] },
-        { "id": "gkb8", "title": "ГБУЗ РБ ГКБ № 8 г. Уфа", "photos": [] },
-        { "id": "rkb", "title": "ГУЗ РКБ им. Г.Г. Куватова, родильный дом", "photos": [] },
-        { "id": "perinatal", "title": "ГБУЗ Республиканский клинический перинатальный центр", "photos": [] },
-        { "id": "bgmu", "title": "Родильный дом клиники БГМУ", "photos": [] },
-        { "id": "sterlitamak", "title": "Перинатальный центр (роддом СК), Стерлитамак", "photos": [] },
-        { "id": "kumertau", "title": "Межрайонный перинатальный центр г. Кумертау", "photos": [] },
-        { "id": "ompc", "title": "ГАУЗ ОМПЦ г. Орск", "photos": [] }
+        {
+            "id": "roddom3",
+            "title": "ГБУЗ Родильный дом №3 г. Уфа",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55df8850bd5-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55df8cd6a49-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55df95302aa-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55df9e3d8d6-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55dfa30186c-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "gkb8",
+            "title": "ГБУЗ РБ ГКБ № 8 г. Уфа",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e125bb2e5-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e1278c635-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e12cc34b0-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e136312a0-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e13ac4196-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "rkb",
+            "title": "ГУЗ РКБ им. Г.Г. Куватова, родильный дом",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e149602fe-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e14b73e53-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e14f38e96-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e153f254e-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e15fcf7ac-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "perinatal",
+            "title": "ГБУЗ Республиканский клинический перинатальный центр",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e18688e33-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e18875854-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e18a8b83f-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e1901f6be-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e1926485f-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "bgmu",
+            "title": "Родильный дом клиники БГМУ",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e5d2114d6-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e5d5b9553-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e5dea1e1a-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e5eb6ad2a-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e5f23da16-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "sterlitamak",
+            "title": "Перинатальный центр (роддом СК), Стерлитамак",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e6153b469-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e61a6a8f0-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e62226924-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e62f07156-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e63e63088-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "kumertau",
+            "title": "Межрайонный перинатальный центр г. Кумертау",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e67fb708c-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e6843a3f4-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e68c0d11c-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e699ac631-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e6aa18fde-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        },
+        {
+            "id": "ompc",
+            "title": "ГАУЗ ОМПЦ г. Орск",
+            "photos": [
+                {
+                    "src": "/images/cms/1-6a55e7add63a1-orig.webp",
+                    "alt": "Растр (1)"
+                },
+                {
+                    "src": "/images/cms/2-6a55e7b1e398a-orig.webp",
+                    "alt": "Растр (2)"
+                },
+                {
+                    "src": "/images/cms/3-6a55e7b97dbf1-orig.webp",
+                    "alt": "Растр (3)"
+                },
+                {
+                    "src": "/images/cms/4-6a55e7c35d33a-orig.webp",
+                    "alt": "Растр (4)"
+                },
+                {
+                    "src": "/images/cms/-6a55e7cc0e15c-orig.webp",
+                    "alt": "Растр"
+                }
+            ]
+        }
     ]
 }

@@ -34,3 +34,12 @@ public/api/config.local.php
 
 # OS
 Thumbs.db
+
+# Deploy artifacts
+deploy-minimal/
+deploy-final.zip
+deploy-v*.zip
+dist.zip
+
+# Uploaded CMS images (generated on server)
+public/images/cms/
