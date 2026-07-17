@@ -12,6 +12,7 @@ import MobileBottomBar from './components/MobileBottomBar/MobileBottomBar';
 import InlineCta from './components/InlineCta/InlineCta';
 import ToastProvider from './components/Toast/ToastProvider';
 import BackToTop from './components/BackToTop/BackToTop';
+import SchemaOrg from './components/SchemaOrg/SchemaOrg';
 import { SkeletonCard } from './components/Skeleton/Skeleton';
 
 /* Lazy loaded components for code splitting */
@@ -265,6 +266,7 @@ export default function App() {
   return (
     <ToastProvider>
       <SeoUpdater />
+      <SchemaOrg pathname={location.pathname} />
       <CookieBanner />
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<HomePage />} />
