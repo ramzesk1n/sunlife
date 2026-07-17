@@ -1,0 +1,113 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-07-17T19:52:59.271Z",
+  "phase": null,
+  "phase_name": null,
+  "phase_dir": null,
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "paused",
+  "completed_tasks": [
+    {
+      "id": "todo-010",
+      "name": "UX-polish: Toast, Skeleton, Back-to-top",
+      "status": "done",
+      "commit": "94bf7ba"
+    },
+    {
+      "id": "gallery-optimize",
+      "name": "Optimize gallery WebP (1600px, q75): 87 MB → 36 MB",
+      "status": "done",
+      "commit": "c8fdea4"
+    },
+    {
+      "id": "cleanup-tmp",
+      "name": "Remove leftover tmp file from gallery optimization",
+      "status": "done",
+      "commit": "f71c65f"
+    },
+    {
+      "id": "build-deploy-prep",
+      "name": "Build and prepare dist.zip for deploy",
+      "status": "done",
+      "commit": "f71c65f"
+    }
+  ],
+  "remaining_tasks": [
+    {
+      "id": "manual-deploy",
+      "name": "Manual deploy: upload dist.zip and run deploy.php",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-004",
+      "name": "Vercel deploy + custom domain",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-005",
+      "name": "Analytics (Yandex/GA)",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-008",
+      "name": "Schema.org JSON-LD",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-011",
+      "name": "Privacy policy actualization",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-012",
+      "name": "Accessibility audit",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-013",
+      "name": "CI/CD",
+      "status": "not_started"
+    },
+    {
+      "id": "todo-014",
+      "name": "Thank-you page",
+      "status": "not_started"
+    }
+  ],
+  "blockers": [
+    {
+      "description": "No FTP/SSH password available in this environment; SSH key was rejected by hostiman server.",
+      "type": "human_action",
+      "workaround": "User will upload dist.zip manually and call deploy.php."
+    }
+  ],
+  "human_actions_pending": [
+    {
+      "action": "Upload f:\\VIBECODING\\SUNLIFE\\sunlife\\dist.zip to sunlife-photo.ru root via FTP, then open https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy",
+      "context": "dist.zip is 481 KB and contains dist/ folder with all built files except images/gallery (already on server).",
+      "blocking": true
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Exclude images/gallery from dist.zip for this deploy.",
+      "rationale": "Gallery files are already on the server and were only optimized, not renamed. Including them would make the archive ~47 MB and slow FTP upload unnecessarily.",
+      "phase": null
+    },
+    {
+      "decision": "Delete original JPG/PNG files that have WebP equivalents.",
+      "rationale": "All code references use WebP versions; originals were unused and consumed ~50 MB in the repo.",
+      "phase": null
+    },
+    {
+      "decision": "Resize gallery images to 1600px on the long edge and encode at WebP quality 75.",
+      "rationale": "Reduced gallery from 87 MB to 36 MB with acceptable visual quality; large originals are not needed for web display.",
+      "phase": null
+    }
+  ],
+  "uncommitted_files": [],
+  "next_action": "Wait for user to complete manual deploy, then verify https://sunlife-photo.ru/ loads correctly and toast/back-to-top/skeletons work.",
+  "context_notes": "todo-010 is complete and pushed to GitHub. The build is clean (no lint/TS errors). dist.zip is ready. The only remaining step is human-driven deployment because credentials are not available. After deploy, the next todos are todo-004 (Vercel) and todo-005 (analytics), but todo-011 (privacy policy) may be more urgent depending on legal requirements."
+}
