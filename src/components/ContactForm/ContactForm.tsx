@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { usePhoneMask, getTodayDate } from '../../hooks/usePhoneMask';
+import { useToast } from '../Toast/ToastProvider';
 
 interface FormData {
   name: string;
@@ -33,6 +34,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const { handlePhoneChange } = usePhoneMask();
+  const { showToast } = useToast();
   const todayDate = getTodayDate();
 
   useEffect(() => {
@@ -74,13 +76,28 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
       
       if (data.success) {
         setStatus('success');
+        showToast('Заявка отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
+        setFormData({
+          name: '',
+          phone: '',
+          contactMethod: 'whatsapp',
+          hospital: '',
+          date: '',
+          consent: false,
+          package: '',
+        });
+        if (onClose) setTimeout(onClose, 1500);
       } else {
         setStatus('error');
-        setErrorMessage(data.errors?.join(', ') || data.error || 'Ошибка отправки');
+        const msg = data.errors?.join(', ') || data.error || 'Ошибка отправки';
+        setErrorMessage(msg);
+        showToast(msg, 'error');
       }
     } catch (err) {
       setStatus('error');
-      setErrorMessage('Ошибка сети. Проверьте подключение и попробуйте снова.');
+      const msg = 'Ошибка сети. Проверьте подключение и попробуйте снова.';
+      setErrorMessage(msg);
+      showToast(msg, 'error');
     }
   };
 

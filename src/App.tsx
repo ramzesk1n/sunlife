@@ -10,6 +10,9 @@ import Benefits from './components/Benefits/Benefits';
 import Footer from './components/Footer/Footer';
 import MobileBottomBar from './components/MobileBottomBar/MobileBottomBar';
 import InlineCta from './components/InlineCta/InlineCta';
+import ToastProvider from './components/Toast/ToastProvider';
+import BackToTop from './components/BackToTop/BackToTop';
+import { SkeletonCard } from './components/Skeleton/Skeleton';
 
 /* Lazy loaded components for code splitting */
 const ExperienceSteps = lazy(() => import('./components/ExperienceSteps/ExperienceSteps'));
@@ -50,6 +53,18 @@ function PageLoader() {
   );
 }
 
+function SectionSkeleton({ count = 1 }: { count?: number }) {
+  return (
+    <div className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-cream">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {Array.from({ length: count }).map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* Page wrappers */
 function HomePage() {
   return (
@@ -57,10 +72,10 @@ function HomePage() {
       <Header />
       <Hero />
       <Benefits />
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <ExperienceSteps />
       </Suspense>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={4} />}>
         <Gallery />
       </Suspense>
       <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
@@ -72,7 +87,7 @@ function HomePage() {
           />
         </div>
       </section>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={4} />}>
         <PricingCards />
       </Suspense>
       <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
@@ -84,16 +99,16 @@ function HomePage() {
           />
         </div>
       </section>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={3} />}>
         <Testimonials />
       </Suspense>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <FAQ />
       </Suspense>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={4} />}>
         <TeamSlider />
       </Suspense>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <Geography />
       </Suspense>
       <Footer />
@@ -106,7 +121,7 @@ function PricePage() {
   return (
     <>
       <Header />
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={4} />}>
         <PricingCards />
       </Suspense>
       <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
@@ -118,10 +133,10 @@ function PricePage() {
           />
         </div>
       </section>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <Geography />
       </Suspense>
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <FAQ />
       </Suspense>
       <Footer />
@@ -134,7 +149,7 @@ function GalleryPageRoute() {
   return (
     <>
       <Header />
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={4} />}>
         <GalleryPage />
       </Suspense>
       <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
@@ -188,7 +203,7 @@ function PrivacyPageWrapper() {
   return (
     <>
       <Header />
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <PrivacyPage />
       </Suspense>
       <Footer />
@@ -201,7 +216,7 @@ function ContactsPageRoute() {
   return (
     <>
       <Header />
-      <Suspense fallback={null}>
+      <Suspense fallback={<SectionSkeleton count={1} />}>
         <ContactsPage />
       </Suspense>
       <Footer />
@@ -248,7 +263,7 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <>
+    <ToastProvider>
       <SeoUpdater />
       <CookieBanner />
       <Routes location={location} key={location.pathname}>
@@ -264,6 +279,7 @@ export default function App() {
         </Suspense>
       } />
       </Routes>
-    </>
+      <BackToTop />
+    </ToastProvider>
   );
 }

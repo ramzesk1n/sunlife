@@ -1,7 +1,7 @@
 ---
 id: todo-010
 created: 2026-07-11
-status: open
+status: completed
 priority: medium
 area: ux
 ---

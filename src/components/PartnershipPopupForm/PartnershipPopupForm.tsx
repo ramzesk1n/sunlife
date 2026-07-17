@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePhoneMask } from '../../hooks/usePhoneMask';
+import { useToast } from '../Toast/ToastProvider';
 
 interface PartnershipPopupFormProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
     consent: false,
   });
   const { handlePhoneChange } = usePhoneMask();
+  const { showToast } = useToast();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   useEffect(() => {
@@ -83,6 +85,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
 
       if (res.ok) {
         setStatus('success');
+        showToast('Заявка на сотрудничество отправлена! Мы свяжемся с вами.', 'success');
         setTimeout(() => {
           onClose();
           setStatus('idle');
@@ -90,12 +93,14 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
             name: '', phone: '', email: '', hospital: '', volume: '',
             contactMethod: 'whatsapp', message: '', consent: false,
           });
-        }, 3000);
+        }, 2000);
       } else {
         setStatus('error');
+        showToast('Не удалось отправить заявку. Попробуйте позже.', 'error');
       }
     } catch {
       setStatus('error');
+      showToast('Не удалось отправить заявку. Попробуйте позже.', 'error');
     }
   };
 
