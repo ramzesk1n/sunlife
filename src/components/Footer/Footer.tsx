@@ -1,25 +1,26 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import siteData from '../../content/site.json';
 
 const socialLinks = [
   {
-    href: 'tel:+79279363606',
+    href: siteData.phoneHref,
     label: 'Позвонить',
     src: '/images/whatsapp.svg',
   },
   {
-    href: 'https://wa.me/79279363606',
-    label: 'WhatsApp',
+    href: siteData.whatsapp.href,
+    label: siteData.whatsapp.label,
     src: '/images/whatsapp.svg',
   },
   {
-    href: 'https://telegram.me/TigerSax',
-    label: 'Telegram',
+    href: siteData.telegram.href,
+    label: siteData.telegram.label,
     src: '/images/telegram.svg',
   },
   {
-    href: 'https://vk.com/roddomafoto',
-    label: 'VK',
+    href: siteData.vk.href,
+    label: siteData.vk.label,
     src: '/images/vk.svg',
   },
 ];
@@ -36,8 +37,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
           {/* Бренд */}
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0">
+            <Link to="/" className="flex items-center gap-3 mb-3 group">
+              <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0 group-hover:shadow-gold transition-shadow duration-300">
                 <img
                   src="/images/sunlife_logo.webp"
                   alt=""
@@ -51,7 +52,7 @@ export default function Footer() {
                 <p className="text-xs text-gold-dark uppercase tracking-[0.2em]">фотослужба</p>
                 <p className="text-sm font-display font-light text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
               </div>
-            </div>
+            </Link>
             <p className="text-text-muted text-base leading-relaxed">
               Профессиональная фотосъёмка выписки новорождённых
             </p>
@@ -84,10 +85,10 @@ export default function Footer() {
               Контакты
             </h4>
             <div className="space-y-2 text-base">
-              <a href="tel:+79279363606" className="block text-text-muted hover:text-gold-primary transition-colors">
-                +7 (927) 936-36-06
+              <a href={siteData.phoneHref} className="block text-text-muted hover:text-gold-primary transition-colors">
+                {siteData.phone}
               </a>
-              <p className="text-text-muted">hello@sunlife-ufa.ru</p>
+              <p className="text-text-muted">{siteData.email}</p>
               <div className="flex gap-3 pt-2">
                 {socialLinks.map((social) => (
                   <a

@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ContactForm from '../ContactForm/ContactForm';
@@ -15,8 +14,24 @@ export default function Hero() {
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isTextVisible, setIsTextVisible] = useState(false);
+  const [isImageVisible, setIsImageVisible] = useState(false);
+
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
+
+  useEffect(() => {
+    // Trigger entrance animations on mount
+    if (!prefersReducedMotion) {
+      requestAnimationFrame(() => {
+        setIsTextVisible(true);
+        setTimeout(() => setIsImageVisible(true), 200);
+      });
+    } else {
+      setIsTextVisible(true);
+      setIsImageVisible(true);
+    }
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -79,11 +94,10 @@ export default function Hero() {
         <div className="max-w-7xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             {/* Text content */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, x: '-2.5rem' }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="order-2 lg:order-1 flex"
+            <div
+              className={`order-1 lg:order-1 flex transition-all duration-700 ease-out ${
+                isTextVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+              }`}
             >
               <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12 flex flex-col justify-center w-full">
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-medium text-gold-primary-80 uppercase tracking-[0.1em] mb-6 text-balance">
@@ -108,14 +122,13 @@ export default function Hero() {
                   Забронировать дату
                 </button>
               </div>
-            </motion.div>
+            </div>
 
             {/* Hero image */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, x: '2.5rem' }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-              className="order-1 lg:order-2 flex"
+            <div
+              className={`order-2 lg:order-2 flex transition-all duration-700 ease-out ${
+                isImageVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
+              }`}
             >
               <div
                 ref={imageRef}
@@ -128,7 +141,7 @@ export default function Hero() {
                   loading="eager"
                 />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

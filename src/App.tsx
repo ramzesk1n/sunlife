@@ -1,8 +1,3 @@
-import GalleryPage from './pages/GalleryPage';
-import ContactsPage from './pages/ContactsPage';
-import PrivacyPage from './pages/PrivacyPage';
-import NotFoundPage from './pages/NotFoundPage';
-import TeamSlider from './components/TeamSlider/TeamSlider';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect, Suspense, lazy } from 'react';
 import metaData from './content/meta.json';
@@ -12,16 +7,19 @@ import Header from './components/Header/Header';
 import CookieBanner from './components/CookieBanner/CookieBanner';
 import Hero from './components/Hero/Hero';
 import Benefits from './components/Benefits/Benefits';
-import ExperienceSteps from './components/ExperienceSteps/ExperienceSteps';
-import Geography from './components/Geography/Geography';
-import PricingCards from './components/PricingCards/PricingCards';
-import Gallery from './components/Gallery/Gallery';
-import Testimonials from './components/Testimonials/Testimonials';
-import FAQ from './components/FAQ/FAQ';
 import Footer from './components/Footer/Footer';
-import FloatingCallBubble from './components/FloatingCallBubble/FloatingCallBubble';
+import MobileBottomBar from './components/MobileBottomBar/MobileBottomBar';
+import InlineCta from './components/InlineCta/InlineCta';
 
 /* Lazy loaded components for code splitting */
+const ExperienceSteps = lazy(() => import('./components/ExperienceSteps/ExperienceSteps'));
+const Gallery = lazy(() => import('./components/Gallery/Gallery'));
+const PricingCards = lazy(() => import('./components/PricingCards/PricingCards'));
+const Testimonials = lazy(() => import('./components/Testimonials/Testimonials'));
+const FAQ = lazy(() => import('./components/FAQ/FAQ'));
+const TeamSlider = lazy(() => import('./components/TeamSlider/TeamSlider'));
+const Geography = lazy(() => import('./components/Geography/Geography'));
+
 const PartnershipHero = lazy(() => import('./components/PartnershipHero/PartnershipHero'));
 const PartnershipAbout = lazy(() => import('./components/PartnershipAbout/PartnershipAbout'));
 const PartnershipOffers = lazy(() => import('./components/PartnershipOffers/PartnershipOffers'));
@@ -33,6 +31,12 @@ const PartnershipTeam = lazy(() => import('./components/PartnershipTeam/Partners
 const PartnershipGallery = lazy(() => import('./components/PartnershipGallery/PartnershipGallery'));
 const PartnershipExamples = lazy(() => import('./components/PartnershipExamples/PartnershipExamples'));
 const PartnershipPopupForm = lazy(() => import('./components/PartnershipPopupForm/PartnershipPopupForm'));
+
+/* Lazy loaded pages */
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const ContactsPage = lazy(() => import('./pages/ContactsPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 /* Loading fallback */
 function PageLoader() {
@@ -53,15 +57,47 @@ function HomePage() {
       <Header />
       <Hero />
       <Benefits />
-      <ExperienceSteps />
-      <Gallery />
-      <PricingCards />
-      <Testimonials />
-      <FAQ />
-      <TeamSlider />
-      <Geography />
+      <Suspense fallback={null}>
+        <ExperienceSteps />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Gallery />
+      </Suspense>
+      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+        <div className="max-w-4xl mx-auto">
+          <InlineCta
+            page="home"
+            title="Остались вопросы?"
+            subtitle="Получите персональную консультацию по съёмке выписки из роддома"
+          />
+        </div>
+      </section>
+      <Suspense fallback={null}>
+        <PricingCards />
+      </Suspense>
+      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+        <div className="max-w-4xl mx-auto">
+          <InlineCta
+            page="home"
+            title="Не нашли подходящий пакет?"
+            subtitle="Напишите нам — подберём оптимальное решение под ваши пожелания"
+          />
+        </div>
+      </section>
+      <Suspense fallback={null}>
+        <Testimonials />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FAQ />
+      </Suspense>
+      <Suspense fallback={null}>
+        <TeamSlider />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Geography />
+      </Suspense>
       <Footer />
-      <FloatingCallBubble />
+      <MobileBottomBar />
     </>
   );
 }
@@ -70,11 +106,26 @@ function PricePage() {
   return (
     <>
       <Header />
-      <PricingCards />
-      <Geography />
-      <FAQ />
+      <Suspense fallback={null}>
+        <PricingCards />
+      </Suspense>
+      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+        <div className="max-w-4xl mx-auto">
+          <InlineCta
+            page="price"
+            title="Расскажем о съёмке в вашем роддоме"
+            subtitle="Оставьте заявку — мы подскажем, какой пакет подойдёт именно вам"
+          />
+        </div>
+      </section>
+      <Suspense fallback={null}>
+        <Geography />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FAQ />
+      </Suspense>
       <Footer />
-      <FloatingCallBubble />
+      <MobileBottomBar />
     </>
   );
 }
@@ -83,9 +134,20 @@ function GalleryPageRoute() {
   return (
     <>
       <Header />
-      <GalleryPage />
+      <Suspense fallback={null}>
+        <GalleryPage />
+      </Suspense>
+      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+        <div className="max-w-4xl mx-auto">
+          <InlineCta
+            page="galery"
+            title="Хотите такие же фото?"
+            subtitle="Забронируйте съёмку выписки из роддома — оставьте заявку прямо сейчас"
+          />
+        </div>
+      </section>
       <Footer />
-      <FloatingCallBubble />
+      <MobileBottomBar />
     </>
   );
 }
@@ -106,9 +168,18 @@ function PartnershipPage() {
       <PartnershipFAQ />
       <PartnershipTeam />
       <PartnershipGallery />
+      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream-2">
+        <div className="max-w-4xl mx-auto">
+          <InlineCta
+            page="partnership"
+            title="Обсудим условия для вашего роддома"
+            subtitle="Оставьте заявку — мы расскажем, как начать сотрудничество с фотослужбой «Санлайф»"
+          />
+        </div>
+      </section>
       <Footer />
       <PartnershipPopupForm isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
-      <FloatingCallBubble />
+      <MobileBottomBar />
     </Suspense>
   );
 }
@@ -117,9 +188,11 @@ function PrivacyPageWrapper() {
   return (
     <>
       <Header />
-      <PrivacyPage />
+      <Suspense fallback={null}>
+        <PrivacyPage />
+      </Suspense>
       <Footer />
-      <FloatingCallBubble />
+      <MobileBottomBar />
     </>
   );
 }
@@ -128,9 +201,11 @@ function ContactsPageRoute() {
   return (
     <>
       <Header />
-      <ContactsPage />
+      <Suspense fallback={null}>
+        <ContactsPage />
+      </Suspense>
       <Footer />
-      <FloatingCallBubble />
+      <MobileBottomBar />
     </>
   );
 }
@@ -183,7 +258,11 @@ export default function App() {
         <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/contacts" element={<ContactsPageRoute />} />
         <Route path="/privacy" element={<PrivacyPageWrapper />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="*" element={
+        <Suspense fallback={<PageLoader />}>
+          <NotFoundPage />
+        </Suspense>
+      } />
       </Routes>
     </>
   );

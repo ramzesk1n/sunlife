@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,31 +6,9 @@ import stepsData from '../../content/steps.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const prefersReducedMotion =
+const prefersReducedMotionGlobal =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: 'easeOut' as const,
-    },
-  },
-};
 
 export default function ExperienceSteps() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -40,11 +18,13 @@ export default function ExperienceSteps() {
   const introText = stepsData.introText;
 
   useEffect(() => {
-    if (prefersReducedMotion || !sectionRef.current) return;
+    if (prefersReducedMotionGlobal || !sectionRef.current) return;
 
     let mm: gsap.MatchMedia | null = null;
 
     mm = gsap.matchMedia();
+
+    // Desktop: pin + scrub stacking
     mm.add('(min-width: 64rem)', () => {
       const cards = gsap.utils.toArray<HTMLElement>('.about-card');
       const container = sectionRef.current?.querySelector('.about-cards-container');
@@ -156,44 +136,80 @@ export default function ExperienceSteps() {
         </div>
       </div>
 
-      {/* Mobile plain cards */}
-      <motion.div
-        className="relative max-w-5xl mx-auto lg:hidden"
-        variants={shouldReduceMotion ? undefined : containerVariants}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-      >
+      {/* Mobile: simple vertical stacked cards with scroll reveal */}
+      <div className="max-w-5xl mx-auto lg:hidden space-y-6">
         {steps.map((step, index) => (
-          <motion.article
+          <MobileStepCard
             key={step.id}
-            variants={shouldReduceMotion ? undefined : itemVariants}
-            className="mx-auto mb-6 w-full max-w-4xl rounded-3xl bg-white p-3 shadow-xl"
-          >
-            <div className="flex flex-col overflow-hidden rounded-2xl bg-gold-lighter">
-              <div className="flex-1 p-6 md:p-8">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl font-display font-light text-gold-primary shadow-sm">
-                  {index + 1}
-                </div>
-                <h3 className="font-display text-xl md:text-2xl font-light uppercase tracking-wide text-text-dark mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-base md:text-lg leading-relaxed text-text-muted">
-                  {step.description}
-                </p>
-              </div>
-
-              <div className="relative h-52 w-full shrink-0 overflow-hidden">
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </motion.article>
+            step={step}
+            index={index}
+          />
         ))}
-      </motion.div>
+      </div>
     </section>
+  );
+}
+
+function MobileStepCard({
+  step,
+  index,
+}: {
+  step: { id: string; title: string; description: string; image: string };
+  index: number;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: '-5% 0px -10% 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className={`transition-all duration-500 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
+      style={{ transitionDelay: `${index * 80}ms` }}
+    >
+      <article className="mx-auto w-full rounded-3xl bg-white p-3 shadow-xl">
+        <div className="flex flex-col overflow-hidden rounded-2xl bg-gold-lighter">
+          <div className="flex-1 p-6">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl font-display font-light text-gold-primary shadow-sm">
+              {index + 1}
+            </div>
+            <h3 className="font-display text-xl font-light uppercase tracking-wide text-text-dark mb-3">
+              {step.title}
+            </h3>
+            <p className="text-base leading-relaxed text-text-muted">
+              {step.description}
+            </p>
+          </div>
+
+          <div className="relative h-52 w-full shrink-0 overflow-hidden">
+            <img
+              src={step.image}
+              alt={step.title}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </div>
+      </article>
+    </div>
   );
 }

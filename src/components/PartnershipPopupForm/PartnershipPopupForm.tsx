@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePhoneMask } from '../../hooks/usePhoneMask';
 
 interface PartnershipPopupFormProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
     message: '',
     consent: false,
   });
+  const { handlePhoneChange } = usePhoneMask();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   useEffect(() => {
@@ -48,6 +50,12 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
+
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handlePhoneChange(e, (value) => {
+      setFormData((prev) => ({ ...prev, phone: value }));
+    });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -92,7 +100,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
   };
 
   const inputClasses =
-    'w-full px-4 py-3 rounded-xl border border-gold-primary/20 bg-cream/80 text-text-dark placeholder:text-text-light focus:outline-none focus:border-gold-primary focus:ring-1 focus:ring-gold-primary/30 transition-all';
+    'w-full px-3 py-2.5 rounded-lg border border-gold-primary/20 bg-cream/80 text-text-dark placeholder:text-text-light text-sm focus:outline-none focus:border-gold-primary focus:ring-1 focus:ring-gold-primary/30 transition-all';
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === overlayRef.current) onClose();
@@ -110,7 +118,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-cream-2 rounded-3xl p-6 sm:p-8 shadow-glass border border-gold-primary/10"
+            className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto bg-cream-2 rounded-2xl p-4 sm:p-6 shadow-glass border border-gold-primary/10"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -119,7 +127,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gold-primary/10 flex items-center justify-center text-gold-dark hover:bg-gold-primary hover:text-cream transition-colors"
+              className="absolute top-3 right-3 w-7 h-7 rounded-full bg-gold-primary/10 flex items-center justify-center text-gold-dark hover:bg-gold-primary hover:text-cream transition-colors"
               aria-label="Закрыть"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,31 +135,31 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
               </svg>
             </button>
 
-            <h2 className="font-display text-2xl sm:text-3xl text-gold-primary-80 uppercase tracking-wider text-center mb-6">
+            <h2 className="font-display text-xl sm:text-2xl text-gold-primary-80 uppercase tracking-wider text-center mb-4">
               Стать партнёром
             </h2>
 
             {status === 'success' ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-4">
+              <div className="text-center py-6">
+                <div className="w-14 h-14 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-3">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <p className="text-text-dark text-lg font-medium">Заявка отправлена!</p>
-                <p className="text-text-muted mt-2">Мы свяжемся с вами в ближайшее время.</p>
+                <p className="text-text-dark text-base font-medium">Заявка отправлена!</p>
+                <p className="text-text-muted text-sm mt-1">Мы свяжемся с вами в ближайшее время.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     Как к вам обращаться?
                   </label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
-                    onChange={handleChange}
+                    onChange={handlePhoneInput}
                     required
                     className={inputClasses}
                     placeholder="ФИО глав. врача"
@@ -159,7 +167,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 </div>
 
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     Телефон
                   </label>
                   <input
@@ -174,7 +182,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 </div>
 
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     E-mail
                   </label>
                   <input
@@ -188,7 +196,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 </div>
 
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     Предполагаемый объём
                   </label>
                   <input
@@ -202,7 +210,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 </div>
 
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     Как вам удобнее получить ответ?
                   </label>
                   <div className="flex gap-2">
@@ -211,7 +219,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                         key={method}
                         type="button"
                         onClick={() => setFormData((prev) => ({ ...prev, contactMethod: method }))}
-                        className={`flex-1 py-2.5 rounded-xl border text-sm font-display uppercase tracking-wider transition-all ${
+                        className={`flex-1 py-2 rounded-lg border text-xs font-display uppercase tracking-wider transition-all ${
                           formData.contactMethod === method
                             ? 'bg-gold-primary text-cream border-gold-primary'
                             : 'bg-cream/80 text-gold-dark border-gold-primary/20 hover:bg-gold-primary/10'
@@ -241,7 +249,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 </div>
 
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     Название клиники (номер и город)
                   </label>
                   <input
@@ -256,14 +264,14 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 </div>
 
                 <div>
-                  <label className="block text-sm font-display font-light text-gold-dark uppercase tracking-wider mb-1 text-center">
+                  <label className="block text-xs font-display font-light text-gold-dark mb-1 text-center">
                     Опишите интересующее направление сотрудничества
                   </label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows={3}
+                    rows={2}
                     className={inputClasses + ' resize-none'}
                     placeholder="Ваше сообщение..."
                   />
@@ -301,7 +309,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full py-4 bg-gold-primary text-cream font-display uppercase tracking-wider rounded-2xl hover:bg-gold-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3 bg-gold-primary text-cream font-display uppercase tracking-wider rounded-xl hover:bg-gold-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
                   {status === 'loading' ? 'Отправка...' : 'Отправить заявку'}
                 </button>

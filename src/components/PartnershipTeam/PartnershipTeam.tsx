@@ -16,7 +16,7 @@ export default function PartnershipTeam() {
     const track = trackRef.current;
     let animationId: number;
     let offset = 0;
-    const speed = 0.4;
+    const speed = 0.8;
 
     const animate = () => {
       if (!isPaused) {

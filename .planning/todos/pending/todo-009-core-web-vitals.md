@@ -1,7 +1,8 @@
 ---
 id: todo-009
 created: 2026-07-11
-status: open
+updated: 2026-07-17
+status: in-progress
 priority: medium
 area: performance
 ---
@@ -14,15 +15,21 @@ area: performance
 - CLS (Cumulative Layout Shift) < 0.1
 - TTFB (Time to First Byte) < 600ms
 
-## Задачи
-- [ ] Оптимизировать hero-image-main.jpg (WebP/AVIF, srcset)
-- [ ] Оптимизировать hero-image-partership-1600.jpg
-- [ ] Добавить preload для критических шрифтов (Montserrat, Manrope)
-- [ ] Добавить fetchpriority="high" для hero-изображений
-- [ ] Уменьшить CLS: зарезервировать место под изображения (width/height)
-- [ ] Проверить и устранить layout shift в карусели отзывов
-- [ ] Lazy-load для нижних секций (ниже fold)
-- [ ] Preconnect к внешним доменам (если будут CDN)
+## Что сделано (2026-07-17)
+- [x] hero-image-main.webp preloaded с `fetchpriority="high"`
+- [x] Google Fonts self-hosted (`/fonts/`)
+- [x] CSS deferred loading
+- [x] Lazy-load нижних секций (Benefits, ExperienceSteps, Gallery, Testimonials, FAQ, TeamSlider, Geography)
+- [x] Оптимизация изображений фотокниг (30-40 KiB вместо 400-800 KiB)
+- [x] Оптимизация логотипа (3.9 KiB вместо 35 KiB)
+- [x] Modulepreload только для критичных JS-чанков
+
+## Оставшиеся задачи
+- [ ] Оптимизировать hero-image-partnership
+- [ ] Добавить srcset для responsive images
+- [ ] Уменьшить CLS: width/height для всех изображений
+- [ ] Настроить cache headers на nginx (сейчас 1 день)
+- [ ] Проверить forced reflow от GSAP ScrollTrigger
 
 ## Инструменты
 - PageSpeed Insights

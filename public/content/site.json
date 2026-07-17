@@ -1,0 +1,43 @@
+{
+  "phone": "+7 (927) 936-36-06",
+  "phoneHref": "tel:+79279363606",
+  "whatsapp": {
+    "href": "https://wa.me/79279363606",
+    "label": "WhatsApp"
+  },
+  "telegram": {
+    "href": "https://telegram.me/TigerSax",
+    "label": "Telegram"
+  },
+  "vk": {
+    "href": "https://vk.com/roddomafoto",
+    "label": "VK"
+  },
+  "email": "hello@sunlife-ufa.ru",
+  "cta": {
+    "home": {
+      "label": "Забронировать дату",
+      "form": "contact"
+    },
+    "price": {
+      "label": "Забронировать съёмку",
+      "form": "contact"
+    },
+    "galery": {
+      "label": "Забронировать съёмку",
+      "form": "contact"
+    },
+    "partnership": {
+      "label": "Стать партнёром",
+      "form": "partnership"
+    },
+    "contacts": {
+      "label": "Заказать звонок",
+      "form": "contact"
+    },
+    "privacy": {
+      "label": "На главную",
+      "form": "home"
+    }
+  }
+}

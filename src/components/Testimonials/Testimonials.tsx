@@ -2,7 +2,9 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-motion';
 import reviewsData from '../../content/reviews.json';
 
-const VISIBLE_COUNT = 3;
+const VISIBLE_COUNT_DESKTOP = 3;
+const VISIBLE_COUNT_MOBILE = 1;
+const SWIPE_THRESHOLD = 50;
 
 const slideVariants = {
   enter: (dir: number) => ({
@@ -21,12 +23,23 @@ const slideVariants = {
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
+  const touchStartX = useRef(0);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
+  const [isMobile, setIsMobile] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState(0);
   const reviews = reviewsData.reviews;
-  const totalPages = Math.ceil(reviews.length / VISIBLE_COUNT);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const visibleCount = isMobile ? VISIBLE_COUNT_MOBILE : VISIBLE_COUNT_DESKTOP;
+  const totalPages = Math.ceil(reviews.length / visibleCount);
 
   const goToPage = useCallback((newPage: number) => {
     setDirection(newPage > page ? 1 : -1);
@@ -50,9 +63,21 @@ export default function Testimonials() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [nextPage, prevPage]);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > SWIPE_THRESHOLD) {
+      if (diff > 0) nextPage();
+      else prevPage();
+    }
+  }, [nextPage, prevPage]);
+
   const visibleReviews = reviews.slice(
-    page * VISIBLE_COUNT,
-    page * VISIBLE_COUNT + VISIBLE_COUNT
+    page * visibleCount,
+    page * visibleCount + visibleCount
   );
 
   return (
@@ -105,7 +130,10 @@ export default function Testimonials() {
             </svg>
           </button>
 
-          <div className="px-8 md:px-12">
+          <div className="px-2 md:px-12"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={page}
@@ -115,7 +143,7 @@ export default function Testimonials() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
               >
                 {visibleReviews.map((review) => (
                   <article

@@ -1,28 +1,5 @@
-import { useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import benefitsData from '../../content/benefits.json';
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut' as const,
-    },
-  },
-};
 
 const iconMap: Record<string, React.ReactNode> = {
   camera: (
@@ -55,8 +32,42 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export default function Benefits() {
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
-  const shouldReduceMotion = useReducedMotion();
+  const [isInView, setIsInView] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '-10%' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const headingClass = prefersReducedMotion
+    ? ''
+    : `transition-all duration-500 ease-out ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`;
+
+  const cardBaseClass = prefersReducedMotion
+    ? ''
+    : `transition-all duration-500 ease-out opacity-0 translate-y-10 scale-95`;
+
+  const cardVisibleClass = 'opacity-100 translate-y-0 scale-100';
 
   return (
     <section
@@ -65,26 +76,18 @@ export default function Benefits() {
       className="py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">
-        <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+        <h2
+          className={`text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider ${headingClass}`}
         >
           Гильдия фотографов САН ЛАЙФ - это
-        </motion.h2>
+        </h2>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12"
-          variants={shouldReduceMotion ? undefined : containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          {benefitsData.benefits.map((benefit) => (
-            <motion.article
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          {benefitsData.benefits.map((benefit, index) => (
+            <article
               key={benefit.id}
-              variants={shouldReduceMotion ? undefined : itemVariants}
-              className="glass rounded-2xl p-8 hover:shadow-glass transition-all duration-300 group"
+              className={`glass rounded-2xl p-8 hover:shadow-glass transition-all duration-300 group ${cardBaseClass} ${isInView ? cardVisibleClass : ''}`}
+              style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 120}ms` }}
             >
               <div className="w-14 h-14 rounded-xl bg-gold-pale border border-gold-primary/20 flex items-center justify-center mb-5 text-gold-primary group-hover:bg-gold-primary group-hover:text-cream transition-colors duration-300">
                 {iconMap[benefit.icon] ?? (
@@ -97,9 +100,9 @@ export default function Benefits() {
               <p className="text-text-muted text-base leading-relaxed">
                 {benefit.description}
               </p>
-            </motion.article>
+            </article>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

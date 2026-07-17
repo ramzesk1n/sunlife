@@ -1,5 +1,7 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+
+const SWIPE_THRESHOLD = 50;
 
 interface Testimonial {
   id: string;
@@ -128,12 +130,25 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 
 export default function PartnershipTestimonials() {
   const sectionRef = useRef<HTMLElement>(null);
+  const touchStartX = useRef(0);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const next = () => setActiveIndex((prev) => (prev + 1) % testimonials.length);
-  const prev = () => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const next = useCallback(() => setActiveIndex((prev) => (prev + 1) % testimonials.length), []);
+  const prev = useCallback(() => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length), []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > SWIPE_THRESHOLD) {
+      if (diff > 0) next();
+      else prev();
+    }
+  }, [next, prev]);
 
   return (
     <section
@@ -168,7 +183,10 @@ export default function PartnershipTestimonials() {
           transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
         >
           {/* Cards container */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}

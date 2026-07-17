@@ -27,6 +27,9 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false, // Disabled for production (saves ~1.2MB per chunk)
     cssMinify: 'lightningcss',
+    modulePreload: {
+      polyfill: false,
+    },
     rollupOptions: {
       output: {
         manualChunks(id: string) {

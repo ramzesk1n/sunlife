@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import siteData from '../../content/site.json';
+import ContactForm from '../ContactForm/ContactForm';
+const PartnershipPopupForm = lazy(() => import('../PartnershipPopupForm/PartnershipPopupForm'));
 
 const navLinks = [
   { label: 'Услуги', href: '/price' },
@@ -26,10 +29,24 @@ const socialLinks = [
   },
 ];
 
+const PAGE_KEY_MAP: Record<string, string> = {
+  '/': 'home',
+  '/price': 'price',
+  '/galery': 'galery',
+  '/partnership': 'partnership',
+  '/contacts': 'contacts',
+  '/privacy': 'privacy',
+};
+
 export default function Header() {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isPartnershipOpen, setIsPartnershipOpen] = useState(false);
+
+  const pageKey = PAGE_KEY_MAP[location.pathname] || 'home';
+  const cta = siteData.cta[pageKey as keyof typeof siteData.cta] || siteData.cta.home;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,6 +134,24 @@ export default function Header() {
             ))}
 
             {/* Mobile menu button */}
+            {/* Desktop CTA */}
+            {cta.form !== 'home' && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (cta.form === 'partnership') {
+                    setIsPartnershipOpen(true);
+                  } else {
+                    setIsContactOpen(true);
+                  }
+                }}
+                className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-gold-primary text-cream text-sm font-display font-light uppercase tracking-wider rounded-xl hover:bg-gold-dark transition-colors duration-300"
+              >
+                {cta.label}
+              </button>
+            )}
+
+            {/* Mobile menu button */}
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -163,6 +198,11 @@ export default function Header() {
           </div>
         )}
       </nav>
+
+      <ContactForm isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      <Suspense fallback={null}>
+        <PartnershipPopupForm isOpen={isPartnershipOpen} onClose={() => setIsPartnershipOpen(false)} />
+      </Suspense>
     </header>
   );
 }

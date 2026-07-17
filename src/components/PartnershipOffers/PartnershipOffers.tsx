@@ -75,7 +75,7 @@ export default function PartnershipOffers() {
 
                 <div className="glass rounded-2xl p-6 md:p-8 hover:shadow-glass transition-all duration-300">
                   <div className="flex items-center gap-3 mb-3 md:hidden">
-                    <span className="w-10 h-10 rounded-full bg-gold-primary text-cream font-display font-bold text-base flex items-center justify-center">
+                    <span className="inline-flex w-10 h-10 rounded-full bg-gold-primary text-cream font-display font-bold text-base items-center justify-center flex-shrink-0">
                       {offer.number}
                     </span>
                     <h3 className="font-display text-lg md:text-xl font-light text-gold-primary-80 uppercase tracking-wider">

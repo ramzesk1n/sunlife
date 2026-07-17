@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import InlineCta from '../components/InlineCta/InlineCta';
 
 export default function PrivacyPage() {
   return (
@@ -211,6 +212,14 @@ export default function PrivacyPage() {
               11.3. Все предложения или вопросы по настоящей Политике следует направлять по контактным данным, указанным в разделе 3.
             </p>
           </section>
+        </div>
+
+        <div className="mt-12">
+          <InlineCta
+            page="privacy"
+            title="Вернуться на главную"
+            subtitle="Узнайте больше о фотослужбе «Санлайф» и забронируйте съёмку"
+          />
         </div>
       </div>
     </div>

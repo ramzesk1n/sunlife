@@ -22,7 +22,7 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             initial={shouldReduceMotion ? false : { opacity: 0, x: '-2.5rem' }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="order-2 lg:order-1 flex"
+            className="order-1 lg:order-1 flex"
           >
             <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12 flex flex-col justify-center w-full">
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-gold-primary-80 uppercase tracking-[0.06em] mb-6 text-balance">
@@ -55,7 +55,7 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             initial={shouldReduceMotion ? false : { opacity: 0, x: '2.5rem' }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="order-1 lg:order-2 flex"
+            className="order-2 lg:order-2 flex"
           >
             <div className="relative w-full rounded-2xl overflow-hidden shadow-glass bg-gold-pale">
               <img

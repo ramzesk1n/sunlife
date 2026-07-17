@@ -88,12 +88,12 @@ export default function PartnershipPricing() {
             <motion.div
               key={item.id}
               variants={shouldReduceMotion ? undefined : itemVariants}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-4 border-b border-gold-primary/10 last:border-b-0"
+              className="flex flex-row items-baseline justify-between gap-3 py-4 border-b border-gold-primary/10 last:border-b-0"
             >
-              <span className="font-display font-light text-gold-dark uppercase tracking-wider text-base md:text-lg">
+              <span className="font-display font-light text-gold-dark uppercase tracking-wider text-base md:text-lg leading-tight">
                 {item.title}
               </span>
-              <span className="font-display text-xl md:text-2xl text-gold-primary whitespace-nowrap">
+              <span className="font-display text-xl md:text-2xl text-gold-primary whitespace-nowrap flex-shrink-0">
                 {item.price}
               </span>
             </motion.div>
@@ -115,12 +115,12 @@ export default function PartnershipPricing() {
             {partnershipData.newborn.map((item) => (
               <div
                 key={item.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border-b border-gold-primary/10 last:border-b-0"
+                className="flex flex-row items-baseline justify-between gap-3 py-3 border-b border-gold-primary/10 last:border-b-0"
               >
-                <span className="font-display font-light text-gold-dark uppercase tracking-wider text-base">
+                <span className="font-display font-light text-gold-dark uppercase tracking-wider text-base leading-tight">
                   {item.title}
                 </span>
-                <span className="font-display text-lg text-gold-primary whitespace-nowrap">
+                <span className="font-display text-lg text-gold-primary whitespace-nowrap flex-shrink-0">
                   {item.price}
                 </span>
               </div>
