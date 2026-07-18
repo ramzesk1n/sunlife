@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-07-17T19:52:59.271Z",
+  "timestamp": "2026-07-17T20:48:00.000Z",
   "phase": null,
   "phase_name": null,
   "phase_dir": null,
@@ -28,10 +28,10 @@
       "commit": "f71c65f"
     },
     {
-      "id": "build-deploy-prep",
-      "name": "Build and prepare dist.zip for deploy",
+      "id": "todo-008",
+      "name": "Schema.org JSON-LD",
       "status": "done",
-      "commit": "f71c65f"
+      "commit": "a0167e0"
     }
   ],
   "remaining_tasks": [
@@ -48,11 +48,6 @@
     {
       "id": "todo-005",
       "name": "Analytics (Yandex/GA)",
-      "status": "not_started"
-    },
-    {
-      "id": "todo-008",
-      "name": "Schema.org JSON-LD",
       "status": "not_started"
     },
     {
@@ -86,7 +81,7 @@
   "human_actions_pending": [
     {
       "action": "Upload f:\\VIBECODING\\SUNLIFE\\sunlife\\dist.zip to sunlife-photo.ru root via FTP, then open https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy",
-      "context": "dist.zip is 481 KB and contains dist/ folder with all built files except images/gallery (already on server).",
+      "context": "dist.zip is ~488 KB and contains dist/ folder with all built files except images/gallery (already on server). Includes todo-010 UX polish and todo-008 Schema.org JSON-LD.",
       "blocking": true
     }
   ],
@@ -108,6 +103,6 @@
     }
   ],
   "uncommitted_files": [],
-  "next_action": "Wait for user to complete manual deploy, then verify https://sunlife-photo.ru/ loads correctly and toast/back-to-top/skeletons work.",
-  "context_notes": "todo-010 is complete and pushed to GitHub. The build is clean (no lint/TS errors). dist.zip is ready. The only remaining step is human-driven deployment because credentials are not available. After deploy, the next todos are todo-004 (Vercel) and todo-005 (analytics), but todo-011 (privacy policy) may be more urgent depending on legal requirements."
+  "next_action": "Wait for user to complete manual deploy, then verify https://sunlife-photo.ru/ loads correctly. After that pick the next todo (recommended: todo-014 Thank-you/404, todo-011 Privacy policy, or todo-005 Analytics).",
+  "context_notes": "todo-010 and todo-008 are complete and pushed to GitHub. The build is clean (no lint/TS errors). dist.zip is ready. The only remaining step is human-driven deployment because credentials are not available. After deploy, the next todos are todo-014 (quick UX win), todo-011 (legal), and todo-005 (analytics/marketing)."
 }

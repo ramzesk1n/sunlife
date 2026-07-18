@@ -41,24 +41,27 @@
 - [x] **FloatingCallBubble** на всех страницах (Позвонить, WhatsApp, Telegram, Max)
 
 ### Phase 5 — Оптимизация и деплой (в процессе)
+- [x] Code-splitting и lazy-load компонентов
+- [x] Оптимизация изображений
+- [x] Self-hosted fonts + deferred CSS
 - [ ] Снизить размер бандлов до бюджета 60kB gzip
   - vendor chunk: 71kB → target <60kB
   - framer-motion: 44kB, gsap: 44kB
 - [ ] Деплой на Vercel + кастомный домен
 - [ ] Исправить: фото в Примеры работ не отображаются (JSON потерян, нужно перезагрузить)
 
-## Milestone 2: Полировка (запланировано)
+## Milestone 2: Полировка (в процессе)
 
 ### Phase 6 — SEO и аналитика
 - [ ] Яндекс.Метрика / Google Analytics (ждёт cookie-согласия)
-- [ ] Schema.org JSON-LD разметка
+- [x] Schema.org JSON-LD разметка ✅
 - [ ] Core Web Vitals оптимизация
 - [ ] Sitemap.xml
 
 ### Phase 7 — UX-полировка
-- [ ] Toast-уведомления
-- [ ] Skeleton-загрузка
-- [ ] Back-to-top кнопка
+- [x] Toast-уведомления ✅
+- [x] Skeleton-загрузка ✅
+- [x] Back-to-top кнопка ✅
 - [ ] Страницы 404 и благодарности
 - [ ] Актуализация политики конфиденциальности
 - [ ] Доступность (a11y проверка)
