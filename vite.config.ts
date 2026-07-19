@@ -32,20 +32,27 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks(id: string) {
-          // React ecosystem
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
-            return 'vendor';
-          }
-          // Framer Motion - separate from GSAP
-          if (id.includes('node_modules/framer-motion')) {
-            return 'framer-motion';
-          }
-          // GSAP - separate chunk
-          if (id.includes('node_modules/gsap')) {
-            return 'gsap';
-          }
-          return undefined;
+        // Groups capture only matched modules; shared deps stay in their
+        // natural chunks, so framer-motion/gsap are not pulled into the
+        // critical path (unlike manualChunks, which drags deps along)
+        codeSplitting: {
+          groups: [
+            {
+              name: 'vendor',
+              test: /node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+              priority: 20,
+            },
+            {
+              name: 'framer-motion',
+              test: /node_modules[\\/]framer-motion[\\/]/,
+              priority: 10,
+            },
+            {
+              name: 'gsap',
+              test: /node_modules[\\/]gsap[\\/]/,
+              priority: 10,
+            },
+          ],
         },
       },
     },

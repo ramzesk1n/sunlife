@@ -34,11 +34,24 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const stored = getStoredConsent();
-    if (!stored) {
-      setVisible(true);
-    } else {
+    if (stored) {
       setConsent(stored);
+      return;
     }
+    // Delay banner until after load so it doesn't become the LCP element
+    let timer = 0;
+    const show = () => {
+      timer = window.setTimeout(() => setVisible(true), 1500);
+    };
+    if (document.readyState === 'complete') {
+      show();
+    } else {
+      window.addEventListener('load', show, { once: true });
+    }
+    return () => {
+      window.removeEventListener('load', show);
+      window.clearTimeout(timer);
+    };
   }, []);
 
   const acceptAll = useCallback(() => {

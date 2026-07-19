@@ -43,6 +43,12 @@
    - Метрики (mobile, локально): perf 25→54, bootup 2.7→1.1s, TBT 2390→250ms, FCP 3.5→1.9s, SpeedIndex 5.6→2.6s
    - Осталось: LCP-элемент = текст cookie-баннера (задержать показ после load), framer-motion eager chunk (manualChunks), проверка на live
 
+7. ✅ **todo-009 (часть 2): LCP + framer-motion chunk**
+   - CookieBanner: показ после `window.load` + 1.5s — LCP-элемент теперь h1 hero, а не баннер
+   - vite.config: manualChunks → `codeSplitting.groups` (rolldown API) — shared-зависимости больше не тянут framer-motion/gsap в критпуть
+   - framer-motion (133KB/44KB gzip) теперь lazy; vendor 227→190KB
+   - Live-аудит подтвердил a11y 100 после деплоя; live TBT/TTFB упирается в хостинг (cache headers на nginx — отдельная задача)
+
 ## Предыдущая сессия: 2026-07-17
 
 ### Что сделано сегодня (2026-07-17)
