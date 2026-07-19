@@ -84,7 +84,7 @@ export default function Header() {
       >
         <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
+          <Link to="/" className="flex items-center gap-2.5 group" aria-label="САН ЛАЙФ — на главную">
             <div className="w-11 h-11 md:w-14 md:h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0">
               <img
                 src="/images/sunlife_logo.webp"
@@ -99,7 +99,7 @@ export default function Header() {
               <p className="text-xs md:text-sm text-gold-dark uppercase tracking-[0.2em] leading-tight">
                 фотослужба
               </p>
-              <p className="text-base md:text-lg font-display font-light text-gold-primary uppercase tracking-wider leading-tight">
+              <p className="text-base md:text-lg font-display font-light text-gold-dark uppercase tracking-wider leading-tight">
                 САН ЛАЙФ
               </p>
             </div>
@@ -157,7 +157,7 @@ export default function Header() {
                     setIsContactOpen(true);
                   }
                 }}
-                className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-gold-primary text-cream text-sm font-display font-light uppercase tracking-wider rounded-xl hover:bg-gold-dark transition-colors duration-300"
+                className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-gold-dark text-cream text-sm font-display font-light uppercase tracking-wider rounded-xl hover:bg-gold-darker transition-colors duration-300"
               >
                 {cta.label}
               </button>

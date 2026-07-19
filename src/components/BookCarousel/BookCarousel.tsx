@@ -98,6 +98,8 @@ export default function BookCarousel({ bookImages, bookLabels, className = '' }:
                     src={src}
                     alt={`Фотокнига ${bookLabels[idx]}`}
                     className="w-full h-full object-cover"
+                    width="640"
+                    height="425"
                     draggable={false}
                   />
                   {/* Book spine effect */}
@@ -115,13 +117,17 @@ export default function BookCarousel({ bookImages, bookLabels, className = '' }:
           <button
             key={idx}
             onClick={() => scrollToIndex(idx)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              idx === activeIndex
-                ? 'bg-gold-primary w-6'
-                : 'bg-gold-primary/30 hover:bg-gold-primary/50 w-2'
-            }`}
+            className="w-8 h-8 shrink-0 flex items-center justify-center"
             aria-label={`Перейти к фотокниге ${idx + 1}`}
-          />
+          >
+            <span
+              className={`h-2 rounded-full transition-all duration-300 ${
+                idx === activeIndex
+                  ? 'bg-gold-primary w-6'
+                  : 'bg-gold-primary/30 hover:bg-gold-primary/50 w-2'
+              }`}
+            />
+          </button>
         ))}
       </div>
     </motion.div>

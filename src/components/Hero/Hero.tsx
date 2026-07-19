@@ -117,7 +117,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={openModal}
-                  className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-light uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                  className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-dark text-base font-display font-light uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-dark hover:text-cream transition-all duration-300"
                 >
                   Забронировать дату
                 </button>
@@ -132,13 +132,15 @@ export default function Hero() {
             >
               <div
                 ref={imageRef}
-                className="relative w-full rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
+                className="relative w-full aspect-[178/100] rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
               >
                 <img
                   src="/images/hero-image-main.webp"
                   alt="Фотограф на выписку из роддома"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
+                  width="2848"
+                  height="1600"
                 />
               </div>
             </div>

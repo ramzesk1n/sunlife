@@ -69,13 +69,13 @@ export default function PartnershipOffers() {
                 variants={shouldReduceMotion ? undefined : itemVariants}
                 className="relative pl-0 md:pl-24"
               >
-                <div className="hidden md:flex absolute left-0 top-0 w-16 h-16 rounded-full bg-gold-primary text-cream font-display font-bold text-xl items-center justify-center border-4 border-cream-2 z-10">
+                <div className="hidden md:flex absolute left-0 top-0 w-16 h-16 rounded-full bg-gold-dark text-cream font-display font-bold text-xl items-center justify-center border-4 border-cream-2 z-10">
                   {offer.number}
                 </div>
 
                 <div className="glass rounded-2xl p-6 md:p-8 hover:shadow-glass transition-all duration-300">
                   <div className="flex items-center gap-3 mb-3 md:hidden">
-                    <span className="inline-flex w-10 h-10 rounded-full bg-gold-primary text-cream font-display font-bold text-base items-center justify-center flex-shrink-0">
+                    <span className="inline-flex w-10 h-10 rounded-full bg-gold-dark text-cream font-display font-bold text-base items-center justify-center flex-shrink-0">
                       {offer.number}
                     </span>
                     <h3 className="font-display text-lg md:text-xl font-light text-gold-primary-80 uppercase tracking-wider">

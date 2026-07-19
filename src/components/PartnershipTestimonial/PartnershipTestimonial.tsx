@@ -251,13 +251,17 @@ export default function PartnershipTestimonial() {
                 <button
                   key={idx}
                   onClick={() => setActiveIndex(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    idx === activeIndex
-                      ? 'bg-gold-primary w-6'
-                      : 'bg-gold-primary/30 hover:bg-gold-primary/50 w-2'
-                  }`}
+                  className="w-8 h-8 shrink-0 flex items-center justify-center"
                   aria-label={`Отзыв ${idx + 1}`}
-                />
+                >
+                  <span
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      idx === activeIndex
+                        ? 'bg-gold-primary w-6'
+                        : 'bg-gold-primary/30 hover:bg-gold-primary/50 w-2'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
 

@@ -50,6 +50,12 @@
       "name": "Footer: legal links moved to bottom strip, one line, text-sm; ramzes-it.ru credit link",
       "status": "done",
       "commit": "c8bb755"
+    },
+    {
+      "id": "perf-a11y-quick-wins",
+      "name": "Lighthouse quick wins: img sizes, main landmark, dot targets, contrast (a11y 100, perf 25→45, TBT 2390→320ms)",
+      "status": "done",
+      "commit": null
     }
   ],
   "remaining_tasks": [

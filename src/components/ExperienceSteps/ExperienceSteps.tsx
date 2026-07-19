@@ -126,6 +126,8 @@ export default function ExperienceSteps() {
                       src={step.image}
                       alt={step.title}
                       loading="lazy"
+                      width="558"
+                      height="1000"
                       className="h-full w-full object-cover"
                     />
                   </div>
@@ -205,6 +207,8 @@ function MobileStepCard({
               src={step.image}
               alt={step.title}
               loading="lazy"
+              width="558"
+              height="1000"
               className="h-full w-full object-cover"
             />
           </div>

@@ -226,7 +226,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                         onClick={() => setFormData((prev) => ({ ...prev, contactMethod: method }))}
                         className={`flex-1 py-2 rounded-lg border text-xs font-display uppercase tracking-wider transition-all ${
                           formData.contactMethod === method
-                            ? 'bg-gold-primary text-cream border-gold-primary'
+                            ? 'bg-gold-dark text-cream border-gold-dark'
                             : 'bg-cream/80 text-gold-dark border-gold-primary/20 hover:bg-gold-primary/10'
                         }`}
                       >
@@ -311,7 +311,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                   />
                   <label className="text-sm text-text-muted">
                     Я даю своё согласие на обработку персональных данных соглашаюсь с условиями{' '}
-                    <Link to="/privacy" className="text-gold-primary hover:underline" target="_blank">
+                    <Link to="/privacy" className="text-gold-dark hover:underline" target="_blank">
                       политикой конфиденциальности
                     </Link>
                   </label>
@@ -320,7 +320,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full py-3 bg-gold-primary text-cream font-display uppercase tracking-wider rounded-xl hover:bg-gold-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  className="w-full py-3 bg-gold-dark text-cream font-display uppercase tracking-wider rounded-xl hover:bg-gold-darker transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
                   {status === 'loading' ? 'Отправка...' : 'Отправить заявку'}
                 </button>

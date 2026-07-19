@@ -152,7 +152,7 @@ export default function MobileBottomBar() {
               <button
                 type="button"
                 onClick={handlePrimaryClick}
-                className="flex-1 bg-gold-primary text-cream font-display font-light uppercase tracking-wider text-sm py-3.5 px-4 rounded-xl hover:bg-gold-dark transition-colors duration-300"
+                className="flex-1 bg-gold-dark text-cream font-display font-light uppercase tracking-wider text-sm py-3.5 px-4 rounded-xl hover:bg-gold-darker transition-colors duration-300"
               >
                 {cta.label}
               </button>

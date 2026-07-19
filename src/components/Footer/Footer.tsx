@@ -47,7 +47,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
           {/* Бренд */}
           <div>
-            <Link to="/" className="flex items-center gap-3 mb-3 group">
+            <Link to="/" className="flex items-center gap-3 mb-3 group" aria-label="САН ЛАЙФ — на главную">
               <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center shrink-0 group-hover:shadow-gold transition-shadow duration-300">
                 <img
                   src="/images/sunlife_logo.webp"
@@ -60,7 +60,7 @@ export default function Footer() {
               </div>
               <div>
                 <p className="text-xs text-gold-dark uppercase tracking-[0.2em]">фотослужба</p>
-                <p className="text-sm font-display font-light text-gold-primary uppercase tracking-wider">САН ЛАЙФ</p>
+                <p className="text-sm font-display font-light text-gold-dark uppercase tracking-wider">САН ЛАЙФ</p>
               </div>
             </Link>
             <p className="text-text-muted text-base leading-relaxed">
@@ -70,9 +70,9 @@ export default function Footer() {
 
           {/* Навигация */}
           <div>
-            <h4 className="font-display font-light text-gold-dark uppercase tracking-wider text-base mb-4">
+            <h3 className="font-display font-light text-gold-dark uppercase tracking-wider text-base mb-4">
               Навигация
-            </h4>
+            </h3>
             <nav className="space-y-2">
               <Link to="/price" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Цены
@@ -88,9 +88,9 @@ export default function Footer() {
 
           {/* Контакты */}
           <div>
-            <h4 className="font-display font-light text-gold-dark uppercase tracking-wider text-base mb-4">
+            <h3 className="font-display font-light text-gold-dark uppercase tracking-wider text-base mb-4">
               Контакты
-            </h4>
+            </h3>
             <div className="space-y-2 text-base">
               <a href={siteData.phoneHref} className="block text-text-muted hover:text-gold-primary transition-colors">
                 {siteData.phone}
@@ -124,17 +124,17 @@ export default function Footer() {
 
         <div className="border-t border-gold-primary/10 pt-6 text-center">
           <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-4">
-            <Link to="/privacy" className="text-text-light hover:text-gold-primary text-sm transition-colors">
+            <Link to="/privacy" className="text-text-muted hover:text-gold-primary text-sm transition-colors">
               Политика конфиденциальности
             </Link>
-            <Link to="/terms" className="text-text-light hover:text-gold-primary text-sm transition-colors">
+            <Link to="/terms" className="text-text-muted hover:text-gold-primary text-sm transition-colors">
               Пользовательское соглашение
             </Link>
-            <Link to="/sitemap" className="text-text-light hover:text-gold-primary text-sm transition-colors">
+            <Link to="/sitemap" className="text-text-muted hover:text-gold-primary text-sm transition-colors">
               Карта сайта
             </Link>
           </nav>
-          <p className="text-text-light text-sm">
+          <p className="text-text-muted text-sm">
             © 2025–2026 <a href="https://ramzes-it.ru/" target="_blank" rel="noopener noreferrer" className="hover:text-gold-primary transition-colors">Студия дизайна Рамзеса Мифтахова</a>. Все права защищены.
           </p>
         </div>

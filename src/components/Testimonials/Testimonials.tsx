@@ -157,6 +157,8 @@ export default function Testimonials() {
                           alt={review.author}
                           className="w-12 h-12 rounded-full object-cover border border-gold-primary/20 flex-shrink-0"
                           loading="lazy"
+                          width="48"
+                          height="48"
                         />
                       ) : (
                         <div className="w-12 h-12 rounded-full bg-gold-pale border border-gold-primary/20 flex items-center justify-center text-gold-dark font-display text-base flex-shrink-0">
@@ -168,7 +170,7 @@ export default function Testimonials() {
                           {review.author}
                         </h3>
                         {(review as any).city && (
-                          <p className="text-sm text-text-light">{(review as any).city}</p>
+                          <p className="text-sm text-text-muted">{(review as any).city}</p>
                         )}
                       </div>
                     </div>
@@ -176,7 +178,7 @@ export default function Testimonials() {
                       &ldquo;{review.text}&rdquo;
                     </p>
                     {review.date && (
-                      <p className="text-sm text-text-light mt-4 pt-4 border-t border-gold-primary/10">
+                      <p className="text-sm text-text-muted mt-4 pt-4 border-t border-gold-primary/10">
                         {review.date}
                       </p>
                     )}
@@ -192,14 +194,18 @@ export default function Testimonials() {
                 key={i}
                 type="button"
                 onClick={() => goToPage(i)}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  i === page
-                    ? 'bg-gold-primary w-6'
-                    : 'bg-gold-light w-2.5 hover:bg-gold-primary/70'
-                }`}
+                className="w-8 h-8 shrink-0 flex items-center justify-center"
                 aria-label={`Страница отзывов ${i + 1}`}
                 aria-current={i === page ? 'true' : undefined}
-              />
+              >
+                <span
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    i === page
+                      ? 'bg-gold-primary w-6'
+                      : 'bg-gold-light w-2.5 hover:bg-gold-primary/70'
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </div>

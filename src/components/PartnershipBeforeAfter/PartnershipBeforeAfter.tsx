@@ -147,7 +147,7 @@ export default function PartnershipBeforeAfter() {
           >
             <PhotoGrid images={afterImages} label="После" />
             <div 
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-gold-primary text-cream text-[10px] sm:text-xs font-display uppercase tracking-wider rounded-full z-10 transition-opacity duration-200"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-gold-dark text-cream text-[10px] sm:text-xs font-display uppercase tracking-wider rounded-full z-10 transition-opacity duration-200"
               style={{ opacity: position > 90 ? 0 : 1 }}
             >
               После

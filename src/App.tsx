@@ -73,47 +73,49 @@ function HomePage() {
   return (
     <>
       <Header />
-      <Hero />
-      <Benefits />
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <ExperienceSteps />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton count={4} />}>
-        <Gallery />
-      </Suspense>
-      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
-        <div className="max-w-4xl mx-auto">
-          <InlineCta
-            page="home"
-            title="Остались вопросы?"
-            subtitle="Получите персональную консультацию по съёмке выписки из роддома"
-          />
-        </div>
-      </section>
-      <Suspense fallback={<SectionSkeleton count={4} />}>
-        <PricingCards />
-      </Suspense>
-      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
-        <div className="max-w-4xl mx-auto">
-          <InlineCta
-            page="home"
-            title="Не нашли подходящий пакет?"
-            subtitle="Напишите нам — подберём оптимальное решение под ваши пожелания"
-          />
-        </div>
-      </section>
-      <Suspense fallback={<SectionSkeleton count={3} />}>
-        <Testimonials />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <FAQ />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton count={4} />}>
-        <TeamSlider />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <Geography />
-      </Suspense>
+      <main>
+        <Hero />
+        <Benefits />
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <ExperienceSteps />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton count={4} />}>
+          <Gallery />
+        </Suspense>
+        <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+          <div className="max-w-4xl mx-auto">
+            <InlineCta
+              page="home"
+              title="Остались вопросы?"
+              subtitle="Получите персональную консультацию по съёмке выписки из роддома"
+            />
+          </div>
+        </section>
+        <Suspense fallback={<SectionSkeleton count={4} />}>
+          <PricingCards />
+        </Suspense>
+        <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+          <div className="max-w-4xl mx-auto">
+            <InlineCta
+              page="home"
+              title="Не нашли подходящий пакет?"
+              subtitle="Напишите нам — подберём оптимальное решение под ваши пожелания"
+            />
+          </div>
+        </section>
+        <Suspense fallback={<SectionSkeleton count={3} />}>
+          <Testimonials />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <FAQ />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton count={4} />}>
+          <TeamSlider />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <Geography />
+        </Suspense>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>
@@ -124,24 +126,26 @@ function PricePage() {
   return (
     <>
       <Header />
-      <Suspense fallback={<SectionSkeleton count={4} />}>
-        <PricingCards />
-      </Suspense>
-      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
-        <div className="max-w-4xl mx-auto">
-          <InlineCta
-            page="price"
-            title="Расскажем о съёмке в вашем роддоме"
-            subtitle="Оставьте заявку — мы подскажем, какой пакет подойдёт именно вам"
-          />
-        </div>
-      </section>
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <Geography />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <FAQ />
-      </Suspense>
+      <main>
+        <Suspense fallback={<SectionSkeleton count={4} />}>
+          <PricingCards />
+        </Suspense>
+        <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+          <div className="max-w-4xl mx-auto">
+            <InlineCta
+              page="price"
+              title="Расскажем о съёмке в вашем роддоме"
+              subtitle="Оставьте заявку — мы подскажем, какой пакет подойдёт именно вам"
+            />
+          </div>
+        </section>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <Geography />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <FAQ />
+        </Suspense>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>
@@ -152,18 +156,20 @@ function GalleryPageRoute() {
   return (
     <>
       <Header />
-      <Suspense fallback={<SectionSkeleton count={4} />}>
-        <GalleryPage />
-      </Suspense>
-      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
-        <div className="max-w-4xl mx-auto">
-          <InlineCta
-            page="galery"
-            title="Хотите такие же фото?"
-            subtitle="Забронируйте съёмку выписки из роддома — оставьте заявку прямо сейчас"
-          />
-        </div>
-      </section>
+      <main>
+        <Suspense fallback={<SectionSkeleton count={4} />}>
+          <GalleryPage />
+        </Suspense>
+        <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+          <div className="max-w-4xl mx-auto">
+            <InlineCta
+              page="galery"
+              title="Хотите такие же фото?"
+              subtitle="Забронируйте съёмку выписки из роддома — оставьте заявку прямо сейчас"
+            />
+          </div>
+        </section>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>
@@ -176,25 +182,27 @@ function PartnershipPage() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />
-      <PartnershipHero onOpenForm={() => setIsPopupOpen(true)} />
-      <PartnershipAbout />
-      <PartnershipOffers />
-      <PartnershipTestimonial />
-      <PartnershipBeforeAfter />
-      <PartnershipPricing />
-      <PartnershipExamples />
-      <PartnershipFAQ />
-      <PartnershipTeam />
-      <PartnershipGallery />
-      <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream-2">
-        <div className="max-w-4xl mx-auto">
-          <InlineCta
-            page="partnership"
-            title="Обсудим условия для вашего роддома"
-            subtitle="Оставьте заявку — мы расскажем, как начать сотрудничество с фотослужбой «Санлайф»"
-          />
-        </div>
-      </section>
+      <main>
+        <PartnershipHero onOpenForm={() => setIsPopupOpen(true)} />
+        <PartnershipAbout />
+        <PartnershipOffers />
+        <PartnershipTestimonial />
+        <PartnershipBeforeAfter />
+        <PartnershipPricing />
+        <PartnershipExamples />
+        <PartnershipFAQ />
+        <PartnershipTeam />
+        <PartnershipGallery />
+        <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream-2">
+          <div className="max-w-4xl mx-auto">
+            <InlineCta
+              page="partnership"
+              title="Обсудим условия для вашего роддома"
+              subtitle="Оставьте заявку — мы расскажем, как начать сотрудничество с фотослужбой «Санлайф»"
+            />
+          </div>
+        </section>
+      </main>
       <Footer />
       <PartnershipPopupForm isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
       <MobileBottomBar />
@@ -206,9 +214,11 @@ function PrivacyPageWrapper() {
   return (
     <>
       <Header />
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <PrivacyPage />
-      </Suspense>
+      <main>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <PrivacyPage />
+        </Suspense>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>
@@ -219,9 +229,11 @@ function TermsPageWrapper() {
   return (
     <>
       <Header />
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <TermsPage />
-      </Suspense>
+      <main>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <TermsPage />
+        </Suspense>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>
@@ -232,9 +244,11 @@ function SitemapPageWrapper() {
   return (
     <>
       <Header />
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <SitemapPage />
-      </Suspense>
+      <main>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <SitemapPage />
+        </Suspense>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>
@@ -245,9 +259,11 @@ function ContactsPageRoute() {
   return (
     <>
       <Header />
-      <Suspense fallback={<SectionSkeleton count={1} />}>
-        <ContactsPage />
-      </Suspense>
+      <main>
+        <Suspense fallback={<SectionSkeleton count={1} />}>
+          <ContactsPage />
+        </Suspense>
+      </main>
       <Footer />
       <MobileBottomBar />
     </>

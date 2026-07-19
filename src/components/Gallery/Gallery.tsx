@@ -120,6 +120,8 @@ export default function Gallery() {
                   alt={img.alt}
                   className="w-full h-full object-cover"
                   loading={i === 0 ? 'eager' : 'lazy'}
+                  width="1200"
+                  height="800"
                   draggable={false}
                 />
                 {/* Gradient overlay */}
@@ -177,6 +179,8 @@ export default function Gallery() {
                   alt=""
                   className="w-full h-full object-cover"
                   loading="lazy"
+                  width="80"
+                  height="80"
                 />
               </button>
             ))}
@@ -188,13 +192,17 @@ export default function Gallery() {
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  i === currentIndex
-                    ? 'bg-gold-primary w-6'
-                    : 'bg-gold-primary/30 hover:bg-gold-primary/50'
-                }`}
+                className="w-8 h-8 shrink-0 flex items-center justify-center"
                 aria-label={`Перейти к фото ${i + 1}`}
-              />
+              >
+                <span
+                  className={`h-2 rounded-full transition-all ${
+                    i === currentIndex
+                      ? 'bg-gold-primary w-6'
+                      : 'bg-gold-primary/30 hover:bg-gold-primary/50 w-2'
+                  }`}
+                />
+              </button>
             ))}
           </div>
 

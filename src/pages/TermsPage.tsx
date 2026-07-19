@@ -181,7 +181,7 @@ export default function TermsPage() {
             </p>
             <p>
               9.2. Порядок обработки и защиты персональных данных определяется{' '}
-              <Link to="/privacy" className="text-gold-primary hover:underline">
+              <Link to="/privacy" className="text-gold-dark hover:underline">
                 Политикой в отношении обработки персональных данных
               </Link>
               , размещённой на Сайте.

@@ -95,6 +95,8 @@ export default function TeamSlider() {
                       alt={member.name}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      width="300"
+                      height="400"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gold-primary/40">

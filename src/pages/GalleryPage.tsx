@@ -87,7 +87,7 @@ export default function GalleryPage() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-5 py-2.5 rounded-xl font-display text-sm uppercase tracking-wider transition-all duration-300 ${
                   activeCategory === cat.id
-                    ? 'bg-gold-primary text-cream shadow-gold'
+                    ? 'bg-gold-dark text-cream shadow-gold'
                     : 'bg-cream-2 text-gold-dark border border-gold-primary/20 hover:bg-gold-primary/10'
                 }`}
               >

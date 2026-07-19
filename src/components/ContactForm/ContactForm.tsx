@@ -256,7 +256,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
               className="text-sm text-text-muted leading-snug"
             >
               Я согласен(на) на обработку моих персональных данных (имя, телефон) в целях обработки заявки на фотосъёмку и связи со мной в соответствии с{' '}
-              <Link to="/privacy" className="text-gold-primary hover:underline" target="_blank">
+              <Link to="/privacy" className="text-gold-dark hover:underline" target="_blank">
                 Политикой обработки персональных данных
               </Link>
             </label>
@@ -265,7 +265,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full py-3 border border-gold-primary text-gold-primary font-display font-light uppercase tracking-wider rounded-xl hover:bg-gold-primary hover:text-cream transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            className="w-full py-3 border border-gold-primary text-gold-dark font-display font-light uppercase tracking-wider rounded-xl hover:bg-gold-dark hover:text-cream transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
           >
             {status === 'loading' ? 'Отправка...' : 'Оставить заявку'}
           </button>

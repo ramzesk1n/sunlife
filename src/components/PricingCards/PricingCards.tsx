@@ -114,7 +114,7 @@ export default function PricingCards() {
                 }`}
               >
                 {pkg.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold-primary text-cream text-sm font-display uppercase tracking-wider rounded-full shadow-gold">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold-dark text-cream text-sm font-display uppercase tracking-wider rounded-full shadow-gold">
                     Популярный
                   </span>
                 )}
@@ -160,7 +160,7 @@ export default function PricingCards() {
                   onClick={() => openModal(pkg.id)}
                   className={`w-full py-4 px-4 rounded-2xl font-display font-light uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
-                      ? 'border border-gold-primary text-gold-primary hover:bg-gold-primary hover:text-cream'
+                      ? 'border border-gold-primary text-gold-dark hover:bg-gold-dark hover:text-cream'
                       : 'border border-gold-primary/40 text-gold-dark hover:bg-gold-primary hover:text-cream hover:border-gold-primary'
                   }`}
                 >

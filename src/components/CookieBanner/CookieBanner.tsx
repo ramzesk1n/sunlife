@@ -75,7 +75,7 @@ export default function CookieBanner() {
               <p className="text-text-muted text-sm mt-2 leading-relaxed">
                 Вы можете принять все cookie или настроить их по категориям.
                 {' '}Подробнее - в{' '}
-                <Link to="/privacy#cookies" className="text-gold-primary hover:underline font-medium" target="_blank">
+                <Link to="/privacy#cookies" className="text-gold-dark hover:underline font-medium" target="_blank">
                   Политике cookie
                 </Link>
                 .
@@ -100,7 +100,7 @@ export default function CookieBanner() {
               <button
                 type="button"
                 onClick={acceptAll}
-                className="px-5 py-2.5 rounded-xl bg-gold-primary text-cream font-display text-sm uppercase tracking-wider hover:bg-gold-dark transition-colors whitespace-nowrap"
+                className="px-5 py-2.5 rounded-xl bg-gold-dark text-cream font-display text-sm uppercase tracking-wider hover:bg-gold-darker transition-colors whitespace-nowrap"
               >
                 Принять все
               </button>
@@ -187,7 +187,7 @@ export default function CookieBanner() {
               <button
                 type="button"
                 onClick={saveCustom}
-                className="px-4 py-2.5 rounded-xl bg-gold-primary text-cream font-display text-sm uppercase tracking-wider hover:bg-gold-dark transition-colors"
+                className="px-4 py-2.5 rounded-xl bg-gold-dark text-cream font-display text-sm uppercase tracking-wider hover:bg-gold-darker transition-colors"
               >
                 Сохранить настройки
               </button>

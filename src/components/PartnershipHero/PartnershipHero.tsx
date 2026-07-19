@@ -44,7 +44,7 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
               <button
                 type="button"
                 onClick={onOpenForm}
-                className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-primary text-base font-display font-light uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                className="self-start inline-flex items-center justify-center px-8 py-4 border border-gold-primary text-gold-dark text-base font-display font-light uppercase tracking-[0.0625em] rounded-2xl hover:bg-gold-dark hover:text-cream transition-all duration-300"
               >
                 Стать партнёром
               </button>
@@ -57,12 +57,14 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             className="order-2 lg:order-2 flex"
           >
-            <div className="relative w-full rounded-2xl overflow-hidden shadow-glass bg-gold-pale">
+            <div className="relative w-full aspect-[1600/899] rounded-2xl overflow-hidden shadow-glass bg-gold-pale">
               <img
                 src="/images/hero-image-partership-1600.webp"
                 alt="Партнёрство с роддомами"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
+                width="1600"
+                height="899"
               />
             </div>
           </motion.div>

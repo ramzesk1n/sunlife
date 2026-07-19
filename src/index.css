@@ -5,7 +5,7 @@
 @theme {
   /* === Webflow-стиль: золото + крем === */
   --color-gold-primary: #ca8a47;
-  --color-gold-primary-80: #ca8a47cc;
+  --color-gold-primary-80: #936d28; /* контрастный золотой для заголовков на кремовом фоне (было #ca8a47cc — 2.27:1, не проходило WCAG) */
   --color-gold-primary-60: #ca8a4799;
   --color-gold-secondary: #bfa06c;
   --color-gold-muted: #c1b08c;

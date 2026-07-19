@@ -76,7 +76,7 @@ export default function SitemapPage() {
                 <li key={page.to}>
                   <Link
                     to={page.to}
-                    className="font-display text-lg text-gold-primary hover:text-gold-dark uppercase tracking-wider transition-colors"
+                    className="font-display text-lg text-gold-dark hover:text-gold-primary uppercase tracking-wider transition-colors"
                   >
                     {page.title}
                   </Link>
@@ -95,7 +95,7 @@ export default function SitemapPage() {
                 <li key={page.to}>
                   <Link
                     to={page.to}
-                    className="font-display text-lg text-gold-primary hover:text-gold-dark uppercase tracking-wider transition-colors"
+                    className="font-display text-lg text-gold-dark hover:text-gold-primary uppercase tracking-wider transition-colors"
                   >
                     {page.title}
                   </Link>

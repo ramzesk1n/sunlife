@@ -228,7 +228,7 @@ export default function ContactsPage() {
               <button
                 type="button"
                 onClick={() => setIsFormOpen(true)}
-                className="block w-full py-4 bg-gold-primary text-cream text-center font-display uppercase tracking-wider rounded-2xl hover:bg-gold-dark transition-colors"
+                className="block w-full py-4 bg-gold-dark text-cream text-center font-display uppercase tracking-wider rounded-2xl hover:bg-gold-darker transition-colors"
               >
                 Заказать звонок
               </button>
