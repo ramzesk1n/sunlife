@@ -36,6 +36,14 @@ const breadcrumbMap: Record<string, BreadcrumbItem[]> = {
     { name: 'Главная', path: '/' },
     { name: 'Политика конфиденциальности', path: '/privacy' },
   ],
+  '/terms': [
+    { name: 'Главная', path: '/' },
+    { name: 'Пользовательское соглашение', path: '/terms' },
+  ],
+  '/sitemap': [
+    { name: 'Главная', path: '/' },
+    { name: 'Карта сайта', path: '/sitemap' },
+  ],
 };
 
 export function getOrganizationSchema() {

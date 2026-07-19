@@ -6,7 +6,7 @@ import { useToast } from '../Toast/ToastProvider';
 interface FormData {
   name: string;
   phone: string;
-  contactMethod: 'telegram' | 'whatsapp' | 'phone';
+  contactMethod: 'telegram' | 'whatsapp' | 'max' | 'phone';
   hospital: string;
   date: string;
   consent: boolean;
@@ -201,6 +201,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
             >
               <option value="whatsapp">WhatsApp</option>
               <option value="telegram">Telegram</option>
+              <option value="max">Max</option>
               <option value="phone">Телефон</option>
             </select>
           </div>

@@ -3,7 +3,7 @@ import PuppeteerRenderer from '@prerenderer/renderer-puppeteer';
 import fs from 'fs/promises';
 import path from 'path';
 
-const routes = ['/', '/price', '/galery', '/partnership', '/contacts', '/privacy'];
+const routes = ['/', '/price', '/galery', '/partnership', '/contacts', '/privacy', '/terms', '/sitemap'];
 
 async function getCriticalAssetPaths(): Promise<{ js: string[]; css: string }> {
   const assetsDir = path.resolve('./dist/assets');

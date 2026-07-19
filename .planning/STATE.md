@@ -1,6 +1,29 @@
 # САН ЛАЙФ - Состояние проекта
 
-## Активная сессия: 2026-07-17
+## Активная сессия: 2026-07-19
+
+### Что сделано сегодня (2026-07-19)
+
+1. ✅ **Контакты обновлены**
+   - Telegram → `telegram.me/roddomaphoto`
+   - Email → `89279611561@mail.ru` (в т.ч. в PrivacyPage, ContactsPage, site.json)
+   - Max: иконка `public/images/max.svg` + ссылки в site.json, Header, Footer, MobileBottomBar, InlineCta, ContactsPage
+   - Заявки с форм дублируются на email (`NOTIFY_EMAIL` в send-form.php)
+   - Тултипы на иконках соцсетей в Header/Footer (только десктоп)
+   - Max добавлен в выбор способа связи в ContactForm и PartnershipPopupForm
+
+2. ✅ **Новые страницы**
+   - `/terms` — Пользовательское соглашение (10 секций, реквизиты ИП)
+   - `/sitemap` — HTML-карта сайта
+   - `public/sitemap.xml` — XML-карта (8 URL, домен sunlife-photo.ru)
+   - Роуты + meta.json + prerender (8 маршрутов) + breadcrumbs
+
+3. ✅ **Правило деплоя**
+   - dist.zip — ПЛОСКАЯ структура (без папки-обёртки dist/)
+   - build-and-zip.sh переписан на Python-упаковку
+   - Правило записано в DEPLOY-GUIDE.md, PROJECT.md, .continue-here.md
+
+## Предыдущая сессия: 2026-07-17
 
 ### Что сделано сегодня (2026-07-17)
 

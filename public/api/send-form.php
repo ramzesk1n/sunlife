@@ -116,7 +116,7 @@ if (!empty($errors)) {
 }
 
 // Format message
-$methodLabels = ['telegram' => 'Telegram', 'whatsapp' => 'WhatsApp', 'phone' => 'Телефон'];
+$methodLabels = ['telegram' => 'Telegram', 'whatsapp' => 'WhatsApp', 'max' => 'Max', 'phone' => 'Телефон'];
 
 if ($formType === 'partnership') {
     $message = "🤝 <b>Новая заявка на партнёрство</b>\n\n";

@@ -40,6 +40,8 @@ const PartnershipPopupForm = lazy(() => import('./components/PartnershipPopupFor
 const GalleryPage = lazy(() => import('./pages/GalleryPage'));
 const ContactsPage = lazy(() => import('./pages/ContactsPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const SitemapPage = lazy(() => import('./pages/SitemapPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 /* Loading fallback */
@@ -213,6 +215,32 @@ function PrivacyPageWrapper() {
   );
 }
 
+function TermsPageWrapper() {
+  return (
+    <>
+      <Header />
+      <Suspense fallback={<SectionSkeleton count={1} />}>
+        <TermsPage />
+      </Suspense>
+      <Footer />
+      <MobileBottomBar />
+    </>
+  );
+}
+
+function SitemapPageWrapper() {
+  return (
+    <>
+      <Header />
+      <Suspense fallback={<SectionSkeleton count={1} />}>
+        <SitemapPage />
+      </Suspense>
+      <Footer />
+      <MobileBottomBar />
+    </>
+  );
+}
+
 function ContactsPageRoute() {
   return (
     <>
@@ -275,6 +303,8 @@ export default function App() {
         <Route path="/partnership" element={<PartnershipPage />} />
         <Route path="/contacts" element={<ContactsPageRoute />} />
         <Route path="/privacy" element={<PrivacyPageWrapper />} />
+        <Route path="/terms" element={<TermsPageWrapper />} />
+        <Route path="/sitemap" element={<SitemapPageWrapper />} />
         <Route path="*" element={
         <Suspense fallback={<PageLoader />}>
           <NotFoundPage />

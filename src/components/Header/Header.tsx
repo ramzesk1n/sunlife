@@ -16,21 +16,25 @@ const socialLinks = [
     href: 'https://wa.me/79279363606',
     label: 'WhatsApp',
     src: '/images/whatsapp.svg',
+    tooltip: 'Написать в WhatsApp',
   },
   {
     href: 'https://telegram.me/roddomaphoto',
     label: 'Telegram',
     src: '/images/telegram.svg',
+    tooltip: 'Написать в Telegram',
   },
   {
     href: 'https://vk.com/roddomafoto',
     label: 'VK',
     src: '/images/vk.svg',
+    tooltip: 'Мы во ВКонтакте',
   },
   {
     href: siteData.max.href,
     label: 'Max',
     src: '/images/max.svg',
+    tooltip: 'Написать в Max',
   },
 ];
 
@@ -127,7 +131,7 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-cream-2 border border-gold-primary/30 flex items-center justify-center text-gold-primary hover:bg-gold-primary hover:text-cream hover:border-gold-primary transition-all duration-300"
+                className="relative group w-9 h-9 md:w-10 md:h-10 rounded-xl bg-cream-2 border border-gold-primary/30 flex items-center justify-center text-gold-primary hover:bg-gold-primary hover:text-cream hover:border-gold-primary transition-all duration-300"
               >
                 <img
                   src={social.src}
@@ -135,6 +139,9 @@ export default function Header() {
                   className="w-5 h-5"
                   loading="lazy"
                 />
+                <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-text-dark px-2.5 py-1 text-xs text-cream opacity-0 transition-opacity duration-200 group-hover:opacity-100 hidden md:block z-50">
+                  {social.tooltip}
+                </span>
               </a>
             ))}
 

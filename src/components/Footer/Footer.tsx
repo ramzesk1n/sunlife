@@ -7,26 +7,31 @@ const socialLinks = [
     href: siteData.phoneHref,
     label: 'Позвонить',
     src: '/images/whatsapp.svg',
+    tooltip: 'Позвонить',
   },
   {
     href: siteData.whatsapp.href,
     label: siteData.whatsapp.label,
     src: '/images/whatsapp.svg',
+    tooltip: 'Написать в WhatsApp',
   },
   {
     href: siteData.telegram.href,
     label: siteData.telegram.label,
     src: '/images/telegram.svg',
+    tooltip: 'Написать в Telegram',
   },
   {
     href: siteData.vk.href,
     label: siteData.vk.label,
     src: '/images/vk.svg',
+    tooltip: 'Мы во ВКонтакте',
   },
   {
     href: siteData.max.href,
     label: siteData.max.label,
     src: '/images/max.svg',
+    tooltip: 'Написать в Max',
   },
 ];
 
@@ -81,6 +86,12 @@ export default function Footer() {
               <Link to="/privacy" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Политика конфиденциальности
               </Link>
+              <Link to="/terms" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
+                Пользовательское соглашение
+              </Link>
+              <Link to="/sitemap" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
+                Карта сайта
+              </Link>
             </nav>
           </div>
 
@@ -101,7 +112,7 @@ export default function Footer() {
                     href={social.href}
                     target={social.href.startsWith('tel:') ? undefined : '_blank'}
                     rel={social.href.startsWith('tel:') ? undefined : 'noopener noreferrer'}
-                    className="w-9 h-9 rounded-xl bg-cream border border-gold-primary/30 flex items-center justify-center text-gold-primary hover:bg-gold-primary hover:text-cream transition-all duration-300"
+                    className="relative group w-9 h-9 rounded-xl bg-cream border border-gold-primary/30 flex items-center justify-center text-gold-primary hover:bg-gold-primary hover:text-cream transition-all duration-300"
                     aria-label={social.label}
                   >
                     <img
@@ -110,6 +121,9 @@ export default function Footer() {
                       className="w-[1.125rem] h-[1.125rem]"
                       loading="lazy"
                     />
+                    <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-text-dark px-2.5 py-1 text-xs text-cream opacity-0 transition-opacity duration-200 group-hover:opacity-100 hidden md:block z-50">
+                      {social.tooltip}
+                    </span>
                   </a>
                 ))}
               </div>
