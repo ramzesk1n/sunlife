@@ -55,7 +55,7 @@
       "id": "perf-a11y-quick-wins",
       "name": "Lighthouse quick wins: img sizes, main landmark, dot targets, contrast (a11y 100, perf 25→45, TBT 2390→320ms)",
       "status": "done",
-      "commit": null
+      "commit": "0ecec1d"
     }
   ],
   "remaining_tasks": [
