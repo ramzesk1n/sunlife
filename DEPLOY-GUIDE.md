@@ -52,6 +52,19 @@ powershell -Command "Compress-Archive -Path deploy-minimal -DestinationPath depl
 
 > **Важно:** архив создаётся через PowerShell на Windows. Внутри пути сохраняются с `\`, поэтому на сервере распаковывать нужно **только через `7za`**, а не `unzip`.
 
+## 2а. Быстрый деплой через dist.zip + deploy.php
+
+Альтернатива ручной распаковке — скрипт `deploy.php` на сервере:
+
+```bash
+./build-and-zip.sh   # сборка + dist.zip (плоская структура, без папки dist/)
+```
+
+Затем загрузить `dist.zip` в корень сайта (FTP) и открыть:
+`https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy`
+
+`deploy.php` сам распакует архив в корень и удалит его. В архив не входят `images/`, `admin/`, `fonts/`, `content/` — они уже на сервере.
+
 ## 3. Деплой на сервер
 
 ### Доступ
@@ -113,6 +126,7 @@ rm -f deploy-final.zip
 
 ## Важные замечания
 
+- **Структура архива — ПЛОСКАЯ.** В `dist.zip` (и любом другом архиве для деплоя) файлы должны лежать **в корне архива** (`index.html`, `assets/`, `api/`, …), **без обёрточной папки** `dist/` или `deploy-minimal/`. Если в архиве есть папка-обёртка, при распаковке на сервере файлы просто лежат в этой папке (`dist/dist/…`) и **не заменяют** существующие. Проверка: `python -c "import zipfile; print(zipfile.ZipFile('dist.zip').namelist()[:5])"` — пути не должны начинаться с `dist/`.
 - **Не коммитьте** `deploy-minimal/`, `deploy-*.zip`, `dist.zip`, `public/images/cms/` — они в `.gitignore`.
 - **Фото галереи** (`images/gallery/`) не входят в архив — они уже на сервере и не менялись.
 - **CMS-изображения** (`images/cms/`) создаются админкой на сервере, локально их может не быть.

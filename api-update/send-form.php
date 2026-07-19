@@ -190,6 +190,20 @@ if (!$tgResponse['ok']) {
     exit;
 }
 
+// Send a copy to email (non-blocking: failure does not affect the response)
+$notifyEmail = defined('NOTIFY_EMAIL') ? NOTIFY_EMAIL : '89279611561@mail.ru';
+$emailSubject = $formType === 'partnership'
+    ? 'Новая заявка на партнёрство — sunlife-photo.ru'
+    : 'Новая заявка с сайта — sunlife-photo.ru';
+$emailHeaders = implode("\r\n", [
+    'From: noreply@sunlife-photo.ru',
+    'Content-Type: text/plain; charset=utf-8',
+]);
+$encodedSubject = '=?UTF-8?B?' . base64_encode($emailSubject) . '?=';
+if (!@mail($notifyEmail, $encodedSubject, strip_tags($message), $emailHeaders)) {
+    error_log('Mail error: could not send form copy to ' . $notifyEmail);
+}
+
 echo json_encode([
     'success' => true,
     'message' => 'Заявка отправлена! Мы свяжемся с вами в ближайшее время.'

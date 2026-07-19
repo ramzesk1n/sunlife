@@ -6,14 +6,18 @@
     "label": "WhatsApp"
   },
   "telegram": {
-    "href": "https://telegram.me/TigerSax",
+    "href": "https://telegram.me/roddomaphoto",
     "label": "Telegram"
   },
   "vk": {
     "href": "https://vk.com/roddomafoto",
     "label": "VK"
   },
-  "email": "hello@sunlife-ufa.ru",
+  "max": {
+    "href": "https://max.ru/u/f9LHodD0cOLZbM-v7Zt8NAWfG0dcqScx8YMMF1ESB4_ct3QY4xHFcKfqgqc",
+    "label": "Max"
+  },
+  "email": "89279611561@mail.ru",
   "cta": {
     "home": {
       "label": "Забронировать дату",

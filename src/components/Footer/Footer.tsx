@@ -23,6 +23,11 @@ const socialLinks = [
     label: siteData.vk.label,
     src: '/images/vk.svg',
   },
+  {
+    href: siteData.max.href,
+    label: siteData.max.label,
+    src: '/images/max.svg',
+  },
 ];
 
 export default function Footer() {

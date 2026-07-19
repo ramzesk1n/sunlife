@@ -37,7 +37,8 @@ scripts/
 ## Хостинг
 - **Production**: hostiman.ru (PHP 8.3.30, SSH port 8228, login s273478)
 - **Домен**: sunlife-photo.ru
-- **Деплой**: `deploy-final.zip` через FileZilla + ручная замена assets/
+- **Деплой**: `dist.zip` через FTP + `deploy.php?key=sunlife2025deploy` (скрипт `build-and-zip.sh`)
+- **Структура архива**: ПЛОСКАЯ — файлы в корне архива, БЕЗ папки-обёртки `dist/` (иначе на сервере создаётся `dist/dist/` и файлы не заменяются). В архив не входят `images/`, `admin/`, `fonts/`, `content/`
 - **Важно**: `dist/content/` исключается из билда — серверные данные не перезаписываются
 
 ## Админ-панель
@@ -53,7 +54,7 @@ scripts/
 
 ## Контакты проекта
 - Телефон: +7 (927) 936-36-06
-- Email: hello@sunlife-ufa.ru
+- Email: 89279611561@mail.ru
 - Соцсети: WhatsApp, Telegram, Max, VK
 - Оператор: ИП Чанышев Тагир Амирович
 - ИНН: 027812301688, ОГРН: 313028000070599

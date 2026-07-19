@@ -18,7 +18,7 @@ const socialLinks = [
     src: '/images/whatsapp.svg',
   },
   {
-    href: 'https://telegram.me/TigerSax',
+    href: 'https://telegram.me/roddomaphoto',
     label: 'Telegram',
     src: '/images/telegram.svg',
   },
@@ -26,6 +26,11 @@ const socialLinks = [
     href: 'https://vk.com/roddomafoto',
     label: 'VK',
     src: '/images/vk.svg',
+  },
+  {
+    href: siteData.max.href,
+    label: 'Max',
+    src: '/images/max.svg',
   },
 ];
 
