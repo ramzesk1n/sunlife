@@ -62,6 +62,12 @@
       "name": "GSAP off critical path (Hero parallax → rAF), ScrollTrigger ignoreMobileResize (perf 45→54, bootup 1.1s)",
       "status": "done",
       "commit": "5172ef8"
+    },
+    {
+      "id": "todo-009-part2",
+      "name": "Cookie banner delayed past load (LCP=h1 now), codeSplitting groups — framer-motion off critical path",
+      "status": "done",
+      "commit": "6a902c1"
     }
   ],
   "remaining_tasks": [
