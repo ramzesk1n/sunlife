@@ -69,7 +69,7 @@ export default function RussiaMap() {
     svg.removeAttribute('height');
     svg.style.width = '100%';
     svg.style.height = 'auto';
-    svg.setAttribute('role', 'img');
+    svg.setAttribute('role', 'group');
     svg.setAttribute('aria-label', 'Карта городов работы фотослужбы САН ЛАЙФ');
   }, []);
 

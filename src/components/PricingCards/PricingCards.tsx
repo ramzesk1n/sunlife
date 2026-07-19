@@ -126,7 +126,7 @@ export default function PricingCards() {
                   <p className="text-text-muted text-base mb-4">{pkg.description}</p>
 
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="font-display text-4xl md:text-5xl text-gold-primary uppercase tracking-wider">
+                    <span className="font-display text-4xl md:text-5xl text-gold-dark uppercase tracking-wider">
                       {pkg.price.toLocaleString('ru-RU')}
                     </span>
                     <span className="text-text-muted text-lg">{pkg.currency}</span>
@@ -149,7 +149,7 @@ export default function PricingCards() {
                   </ul>
 
                   {pkg.note && (
-                    <p className="text-sm text-gold-dark bg-gold-pale rounded-lg p-3 mb-4">
+                    <p className="text-sm text-gold-darker bg-gold-pale rounded-lg p-3 mb-4">
                       ⚠️ {pkg.note}
                     </p>
                   )}
@@ -200,7 +200,7 @@ export default function PricingCards() {
                 Оставить заявку
               </h2>
               {selectedPackageName && (
-                <p className="text-gold-primary text-sm mb-2 uppercase tracking-wider">
+                <p className="text-gold-dark text-sm mb-2 uppercase tracking-wider">
                   Выбран пакет: <strong>{selectedPackageName}</strong>
                 </p>
               )}

@@ -149,7 +149,7 @@ export default function ContactsPage() {
                     <p className="text-text-dark text-lg font-medium group-hover:text-gold-primary transition-colors">
                       {item.value}
                     </p>
-                    <p className="text-text-light text-sm mt-1">{item.description}</p>
+                    <p className="text-text-muted text-sm mt-1">{item.description}</p>
                   </div>
                 </a>
               ))}
@@ -232,7 +232,7 @@ export default function ContactsPage() {
               >
                 Заказать звонок
               </button>
-              <p className="text-text-light text-xs text-center mt-3">
+              <p className="text-text-muted text-xs text-center mt-3">
                 Или напишите в WhatsApp / Telegram — ответим мгновенно
               </p>
             </div>

@@ -132,8 +132,8 @@ export default function PartnershipPricing() {
               Дополнительная печать:
             </p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-text-muted text-base">
-              {partnershipData.newbornExtras.map((extra, idx) => (
-                <li key={idx}>{extra}</li>
+              {partnershipData.newbornExtras.map((extra) => (
+                <li key={extra}>{extra}</li>
               ))}
             </ul>
           </div>

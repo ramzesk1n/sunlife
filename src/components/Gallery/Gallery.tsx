@@ -111,7 +111,7 @@ export default function Gallery() {
           >
             {images.map((img, i) => (
               <div
-                key={i}
+                key={img.src}
                 className="absolute inset-0 transition-opacity duration-500"
                 style={{ opacity: i === currentIndex ? 1 : 0 }}
               >
@@ -165,7 +165,7 @@ export default function Gallery() {
           <div className="mt-4 max-w-5xl mx-auto flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
             {images.map((img, i) => (
               <button
-                key={i}
+                key={img.src}
                 onClick={() => goTo(i)}
                 className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-all snap-start ${
                   i === currentIndex

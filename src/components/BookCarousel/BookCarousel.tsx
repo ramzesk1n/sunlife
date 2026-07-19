@@ -72,6 +72,9 @@ export default function BookCarousel({ bookImages, bookLabels, className = '' }:
         ref={scrollRef}
         className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 select-none"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        tabIndex={0}
+        role="region"
+        aria-label="Фотокниги — прокручиваемая галерея"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -82,7 +85,7 @@ export default function BookCarousel({ bookImages, bookLabels, className = '' }:
           const isActive = idx === activeIndex;
           return (
             <div
-              key={idx}
+              key={src}
               className="snap-center shrink-0 w-[55%] sm:w-[40%] md:w-[30%] lg:w-[25%] cursor-grab active:cursor-grabbing"
               onClick={() => scrollToIndex(idx)}
             >

@@ -191,7 +191,7 @@ export default function PartnershipTestimonial() {
         >
           {minzdravImages.map((src, idx) => (
             <div
-              key={idx}
+              key={src}
               className="relative aspect-[4/3] rounded-lg sm:rounded-xl overflow-hidden"
             >
               <img

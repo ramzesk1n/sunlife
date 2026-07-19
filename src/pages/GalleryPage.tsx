@@ -105,7 +105,7 @@ export default function GalleryPage() {
               >
                 {cat.label}
                 {cat.count !== undefined && (
-                  <span className="ml-2 text-xs opacity-70">
+                  <span className="ml-2 text-xs">
                     {cat.count}
                   </span>
                 )}
