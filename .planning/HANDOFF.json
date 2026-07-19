@@ -68,6 +68,12 @@
       "name": "Cookie banner delayed past load (LCP=h1 now), codeSplitting groups — framer-motion off critical path",
       "status": "done",
       "commit": "6a902c1"
+    },
+    {
+      "id": "todo-014",
+      "name": "Auto-dismissing ThankYouNote in forms + 404 in site layout",
+      "status": "done",
+      "commit": "3dc6724"
     }
   ],
   "remaining_tasks": [
