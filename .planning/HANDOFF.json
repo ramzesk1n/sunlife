@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-07-17T20:48:00.000Z",
+  "timestamp": "2026-07-19T17:10:00.000Z",
   "phase": null,
   "phase_name": null,
   "phase_dir": null,
@@ -32,6 +32,24 @@
       "name": "Schema.org JSON-LD",
       "status": "done",
       "commit": "a0167e0"
+    },
+    {
+      "id": "contacts-update",
+      "name": "Telegram/email/Max contacts, email form notifications, flat dist.zip",
+      "status": "done",
+      "commit": "e28e66e"
+    },
+    {
+      "id": "tooltips-terms-sitemap",
+      "name": "Desktop tooltips, Max in forms, /terms page, html/xml sitemap",
+      "status": "done",
+      "commit": "135317a"
+    },
+    {
+      "id": "footer-legal-links",
+      "name": "Footer: legal links moved to bottom strip, one line, text-xs",
+      "status": "done",
+      "commit": null
     }
   ],
   "remaining_tasks": [
@@ -81,7 +99,7 @@
   "human_actions_pending": [
     {
       "action": "Upload f:\\VIBECODING\\SUNLIFE\\sunlife\\dist.zip to sunlife-photo.ru root via FTP, then open https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy",
-      "context": "dist.zip is ~488 KB and contains dist/ folder with all built files except images/gallery (already on server). Includes todo-010 UX polish and todo-008 Schema.org JSON-LD.",
+      "context": "dist.zip is ~1.9 MB, FLAT structure (no dist/ wrapper — deploy.php replaces files correctly). Excludes images subfolders, admin/, fonts/, content/ (already on server). Includes all 2026-07-19 changes: new contacts, Max, /terms, /sitemap, sitemap.xml, footer legal strip.",
       "blocking": true
     }
   ],
@@ -103,6 +121,6 @@
     }
   ],
   "uncommitted_files": [],
-  "next_action": "Wait for user to complete manual deploy, then verify https://sunlife-photo.ru/ loads correctly. After that pick the next todo (recommended: todo-014 Thank-you/404, todo-011 Privacy policy, or todo-005 Analytics).",
-  "context_notes": "todo-010 and todo-008 are complete and pushed to GitHub. The build is clean (no lint/TS errors). dist.zip is ready. The only remaining step is human-driven deployment because credentials are not available. After deploy, the next todos are todo-014 (quick UX win), todo-011 (legal), and todo-005 (analytics/marketing)."
+  "next_action": "Upload dist.zip (~1.9 MB, flat structure) to sunlife-photo.ru root and run https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy. Then verify site. After that pick the next todo (recommended: todo-014 Thank-you/404, todo-011 Privacy policy, or todo-005 Analytics).",
+  "context_notes": "2026-07-19: contacts updated (telegram.me/roddomaphoto, 89279611561@mail.ru, Max links + icon), form submissions now also emailed via NOTIFY_EMAIL, desktop tooltips on social icons, Max added to form contact-method selectors, new pages /terms and /sitemap, public/sitemap.xml created, footer legal links moved to a single-line bottom strip (text-xs). dist.zip is now FLAT (no dist/ wrapper) per updated rule in DEPLOY-GUIDE.md. Build is clean, prerender covers 8 routes. Commits: e28e66e, 135317a (pushed). Footer change built but not yet committed."
 }

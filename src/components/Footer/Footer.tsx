@@ -83,15 +83,6 @@ export default function Footer() {
               <Link to="/partnership" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
                 Партнёрство
               </Link>
-              <Link to="/privacy" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
-                Политика конфиденциальности
-              </Link>
-              <Link to="/terms" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
-                Пользовательское соглашение
-              </Link>
-              <Link to="/sitemap" className="block text-text-muted hover:text-gold-primary text-base transition-colors uppercase tracking-wider">
-                Карта сайта
-              </Link>
             </nav>
           </div>
 
@@ -132,8 +123,19 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gold-primary/10 pt-6 text-center">
+          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-4">
+            <Link to="/privacy" className="text-text-light hover:text-gold-primary text-sm transition-colors">
+              Политика конфиденциальности
+            </Link>
+            <Link to="/terms" className="text-text-light hover:text-gold-primary text-sm transition-colors">
+              Пользовательское соглашение
+            </Link>
+            <Link to="/sitemap" className="text-text-light hover:text-gold-primary text-sm transition-colors">
+              Карта сайта
+            </Link>
+          </nav>
           <p className="text-text-light text-sm">
-            © 2025–2026 Студия дизайна Рамзеса Мифтахова. Все права защищены.
+            © 2025–2026 <a href="https://ramzes-it.ru/" target="_blank" rel="noopener noreferrer" className="hover:text-gold-primary transition-colors">Студия дизайна Рамзеса Мифтахова</a>. Все права защищены.
           </p>
         </div>
       </div>
