@@ -74,6 +74,12 @@
       "name": "Auto-dismissing ThankYouNote in forms + 404 in site layout",
       "status": "done",
       "commit": "3dc6724"
+    },
+    {
+      "id": "code-review-fixes",
+      "name": "Code review (typescript-react-reviewer): CRITICAL swapped form handlers + 21 HIGH fixes, dead code removal",
+      "status": "done",
+      "commit": "44bbea0"
     }
   ],
   "remaining_tasks": [
