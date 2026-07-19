@@ -60,6 +60,14 @@
    - HIGH (21 пункт): ErrorBoundary вокруг Routes, убран key=pathname (remount при навигации), meta для 404, cleanup таймеров (Hero/Toast), AbortController в fetch форм и RussiaMap, единая проверка success в PartnershipPopupForm, marquee offset в useRef (TeamSlider/PartnershipTeam — прыжки при hover), derived state в Lightbox, GalleryPage useMemo+observer, типизация any (Testimonials/PartnershipGallery/Examples), getTodayDate локальная дата (был UTC-сдвиг), Esc+overflow-lock в ContactForm-модалке
    - Мёртвый код: удалены FloatingCallBubble, PartnershipTestimonials, footerRef; в Footer иконка «Позвонить» больше не whatsapp.svg (новый phone.svg); SearchAction убран из schema.org (поиск не реализован)
 
+10. ✅ **todo-012: a11y-аудит (axe-core + клавиатура)**
+   - axe-core (WCAG 2.0/2.1 AA, mobile viewport, 5 страниц): были — nested-interactive (#russia-map), scrollable-region-focusable (BookCarousel), color-contrast (/price, /galery, /contacts)
+   - Исправлено: svg role img→group, BookCarousel tabIndex+role=region, цены и примечания → gold-dark/gold-darker, бейджи без opacity-70, text-light→text-muted в Contacts
+   - Итог: **0 нарушений на всех 5 страницах**
+   - Клавиатура: 25 табов с видимым фокусом, модалка держит фокус внутри (focus trap ок)
+   - key={idx} → стабильные ключи (img.src/extra) в Gallery, BookCarousel, PartnershipTestimonial, PartnershipPricing
+   - Скрипты: `scripts/audit-a11y.cjs` (axe по страницам), `scripts/audit-keyboard.cjs` (таб-ордер + фокус)
+
 ## Предыдущая сессия: 2026-07-17
 
 ### Что сделано сегодня (2026-07-17)

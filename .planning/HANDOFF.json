@@ -80,6 +80,12 @@
       "name": "Code review (typescript-react-reviewer): CRITICAL swapped form handlers + 21 HIGH fixes, dead code removal",
       "status": "done",
       "commit": "44bbea0"
+    },
+    {
+      "id": "todo-012",
+      "name": "a11y audit (axe + keyboard): 0 violations, map role, scrollable region, contrast, stable keys",
+      "status": "done",
+      "commit": "748d6a3"
     }
   ],
   "remaining_tasks": [
