@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const SVG_URL = '/images/russia-map.svg';
+
+const pxToRem = (px: number) => `${px / 16}rem`;
 
 const CITY_LABELS: Record<string, string> = {
   ufa: 'Уфа - Республика Башкортостан',
@@ -36,34 +38,32 @@ export default function RussiaMap() {
   const activeRegionRef = useRef<string | null>(null);
 
   useEffect(() => {
-    let isCancelled = false;
+    const controller = new AbortController();
 
     const loadSvg = async () => {
       try {
-        const response = await fetch(SVG_URL);
+        const response = await fetch(SVG_URL, { signal: controller.signal });
         if (!response.ok) throw new Error('SVG load failed');
         const svgText = await response.text();
-        if (isCancelled) return;
 
         setSvgHtml(svgText);
       } catch (err) {
-        if (!isCancelled) {
-          setHasError(true);
-          setIsLoading(false);
-          // eslint-disable-next-line no-console
-          console.error('Map error:', err);
-        }
+        if ((err as Error).name === 'AbortError') return;
+        setHasError(true);
+        setIsLoading(false);
+        // eslint-disable-next-line no-console
+        console.error('Map error:', err);
       }
     };
 
     loadSvg();
 
     return () => {
-      isCancelled = true;
+      controller.abort();
     };
   }, []);
 
-  const setupSvg = (svg: SVGSVGElement) => {
+  const setupSvg = useCallback((svg: SVGSVGElement) => {
     svgRef.current = svg;
     svg.setAttribute('width', '100%');
     svg.removeAttribute('height');
@@ -71,11 +71,9 @@ export default function RussiaMap() {
     svg.style.height = 'auto';
     svg.setAttribute('role', 'img');
     svg.setAttribute('aria-label', 'Карта городов работы фотослужбы САН ЛАЙФ');
-  };
+  }, []);
 
-  const pxToRem = (px: number) => `${px / 16}rem`;
-
-  const showTooltip = (dotEl: Element, city: string) => {
+  const showTooltip = useCallback((dotEl: Element, city: string) => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
@@ -99,27 +97,27 @@ export default function RussiaMap() {
       left: pxToRem(left),
       top: pxToRem(top),
     });
-  };
+  }, []);
 
-  const hideTooltip = () => {
+  const hideTooltip = useCallback(() => {
     setTooltip((prev) => ({ ...prev, visible: false }));
-  };
+  }, []);
 
-  const highlightRegion = (svg: SVGSVGElement, region: string | undefined) => {
+  const highlightRegion = useCallback((svg: SVGSVGElement, region: string | undefined) => {
     svg.querySelectorAll('.map-region').forEach((el) => {
       el.classList.toggle('is-active', el.getAttribute('data-region') === region);
     });
-  };
+  }, []);
 
-  const resetHighlight = (svg: SVGSVGElement) => {
+  const resetHighlight = useCallback((svg: SVGSVGElement) => {
     svg.querySelectorAll('.map-region.is-active').forEach((el) => {
       if (el.getAttribute('data-region') !== activeRegionRef.current) {
         el.classList.remove('is-active');
       }
     });
-  };
+  }, []);
 
-  const resetAll = (clearTooltip = true) => {
+  const resetAll = useCallback((clearTooltip = true) => {
     activeCityRef.current = null;
     activeRegionRef.current = null;
     const svg = svgRef.current;
@@ -127,9 +125,9 @@ export default function RussiaMap() {
       svg.querySelectorAll('.is-active').forEach((el) => el.classList.remove('is-active'));
     }
     if (clearTooltip) hideTooltip();
-  };
+  }, [hideTooltip]);
 
-  const initInteractivity = (svg: SVGSVGElement) => {
+  const initInteractivity = useCallback((svg: SVGSVGElement) => {
     const handlers = new WeakMap<Element, { enter: () => void; leave: () => void; click: (e: Event) => void; keydown: (e: Event) => void }>();
 
     svg.querySelectorAll('.map-city-dot').forEach((dot) => {
@@ -203,9 +201,9 @@ export default function RussiaMap() {
       });
       svg.removeEventListener('click', onSvgClick);
     };
-  };
+  }, [highlightRegion, showTooltip, resetHighlight, hideTooltip, resetAll]);
 
-  const bindInteractivity = () => {
+  const bindInteractivity = useCallback(() => {
     if (!wrapperRef.current) return undefined;
     const svg = wrapperRef.current.querySelector('svg');
     if (!svg) return undefined;
@@ -213,18 +211,13 @@ export default function RussiaMap() {
     const cleanup = initInteractivity(svg);
     setIsLoading(false);
     return cleanup;
-  };
-
-  useEffect(() => {
-    const cleanup = bindInteractivity();
-    return cleanup;
-  }, [svgHtml]);
+  }, [setupSvg, initInteractivity]);
 
   useEffect(() => {
     if (!svgHtml) return undefined;
     const cleanup = bindInteractivity();
     return cleanup;
-  }, []);
+  }, [svgHtml, bindInteractivity]);
 
   const svgHtmlMemo = useMemo(() => ({ __html: svgHtml }), [svgHtml]);
 

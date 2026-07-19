@@ -37,6 +37,30 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
   const { handlePhoneChange } = usePhoneMask();
   const { showToast } = useToast();
   const todayDate = getTodayDate();
+  const abortRef = useRef<AbortController | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      abortRef.current?.abort();
+    };
+  }, []);
+
+  // Модальный вариант: Esc-закрытие и блокировка прокрутки body
+  useEffect(() => {
+    if (isOpen !== true) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && onClose) onClose();
+    };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (prefillPackage) {
@@ -63,18 +87,23 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setStatus('loading');
     setErrorMessage('');
-    
+
     try {
       const response = await fetch('/api/send-form.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        signal: controller.signal,
       });
-      
+
       const data = await response.json();
-      
+      if (!mountedRef.current) return;
+
       if (data.success) {
         setStatus('success');
       } else {
@@ -84,6 +113,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
         showToast(msg, 'error');
       }
     } catch (err) {
+      if ((err as Error).name === 'AbortError' || !mountedRef.current) return;
       setStatus('error');
       const msg = 'Ошибка сети. Проверьте подключение и попробуйте снова.';
       setErrorMessage(msg);
@@ -156,9 +186,9 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
               id={inline ? 'inline-name' : 'name'}
               name="name"
               value={formData.name}
-              onChange={handlePhoneInput}
+              onChange={handleChange}
               required
-              min={todayDate}
+              className={inputClasses}
               placeholder="Ваше имя"
             />
           </div>
@@ -175,7 +205,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
               id={inline ? 'inline-phone' : 'phone'}
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
+              onChange={handlePhoneInput}
               required
               className={inputClasses}
               placeholder="+7 (927) 936-36-06"
@@ -234,6 +264,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
               name="date"
               value={formData.date}
               onChange={handleChange}
+              min={todayDate}
               className={inputClasses}
             />
           </div>

@@ -6,6 +6,15 @@ const VISIBLE_COUNT_DESKTOP = 3;
 const VISIBLE_COUNT_MOBILE = 1;
 const SWIPE_THRESHOLD = 50;
 
+interface Review {
+  id: string;
+  author: string;
+  text: string;
+  date?: string;
+  avatar?: string;
+  city?: string;
+}
+
 const slideVariants = {
   enter: (dir: number) => ({
     x: dir > 0 ? '18.75rem' : '-18.75rem',
@@ -29,7 +38,7 @@ export default function Testimonials() {
   const shouldReduceMotion = useReducedMotion();
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState(0);
-  const reviews = reviewsData.reviews;
+  const reviews: Review[] = reviewsData.reviews;
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -56,6 +65,12 @@ export default function Testimonials() {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      // Не перехватываем стрелки, когда фокус в поле ввода
+      const active = document.activeElement;
+      if (active && ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName)) return;
+      // Листаем только когда секция во viewport
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect || rect.bottom < 0 || rect.top > window.innerHeight) return;
       if (e.key === 'ArrowRight') nextPage();
       if (e.key === 'ArrowLeft') prevPage();
     };
@@ -169,8 +184,8 @@ export default function Testimonials() {
                         <h3 className="font-display font-light text-gold-dark text-base uppercase tracking-wider truncate">
                           {review.author}
                         </h3>
-                        {(review as any).city && (
-                          <p className="text-sm text-text-muted">{(review as any).city}</p>
+                        {review.city && (
+                          <p className="text-sm text-text-muted">{review.city}</p>
                         )}
                       </div>
                     </div>

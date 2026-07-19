@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface ToastItem {
   id: string;
@@ -42,17 +42,19 @@ const styles = {
 
 export default function Toast({ toast, onRemove }: ToastProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const removeTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     const enterTimer = requestAnimationFrame(() => setIsVisible(true));
     const removeTimer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(() => onRemove(toast.id), 300);
+      removeTimeoutRef.current = setTimeout(() => onRemove(toast.id), 300);
     }, 4000);
 
     return () => {
       cancelAnimationFrame(enterTimer);
       clearTimeout(removeTimer);
+      if (removeTimeoutRef.current !== undefined) clearTimeout(removeTimeoutRef.current);
     };
   }, [toast.id, onRemove]);
 
@@ -69,7 +71,7 @@ export default function Toast({ toast, onRemove }: ToastProps) {
         type="button"
         onClick={() => {
           setIsVisible(false);
-          setTimeout(() => onRemove(toast.id), 300);
+          removeTimeoutRef.current = setTimeout(() => onRemove(toast.id), 300);
         }}
         className="ml-auto flex-shrink-0 p-1 rounded-lg hover:bg-black/5 transition-colors"
         aria-label="Закрыть"

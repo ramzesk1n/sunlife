@@ -36,6 +36,16 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
   const { handlePhoneChange } = usePhoneMask();
   const { showToast } = useToast();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const abortRef = useRef<AbortController | null>(null);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      abortRef.current?.abort();
+    };
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -72,6 +82,9 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setStatus('loading');
 
     try {
@@ -82,15 +95,20 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
           ...formData,
           formType: 'partnership',
         }),
+        signal: controller.signal,
       });
 
-      if (res.ok) {
+      const data = await res.json().catch(() => null);
+      if (!mountedRef.current) return;
+
+      if (res.ok && data?.success === true) {
         setStatus('success');
       } else {
         setStatus('error');
         showToast('Не удалось отправить заявку. Попробуйте позже.', 'error');
       }
-    } catch {
+    } catch (err) {
+      if ((err as Error).name === 'AbortError' || !mountedRef.current) return;
       setStatus('error');
       showToast('Не удалось отправить заявку. Попробуйте позже.', 'error');
     }
@@ -161,7 +179,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                     type="text"
                     name="name"
                     value={formData.name}
-                    onChange={handlePhoneInput}
+                    onChange={handleChange}
                     required
                     className={inputClasses}
                     placeholder="ФИО глав. врача"
@@ -176,7 +194,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
                     type="tel"
                     name="phone"
                     value={formData.phone}
-                    onChange={handleChange}
+                    onChange={handlePhoneInput}
                     required
                     className={inputClasses}
                     placeholder="+7 (___) ___-__-__"

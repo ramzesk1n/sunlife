@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
 import galleryData from '../content/gallery-portfolio.json';
@@ -20,11 +20,22 @@ export default function GalleryPage() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [visibleImages, setVisibleImages] = useState<Set<number>>(new Set());
 
-  const categories = [{ id: 'all', label: 'Все' }, ...galleryData.categories];
+  const categories: { id: string; label: string; count?: number }[] = [
+    { id: 'all', label: 'Все' },
+    ...galleryData.categories,
+  ];
 
-  const filteredImages: typeof galleryData.images = activeCategory === 'all'
-    ? galleryData.images
-    : galleryData.images.filter(img => img.category === activeCategory);
+  const filteredImages = useMemo<typeof galleryData.images>(
+    () => activeCategory === 'all'
+      ? galleryData.images
+      : galleryData.images.filter(img => img.category === activeCategory),
+    [activeCategory]
+  );
+
+  const handleCategoryChange = (id: string) => {
+    setActiveCategory(id);
+    setVisibleImages(new Set());
+  };
 
   const openLightbox = useCallback((index: number) => {
     setLightboxIndex(index);
@@ -43,6 +54,7 @@ export default function GalleryPage() {
           if (entry.isIntersecting) {
             const idx = parseInt(entry.target.getAttribute('data-index') || '0');
             setVisibleImages(prev => new Set(prev).add(idx));
+            observer.unobserve(entry.target);
           }
         });
       },
@@ -84,7 +96,7 @@ export default function GalleryPage() {
             {categories.map(cat => (
               <button
                 key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+                onClick={() => handleCategoryChange(cat.id)}
                 className={`px-5 py-2.5 rounded-xl font-display text-sm uppercase tracking-wider transition-all duration-300 ${
                   activeCategory === cat.id
                     ? 'bg-gold-dark text-cream shadow-gold'
@@ -92,9 +104,9 @@ export default function GalleryPage() {
                 }`}
               >
                 {cat.label}
-                {cat.id !== 'all' && 'count' in cat && (
+                {cat.count !== undefined && (
                   <span className="ml-2 text-xs opacity-70">
-                    {(cat as any).count}
+                    {cat.count}
                   </span>
                 )}
               </button>
@@ -117,7 +129,7 @@ export default function GalleryPage() {
                 key={img.src}
                 data-index={i}
                 onClick={() => openLightbox(i)}
-                className={`gallery-item mb-4 w-full rounded-xl overflow-hidden bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-500 cursor-pointer group ${
+                className={`gallery-item relative mb-4 w-full rounded-xl overflow-hidden bg-cream-2 border border-gold-primary/10 shadow-card hover:shadow-glass transition-all duration-500 cursor-pointer group ${
                   visibleImages.has(i) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
                 style={{ willChange: 'transform, opacity' }}

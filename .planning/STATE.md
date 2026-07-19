@@ -54,6 +54,12 @@
    - Интегрирован в ContactForm и PartnershipPopupForm (заменил статичные success-блоки; success-toast убран, error-toast оставлен)
    - 404 обёрнута в Header/Footer/MobileBottomBar, отступы под фиксированную шапку
 
+9. ✅ **Код-ревью (typescript-react-reviewer skill) + фиксы**
+   - Ревью 4 параллельными агентами по чек-листу скилла, ~30 находок
+   - CRITICAL: в обеих формах были перепутаны обработчики — поле имени использовало телефонную маску, телефон был без маски; `min={today}` стоял на поле имени вместо даты (баг был на проде!)
+   - HIGH (21 пункт): ErrorBoundary вокруг Routes, убран key=pathname (remount при навигации), meta для 404, cleanup таймеров (Hero/Toast), AbortController в fetch форм и RussiaMap, единая проверка success в PartnershipPopupForm, marquee offset в useRef (TeamSlider/PartnershipTeam — прыжки при hover), derived state в Lightbox, GalleryPage useMemo+observer, типизация any (Testimonials/PartnershipGallery/Examples), getTodayDate локальная дата (был UTC-сдвиг), Esc+overflow-lock в ContactForm-модалке
+   - Мёртвый код: удалены FloatingCallBubble, PartnershipTestimonials, footerRef; в Footer иконка «Позвонить» больше не whatsapp.svg (новый phone.svg); SearchAction убран из schema.org (поиск не реализован)
+
 ## Предыдущая сессия: 2026-07-17
 
 ### Что сделано сегодня (2026-07-17)

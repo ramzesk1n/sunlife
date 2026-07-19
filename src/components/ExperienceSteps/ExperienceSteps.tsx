@@ -29,9 +29,11 @@ export default function ExperienceSteps() {
 
     // Desktop: pin + scrub stacking
     mm.add('(min-width: 64rem)', () => {
-      const cards = gsap.utils.toArray<HTMLElement>('.about-card');
-      const container = sectionRef.current?.querySelector('.about-cards-container');
-      const pinned = sectionRef.current?.querySelector('.about-cards-pinned');
+      const section = sectionRef.current;
+      if (!section) return;
+      const cards = Array.from(section.querySelectorAll<HTMLElement>('.about-card'));
+      const container = section.querySelector('.about-cards-container');
+      const pinned = section.querySelector('.about-cards-pinned');
 
       if (!container || !pinned || cards.length === 0) return;
 

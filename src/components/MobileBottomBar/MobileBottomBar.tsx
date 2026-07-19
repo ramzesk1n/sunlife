@@ -31,15 +31,13 @@ export default function MobileBottomBar() {
       const heroHeight = window.innerHeight * 0.85;
       const shouldShow = window.scrollY > heroHeight;
       setIsVisible(shouldShow);
-      if (shouldShow && !isBarRendered) {
-        setIsBarRendered(true);
-      }
+      setIsBarRendered((prev) => prev || shouldShow);
     };
 
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isBarRendered]);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

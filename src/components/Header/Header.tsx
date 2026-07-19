@@ -61,6 +61,7 @@ export default function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.25);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

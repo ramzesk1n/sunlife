@@ -18,15 +18,20 @@ export default function Hero() {
 
   useEffect(() => {
     // Trigger entrance animations on mount
-    if (!prefersReducedMotion) {
-      requestAnimationFrame(() => {
-        setIsTextVisible(true);
-        setTimeout(() => setIsImageVisible(true), 200);
-      });
-    } else {
+    if (prefersReducedMotion) {
       setIsTextVisible(true);
       setIsImageVisible(true);
+      return;
     }
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const rafId = requestAnimationFrame(() => {
+      setIsTextVisible(true);
+      timeoutId = setTimeout(() => setIsImageVisible(true), 200);
+    });
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {

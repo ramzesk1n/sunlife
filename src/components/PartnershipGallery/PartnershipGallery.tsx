@@ -26,7 +26,19 @@ const itemVariants = {
 
 const PLACEHOLDER_REGEX = /placeholder-\d+\.(jpg|jpeg|png|webp)/i;
 
-function isValidPhoto(photo: { src?: string; alt?: string }) {
+interface Photo {
+  src: string;
+  alt: string;
+}
+
+interface Project {
+  id: string;
+  title: string;
+  description?: string;
+  photos: Photo[];
+}
+
+function isValidPhoto(photo: Photo) {
   return photo?.src && !PLACEHOLDER_REGEX.test(photo.src);
 }
 
@@ -48,12 +60,12 @@ export default function PartnershipGallery() {
     setLightboxOpen(false);
   }, []);
 
-  const projects = ((partnershipData as any).projects || [])
-    .map((project: any) => ({
+  const projects = ((partnershipData.projects || []) as Project[])
+    .map((project) => ({
       ...project,
       photos: (project.photos || []).filter(isValidPhoto),
     }))
-    .filter((project: any) => project.photos.length > 0);
+    .filter((project) => project.photos.length > 0);
 
   return (
     <section
@@ -89,7 +101,7 @@ export default function PartnershipGallery() {
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
           >
-            {projects.map((project: any) => {
+            {projects.map((project) => {
               const photos = project.photos;
               const cover = photos[0]?.src;
               const photoCount = photos.length;

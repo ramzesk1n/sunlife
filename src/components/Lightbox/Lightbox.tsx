@@ -15,10 +15,16 @@ interface LightboxProps {
 export default function Lightbox({ images, open, index, onClose }: LightboxProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [cur, setCur] = useState(index);
+  const [prevIndex, setPrevIndex] = useState(index);
+
+  // Синхронизация с prop index прямо во время рендера (без эффекта)
+  if (index !== prevIndex) {
+    setPrevIndex(index);
+    setCur(index);
+  }
 
   useEffect(() => {
     if (open) {
-      setCur(index);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -26,7 +32,7 @@ export default function Lightbox({ images, open, index, onClose }: LightboxProps
     return () => {
       document.body.style.overflow = '';
     };
-  }, [open, index]);
+  }, [open]);
 
   const go = useCallback(
     (i: number) => {

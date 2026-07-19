@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import siteData from '../../content/site.json';
 
@@ -6,7 +5,7 @@ const socialLinks = [
   {
     href: siteData.phoneHref,
     label: 'Позвонить',
-    src: '/images/whatsapp.svg',
+    src: '/images/phone.svg',
     tooltip: 'Позвонить',
   },
   {
@@ -36,11 +35,8 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const footerRef = useRef<HTMLElement>(null);
-
   return (
     <footer
-      ref={footerRef}
       className="bg-cream-2 border-t border-gold-primary/10 py-16 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">

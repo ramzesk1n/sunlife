@@ -13,6 +13,7 @@ import InlineCta from './components/InlineCta/InlineCta';
 import ToastProvider from './components/Toast/ToastProvider';
 import BackToTop from './components/BackToTop/BackToTop';
 import SchemaOrg from './components/SchemaOrg/SchemaOrg';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { SkeletonCard } from './components/Skeleton/Skeleton';
 
 /* Lazy loaded components for code splitting */
@@ -271,11 +272,20 @@ function ContactsPageRoute() {
 }
 
 /* SEO updater */
+const notFoundMeta = {
+  title: 'Страница не найдена | САН ЛАЙФ',
+  description: 'Запрашиваемая страница не существует. Вернитесь на главную фотослужбы САН ЛАЙФ и выберите нужный раздел.',
+  ogTitle: 'Страница не найдена | САН ЛАЙФ',
+  ogDescription: 'Запрашиваемая страница не существует.',
+  ogImage: metaData.siteMeta.defaultOgImage,
+  canonical: '/',
+};
+
 function SeoUpdater() {
   const location = useLocation();
 
   useEffect(() => {
-    const meta = metaData.pages.find((p) => p.path === location.pathname) ?? metaData.pages[0];
+    const meta = metaData.pages.find((p) => p.path === location.pathname) ?? notFoundMeta;
     document.title = meta.title;
 
     const updateMeta = (name: string, content: string) => {
@@ -312,7 +322,8 @@ export default function App() {
       <SeoUpdater />
       <SchemaOrg pathname={location.pathname} />
       <CookieBanner />
-      <Routes location={location} key={location.pathname}>
+      <ErrorBoundary>
+        <Routes location={location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/price" element={<PricePage />} />
         <Route path="/galery" element={<GalleryPageRoute />} />
@@ -331,7 +342,8 @@ export default function App() {
           <MobileBottomBar />
         </>
       } />
-      </Routes>
+        </Routes>
+      </ErrorBoundary>
       <BackToTop />
     </ToastProvider>
   );

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import partnershipData from '../../content/partnership.json';
 
@@ -7,7 +7,8 @@ export default function TeamSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
-  const [isPaused, setIsPaused] = useState(false);
+  const isPausedRef = useRef(false);
+  const offsetRef = useRef(0);
   const team = partnershipData.team;
 
   useEffect(() => {
@@ -15,12 +16,11 @@ export default function TeamSlider() {
 
     const track = trackRef.current;
     let animationId: number;
-    let offset = 0;
     const speed = 0.4;
 
     const animate = () => {
-      if (!isPaused) {
-        offset -= speed;
+      if (!isPausedRef.current) {
+        offsetRef.current -= speed;
         const firstChild = track.firstElementChild as HTMLElement | null;
         if (firstChild) {
           const itemWidth = firstChild.offsetWidth;
@@ -28,18 +28,18 @@ export default function TeamSlider() {
           const totalItemWidth = itemWidth + gap;
           const halfWidth = (team.length * totalItemWidth);
 
-          if (Math.abs(offset) >= halfWidth) {
-            offset = 0;
+          if (Math.abs(offsetRef.current) >= halfWidth) {
+            offsetRef.current = 0;
           }
         }
-        track.style.transform = `translateX(${offset}px)`;
+        track.style.transform = `translateX(${offsetRef.current}px)`;
       }
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
-  }, [isPaused, shouldReduceMotion, team.length]);
+  }, [shouldReduceMotion, team.length]);
 
   const duplicatedTeam = [...team, ...team];
 
@@ -71,10 +71,10 @@ export default function TeamSlider() {
 
       <div
         className="relative"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onFocus={() => setIsPaused(true)}
-        onBlur={() => setIsPaused(false)}
+        onMouseEnter={() => { isPausedRef.current = true; }}
+        onMouseLeave={() => { isPausedRef.current = false; }}
+        onFocus={() => { isPausedRef.current = true; }}
+        onBlur={() => { isPausedRef.current = false; }}
       >
         {/* fade edges */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-cream-2 to-transparent z-10" />
