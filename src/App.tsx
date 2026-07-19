@@ -322,9 +322,14 @@ export default function App() {
         <Route path="/terms" element={<TermsPageWrapper />} />
         <Route path="/sitemap" element={<SitemapPageWrapper />} />
         <Route path="*" element={
-        <Suspense fallback={<PageLoader />}>
-          <NotFoundPage />
-        </Suspense>
+        <>
+          <Header />
+          <Suspense fallback={<PageLoader />}>
+            <NotFoundPage />
+          </Suspense>
+          <Footer />
+          <MobileBottomBar />
+        </>
       } />
       </Routes>
       <BackToTop />

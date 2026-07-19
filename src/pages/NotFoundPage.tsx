@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function NotFoundPage() {
   return (
-    <main className="min-h-screen bg-cream flex items-center justify-center px-4">
+    <main className="min-h-[70vh] bg-cream flex items-center justify-center px-4 pt-32 pb-16">
       <div className="text-center max-w-lg">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

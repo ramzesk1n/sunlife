@@ -1,7 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { usePhoneMask, getTodayDate } from '../../hooks/usePhoneMask';
 import { useToast } from '../Toast/ToastProvider';
+import ThankYouNote from '../ThankYouNote/ThankYouNote';
 
 interface FormData {
   name: string;
@@ -76,17 +77,6 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
       
       if (data.success) {
         setStatus('success');
-        showToast('Заявка отправлена! Мы свяжемся с вами в ближайшее время.', 'success');
-        setFormData({
-          name: '',
-          phone: '',
-          contactMethod: 'whatsapp',
-          hospital: '',
-          date: '',
-          consent: false,
-          package: '',
-        });
-        if (onClose) setTimeout(onClose, 1500);
       } else {
         setStatus('error');
         const msg = data.errors?.join(', ') || data.error || 'Ошибка отправки';
@@ -101,6 +91,20 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
     }
   };
 
+  const handleThankYouDone = useCallback(() => {
+    setFormData({
+      name: '',
+      phone: '',
+      contactMethod: 'whatsapp',
+      hospital: '',
+      date: '',
+      consent: false,
+      package: '',
+    });
+    setStatus('idle');
+    if (onClose) onClose();
+  }, [onClose]);
+
   const labelClasses = 'block text-sm font-display font-light text-gold-dark mb-1';
   const inputClasses =
     'w-full px-3 py-2.5 rounded-lg border border-gold-primary/20 bg-cream text-text-dark placeholder-text-light text-sm focus:border-gold-primary focus:ring-1 focus:ring-gold-primary/30 transition-colors';
@@ -108,14 +112,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
   const formContent = (
     <>
       {status === 'success' ? (
-        <div className="glass rounded-2xl p-8 text-center">
-          <p className="font-display text-2xl text-gold-primary-80 mb-2 uppercase tracking-wider">
-            Спасибо! Ваша заявка получена!
-          </p>
-          <p className="text-text-muted text-base">
-            Мы свяжемся с вами в ближайшее время.
-          </p>
-        </div>
+        <ThankYouNote onDone={handleThankYouDone} />
       ) : (
         <form
           onSubmit={handleSubmit}
