@@ -6,6 +6,9 @@ import stepsData from '../../content/steps.json';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Reduce forced reflows from ScrollTrigger resize handling on mobile
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 const prefersReducedMotionGlobal =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;

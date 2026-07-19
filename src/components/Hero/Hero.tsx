@@ -1,9 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ContactForm from '../ContactForm/ContactForm';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const prefersReducedMotion =
   typeof window !== 'undefined' &&
@@ -35,38 +31,29 @@ export default function Hero() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    const image = imageRef.current;
+    if (!section || !image || prefersReducedMotion) return;
 
-    let ctx: gsap.Context | null = null;
+    // Parallax via rAF scroll handler (no GSAP on critical path)
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      const progress = Math.min(Math.max(-rect.top / rect.height, 0), 1);
+      image.style.transform = `translateY(${progress * 15}%)`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !prefersReducedMotion) {
-          ctx = gsap.context(() => {
-            if (imageRef.current) {
-              gsap.to(imageRef.current, {
-                yPercent: 15,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: section,
-                  start: 'top top',
-                  end: 'bottom top',
-                  scrub: true,
-                },
-              });
-            }
-          }, section);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(section);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
 
     return () => {
-      observer.disconnect();
-      if (ctx) ctx.revert();
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      image.style.transform = '';
     };
   }, []);
 

@@ -37,6 +37,12 @@
    - Скиллы установлены: vercel-react-best-practices, typescript-react-reviewer, pagespeed-insights
    - Осталось: LCP ~6s, GSAP reflow/lazy-load (todo-009), проверка CLS на live после деплоя
 
+6. ✅ **todo-009 (часть 1): GSAP убран с критического пути**
+   - Hero: GSAP-параллакс → rAF scroll-handler (transform), gsap теперь lazy вместе с ExperienceSteps
+   - ExperienceSteps: `ScrollTrigger.config({ ignoreMobileResize: true })`
+   - Метрики (mobile, локально): perf 25→54, bootup 2.7→1.1s, TBT 2390→250ms, FCP 3.5→1.9s, SpeedIndex 5.6→2.6s
+   - Осталось: LCP-элемент = текст cookie-баннера (задержать показ после load), framer-motion eager chunk (manualChunks), проверка на live
+
 ## Предыдущая сессия: 2026-07-17
 
 ### Что сделано сегодня (2026-07-17)
