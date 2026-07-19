@@ -47,9 +47,9 @@
     },
     {
       "id": "footer-legal-links",
-      "name": "Footer: legal links moved to bottom strip, one line, text-xs",
+      "name": "Footer: legal links moved to bottom strip, one line, text-sm; ramzes-it.ru credit link",
       "status": "done",
-      "commit": null
+      "commit": "c8bb755"
     }
   ],
   "remaining_tasks": [
