@@ -24,6 +24,7 @@ const Testimonials = lazy(() => import('./components/Testimonials/Testimonials')
 const FAQ = lazy(() => import('./components/FAQ/FAQ'));
 const TeamSlider = lazy(() => import('./components/TeamSlider/TeamSlider'));
 const Geography = lazy(() => import('./components/Geography/Geography'));
+const NewbornPhotos = lazy(() => import('./components/NewbornPhotos/NewbornPhotos'));
 
 const PartnershipHero = lazy(() => import('./components/PartnershipHero/PartnershipHero'));
 const PartnershipAbout = lazy(() => import('./components/PartnershipAbout/PartnershipAbout'));
@@ -131,6 +132,16 @@ function PricePage() {
         <Suspense fallback={<SectionSkeleton count={4} />}>
           <PricingCards />
         </Suspense>
+        <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
+          <div className="max-w-7xl mx-auto">
+            <Suspense fallback={<SectionSkeleton count={1} />}>
+              <NewbornPhotos
+                title="Фотосессия Ньюборн в палате роддома"
+                subtitle="Примеры нашей работы с новорождёнными"
+              />
+            </Suspense>
+          </div>
+        </section>
         <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
           <div className="max-w-4xl mx-auto">
             <InlineCta
