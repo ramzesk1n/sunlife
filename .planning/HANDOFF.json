@@ -116,6 +116,12 @@
       "name": "Before/After renamed to 'Ремонт помещений', Geography section (custom title) added to /partnership before pricing",
       "status": "done",
       "commit": "176afe9"
+    },
+    {
+      "id": "content-edits-2",
+      "name": "Step title 'Индивидуальный подход'; partnership reorder: social projects after FAQ, team last",
+      "status": "done",
+      "commit": "d9b323f"
     }
   ],
   "remaining_tasks": [
