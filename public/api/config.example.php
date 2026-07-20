@@ -12,8 +12,16 @@ const CHAT_ID = 'YOUR_CHAT_ID_HERE';
 
 // Proxy for api.telegram.org (if the host can't reach it directly).
 // Examples: 'socks5h://user:pass@host:port' or 'http://user:pass@host:port'
-// Empty string = direct connection (with direct retry after proxy failure).
+// Empty string = direct connection.
+// TG_PROXIES: pool of proxies — every 30 min the handler races a getMe request
+// through all of them + direct connection and uses the fastest working one.
+// If a proxy stops answering, a throttled email alert goes to NOTIFY_EMAIL.
 const TG_PROXY = '';
+const TG_PROXIES = [
+    // 'socks5h://user:pass@host1:port',
+    // 'socks5h://user:pass@host2:port',
+    // 'http://user:pass@host3:port',
+];
 
 // SMTP for form notifications (empty SMTP_HOST = fallback to PHP mail()).
 // For mail.ru use smtp.mail.ru:465 and an APP password

@@ -32,6 +32,12 @@ const RATE_LIMIT_SECONDS = 60;
 const DAILY_LIMIT = 10;
 const MIN_FILL_MS = 3000; // submissions faster than 3s are bots
 
+// Proxy management
+const PROXY_CACHE_FILE = __DIR__ . '/../.proxy_cache.json';
+const PROXY_CACHE_TTL = 1800;        // re-race proxies every 30 min
+const PROXY_CHECK_TIMEOUT = 6;       // getMe race timeout per candidate
+const PROXY_NOTIFY_THROTTLE = 21600; // max 1 "proxy down" email per 6h per proxy
+
 // Rate limiting: 60s between submissions + daily cap per IP
 function checkRateLimit(): bool {
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
@@ -102,26 +108,154 @@ function containsUrl(string $value): bool {
     return (bool) preg_match('~https?://|www\.~i', $value);
 }
 
-// === Channel: Telegram (proxy with direct fallback) ===
+// === Channel: Telegram (proxy pool with health checks + notifications) ===
 
-function telegramRequest(string $url, array $postData, string $proxy): array {
+// All configured proxies (TG_PROXIES array + legacy TG_PROXY string)
+function proxyCandidates(): array {
+    $list = [];
+    if (defined('TG_PROXIES') && is_array(TG_PROXIES)) {
+        $list = TG_PROXIES;
+    }
+    if (defined('TG_PROXY') && TG_PROXY !== '') {
+        array_unshift($list, TG_PROXY);
+    }
+    return array_values(array_unique(array_filter($list, 'is_string')));
+}
+
+function loadProxyCache(): array {
+    if (file_exists(PROXY_CACHE_FILE)) {
+        $data = json_decode(file_get_contents(PROXY_CACHE_FILE), true);
+        if (is_array($data)) {
+            return $data + ['checked_at' => 0, 'fails' => []];
+        }
+    }
+    return ['checked_at' => 0, 'fails' => []];
+}
+
+function saveProxyCache(array $cache): void {
+    file_put_contents(PROXY_CACHE_FILE, json_encode($cache), LOCK_EX);
+}
+
+function applyProxy($ch, string $proxy): void {
+    if ($proxy === '') {
+        return;
+    }
+    curl_setopt($ch, CURLOPT_PROXY, $proxy);
+    if (stripos($proxy, 'socks5') === 0) {
+        // socks5h: DNS resolved on the proxy side (bypasses local DNS blocks)
+        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5_HOSTNAME);
+    }
+}
+
+// Race a harmless getMe through all proxies + direct connection.
+// The first candidate to answer ok=true is the fastest working one.
+// Returns ['winner' => string|null ('' = direct, null = all failed), 'failed' => string[]]
+function raceProxies(array $candidates, string $getMeUrl): array {
+    $all = array_merge($candidates, ['']); // '' = direct
+    $mh = curl_multi_init();
+    $handles = [];
+
+    foreach ($all as $proxy) {
+        $ch = curl_init($getMeUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, PROXY_CHECK_TIMEOUT);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, PROXY_CHECK_TIMEOUT);
+        applyProxy($ch, $proxy);
+        curl_multi_add_handle($mh, $ch);
+        $handles[(int) $ch] = $proxy;
+    }
+
+    $winner = null;
+    $failed = [];
+
+    do {
+        curl_multi_exec($mh, $running);
+        if ($running > 0) {
+            curl_multi_select($mh, 1.0);
+        }
+        while ($info = curl_multi_info_read($mh)) {
+            $ch = $info['handle'];
+            $proxy = $handles[(int) $ch];
+            $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $err = curl_error($ch);
+            $ok = false;
+            if (!$err && $code === 200) {
+                $body = json_decode(curl_multi_getcontent($ch), true);
+                $ok = !empty($body['ok']);
+            }
+            if ($ok) {
+                // First ok answer = fastest working candidate; abort the rest
+                $winner = $proxy;
+                break 2;
+            }
+            $failed[] = $proxy;
+        }
+    } while ($running > 0);
+
+    foreach ($handles as $ch => $_) {
+        curl_multi_remove_handle($mh, $ch);
+        curl_close($ch);
+    }
+    curl_multi_close($mh);
+
+    // If loop ended without winner, everything not yet finished also counts as failed
+    if ($winner === null) {
+        foreach ($all as $proxy) {
+            if (!in_array($proxy, $failed, true)) {
+                $failed[] = $proxy;
+            }
+        }
+    }
+
+    return ['winner' => $winner, 'failed' => $failed];
+}
+
+// Record proxy failures and email a throttled notification about each
+function recordProxyFailures(array $cache, array $failed, ?string $winner): array {
+    $now = time();
+    $via = $winner === null ? 'НЕТ рабочих вариантов!' : ($winner === '' ? 'прямое соединение' : $winner);
+
+    foreach ($failed as $proxy) {
+        $key = $proxy === '' ? 'direct' : $proxy;
+        $prev = $cache['fails'][$key] ?? ['count' => 0, 'last_notify' => 0];
+        $prev['count']++;
+
+        if ($now - ($prev['last_notify'] ?? 0) > PROXY_NOTIFY_THROTTLE) {
+            sendEmail(
+                '⚠️ Прокси Telegram недоступен — sunlife-photo.ru',
+                "Вариант не отвечает: {$key}\n\nРабочий вариант сейчас: {$via}\nВремя: " . date('d.m.Y H:i:s') . "\n\nЭто автоматическое уведомление обработчика заявок."
+            );
+            $prev['last_notify'] = $now;
+        }
+        $cache['fails'][$key] = $prev;
+    }
+    return $cache;
+}
+
+function telegramSend(string $url, array $postData, string $proxy): bool {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    if ($proxy !== '') {
-        curl_setopt($ch, CURLOPT_PROXY, $proxy);
-        if (stripos($proxy, 'socks5') === 0) {
-            // socks5h: DNS resolved on the proxy side (bypasses local DNS blocks)
-            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5_HOSTNAME);
-        }
-    }
+    applyProxy($ch, $proxy);
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curlError = curl_error($ch);
     curl_close($ch);
-    return [$response, $httpCode, $curlError];
+
+    $via = $proxy !== '' ? "proxy $proxy" : 'direct';
+    if ($curlError || $httpCode !== 200) {
+        error_log("Telegram connection ($via): " . ($curlError ?: "HTTP $httpCode"));
+        return false;
+    }
+    $tgResponse = json_decode($response, true);
+    if (!empty($tgResponse['ok'])) {
+        return true;
+    }
+    error_log("Telegram API ($via): " . ($tgResponse['description'] ?? 'unknown'));
+    return false;
 }
 
 function sendTelegram(string $message): bool {
@@ -130,7 +264,7 @@ function sendTelegram(string $message): bool {
         return false;
     }
 
-    $url = 'https://api.telegram.org/bot' . BOT_TOKEN . '/sendMessage';
+    $base = 'https://api.telegram.org/bot' . BOT_TOKEN;
     $postData = [
         'chat_id' => CHAT_ID,
         'text' => $message,
@@ -138,25 +272,80 @@ function sendTelegram(string $message): bool {
         'disable_web_page_preview' => true,
     ];
 
-    $proxy = defined('TG_PROXY') ? TG_PROXY : '';
-    $attempts = $proxy !== '' ? [$proxy, ''] : [''];
+    $candidates = proxyCandidates();
+    $cache = loadProxyCache();
+    $now = time();
 
-    foreach ($attempts as $currentProxy) {
-        [$response, $httpCode, $curlError] = telegramRequest($url, $postData, $currentProxy);
-        $via = $currentProxy !== '' ? 'via proxy' : 'direct';
-
-        if ($curlError || $httpCode !== 200) {
-            error_log("Telegram connection ($via): " . ($curlError ?: "HTTP $httpCode"));
-            continue;
-        }
-
-        $tgResponse = json_decode($response, true);
-        if (!empty($tgResponse['ok'])) {
-            return true;
-        }
-        error_log("Telegram API ($via): " . ($tgResponse['description'] ?? 'unknown'));
+    // No proxies configured -> just send directly
+    if (empty($candidates)) {
+        return telegramSend($base . '/sendMessage', $postData, '');
     }
 
+    // Periodic health check: race getMe through all candidates
+    $needCheck = ($now - ($cache['checked_at'] ?? 0) > PROXY_CACHE_TTL) || !array_key_exists('winner', $cache);
+    if ($needCheck) {
+        $race = raceProxies($candidates, $base . '/getMe');
+        $cache['winner'] = $race['winner'];
+        $cache['checked_at'] = $now;
+        $cache = recordProxyFailures($cache, $race['failed'], $race['winner']);
+        saveProxyCache($cache);
+    }
+
+    // Ordered attempts: cached winner first, then the rest, direct last
+    $winner = $cache['winner'] ?? null;
+    $attempts = [];
+    if ($winner !== null) {
+        $attempts[] = $winner;
+    }
+    foreach ($candidates as $c) {
+        if (!in_array($c, $attempts, true)) {
+            $attempts[] = $c;
+        }
+    }
+    if (!in_array('', $attempts, true)) {
+        $attempts[] = '';
+    }
+
+    $rechecked = false;
+    $i = 0;
+    while ($i < count($attempts)) {
+        $proxy = $attempts[$i];
+
+        if (telegramSend($base . '/sendMessage', $postData, $proxy)) {
+            // Winner changed? Persist for the next requests
+            if ($proxy !== ($cache['winner'] ?? null)) {
+                $cache['winner'] = $proxy;
+                saveProxyCache($cache);
+            }
+            return true;
+        }
+
+        $cache = recordProxyFailures($cache, [$proxy], $cache['winner'] ?? null);
+        saveProxyCache($cache);
+
+        // The cached winner just failed: re-race once and retry with fresh winner
+        if (!$rechecked && $proxy === $winner) {
+            $rechecked = true;
+            $race = raceProxies($candidates, $base . '/getMe');
+            $cache['winner'] = $race['winner'];
+            $cache['checked_at'] = time();
+            $cache = recordProxyFailures($cache, $race['failed'], $race['winner']);
+            saveProxyCache($cache);
+            if ($race['winner'] !== null && !in_array($race['winner'], $attempts, true)) {
+                $attempts[] = $race['winner'];
+            } elseif ($race['winner'] !== null) {
+                // Move fresh winner next in line
+                $attempts = array_merge([$race['winner']], array_values(array_diff($attempts, [$race['winner'], $proxy])));
+                $i = 0;
+                continue;
+            }
+        }
+        $i++;
+    }
+
+    // Everything failed — notify once per throttle window
+    $cache = recordProxyFailures($cache, ['all-telegram-down'], null);
+    saveProxyCache($cache);
     return false;
 }
 
