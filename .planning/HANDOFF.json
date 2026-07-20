@@ -92,6 +92,12 @@
       "name": "Independent TG/email channels, TG proxy, SMTP PHPMailer, anti-spam hardening",
       "status": "done",
       "commit": "e634f9e"
+    },
+    {
+      "id": "tg-proxy-pool",
+      "name": "TG proxy pool: fastest-proxy race (getMe), 30min cache, throttled email alerts",
+      "status": "done",
+      "commit": "be2e278"
     }
   ],
   "remaining_tasks": [
