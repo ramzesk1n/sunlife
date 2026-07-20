@@ -145,6 +145,10 @@ function applyProxy($ch, string $proxy): void {
         // socks5h: DNS resolved on the proxy side (bypasses local DNS blocks)
         curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5_HOSTNAME);
     }
+    // Many HTTP proxies do TLS interception (self-signed cert in chain).
+    // Acceptable here: we only call api.telegram.org through it.
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 }
 
 // Race a harmless getMe through all proxies + direct connection.
@@ -153,7 +157,8 @@ function applyProxy($ch, string $proxy): void {
 function raceProxies(array $candidates, string $getMeUrl): array {
     $all = array_merge($candidates, ['']); // '' = direct
     $mh = curl_multi_init();
-    $handles = [];
+    $handles = []; // spl_object_id => proxy
+    $chs = [];
 
     foreach ($all as $proxy) {
         $ch = curl_init($getMeUrl);
@@ -162,7 +167,8 @@ function raceProxies(array $candidates, string $getMeUrl): array {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, PROXY_CHECK_TIMEOUT);
         applyProxy($ch, $proxy);
         curl_multi_add_handle($mh, $ch);
-        $handles[(int) $ch] = $proxy;
+        $handles[spl_object_id($ch)] = $proxy;
+        $chs[] = $ch;
     }
 
     $winner = null;
@@ -175,7 +181,7 @@ function raceProxies(array $candidates, string $getMeUrl): array {
         }
         while ($info = curl_multi_info_read($mh)) {
             $ch = $info['handle'];
-            $proxy = $handles[(int) $ch];
+            $proxy = $handles[spl_object_id($ch)];
             $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             $err = curl_error($ch);
             $ok = false;
@@ -192,7 +198,7 @@ function raceProxies(array $candidates, string $getMeUrl): array {
         }
     } while ($running > 0);
 
-    foreach ($handles as $ch => $_) {
+    foreach ($chs as $ch) {
         curl_multi_remove_handle($mh, $ch);
         curl_close($ch);
     }
