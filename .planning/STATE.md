@@ -68,6 +68,13 @@
    - key={idx} → стабильные ключи (img.src/extra) в Gallery, BookCarousel, PartnershipTestimonial, PartnershipPricing
    - Скрипты: `scripts/audit-a11y.cjs` (axe по страницам), `scripts/audit-keyboard.cjs` (таб-ордер + фокус)
 
+11. ✅ **Надёжная доставка заявок + антиспам**
+   - Критично: email отправлялся только ПОСЛЕ Telegram — при блокировке api.telegram.org заявки терялись с 500. Каналы теперь независимы: success если доставил хотя бы один, в JSON `channels: {telegram, email}`
+   - Telegram: поддержка `TG_PROXY` (socks5h/http, DNS на стороне прокси) с фолбэком на прямое соединение
+   - Email: PHPMailer (v6.10, 3 файла в `public/api/lib/phpmailer/`) через SMTP (`smtp.mail.ru:465`), фолбэк на `mail()` если SMTP не настроен
+   - Антиспам (было: honeypot + 60с rate limit): + time-trap (форма быстрее 3с = спам, `startedAt` с фронта), + дневной лимит 10/IP, + санити-чеки (имя 2-60 с буквами, запрет URL в name/hospital, длины полей, валидация email)
+   - Ждёт креды от пользователя: прокси для TG + пароль приложения mail.ru → в серверный `api/config.local.php` (в .gitignore, не коммитится)
+
 ## Предыдущая сессия: 2026-07-17
 
 ### Что сделано сегодня (2026-07-17)

@@ -126,6 +126,7 @@ rm -f deploy-final.zip
 
 ## Важные замечания
 
+- **`config.local.php` (сервер, не в репо)**: после деплоя проверьте, что на сервере в `api/config.local.php` заполнены `BOT_TOKEN`, `CHAT_ID`, и при необходимости `TG_PROXY` (прокси для api.telegram.org, например `socks5h://user:pass@host:port`) и `SMTP_HOST/SMTP_USER/SMTP_PASS` (для надёжной отправки копий заявок на почту; для mail.ru — пароль приложения). Без SMTP работает fallback на `mail()`.
 - **Структура архива — ПЛОСКАЯ.** В `dist.zip` (и любом другом архиве для деплоя) файлы должны лежать **в корне архива** (`index.html`, `assets/`, `api/`, …), **без обёрточной папки** `dist/` или `deploy-minimal/`. Если в архиве есть папка-обёртка, при распаковке на сервере файлы просто лежат в этой папке (`dist/dist/…`) и **не заменяют** существующие. Проверка: `python -c "import zipfile; print(zipfile.ZipFile('dist.zip').namelist()[:5])"` — пути не должны начинаться с `dist/`.
 - **Не коммитьте** `deploy-minimal/`, `deploy-*.zip`, `dist.zip`, `public/images/cms/` — они в `.gitignore`.
 - **Фото галереи** (`images/gallery/`) не входят в архив — они уже на сервере и не менялись.

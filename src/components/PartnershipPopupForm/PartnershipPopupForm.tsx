@@ -36,6 +36,8 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
   const { handlePhoneChange } = usePhoneMask();
   const { showToast } = useToast();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  // Time-trap: server rejects submissions sent faster than 3s after render
+  const [formStartedAt] = useState(() => Date.now());
   const abortRef = useRef<AbortController | null>(null);
   const mountedRef = useRef(true);
 
@@ -94,6 +96,7 @@ export default function PartnershipPopupForm({ isOpen, onClose }: PartnershipPop
         body: JSON.stringify({
           ...formData,
           formType: 'partnership',
+          startedAt: formStartedAt,
         }),
         signal: controller.signal,
       });

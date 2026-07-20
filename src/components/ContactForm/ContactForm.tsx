@@ -34,6 +34,8 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  // Time-trap: server rejects submissions sent faster than 3s after render
+  const [formStartedAt] = useState(() => Date.now());
   const { handlePhoneChange } = usePhoneMask();
   const { showToast } = useToast();
   const todayDate = getTodayDate();
@@ -97,7 +99,7 @@ export default function ContactForm({ inline = false, prefillPackage, isOpen, on
       const response = await fetch('/api/send-form.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, startedAt: formStartedAt }),
         signal: controller.signal,
       });
 
