@@ -12,6 +12,7 @@ const CITY_LABELS: Record<string, string> = {
   'nizhny-novgorod': 'Нижний Новгород - Нижегородская область',
   irkutsk: 'Иркутск - Иркутская область',
   orsk: 'Орск - Оренбургская область',
+  syktyvkar: 'Сыктывкар - Республика Коми',
 };
 
 interface TooltipState {
