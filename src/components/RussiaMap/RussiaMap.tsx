@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-const SVG_URL = '/images/russia-map.svg';
+const SVG_URL = '/images/russia-map.svg?v=2026-07-20';
 
 const pxToRem = (px: number) => `${px / 16}rem`;
 
