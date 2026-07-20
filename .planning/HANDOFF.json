@@ -110,6 +110,12 @@
       "name": "Add Syktyvkar (Komi Republic) to Russia map + geography list",
       "status": "done",
       "commit": "0e672c3"
+    },
+    {
+      "id": "partnership-map-section",
+      "name": "Before/After renamed to 'Ремонт помещений', Geography section (custom title) added to /partnership before pricing",
+      "status": "done",
+      "commit": "176afe9"
     }
   ],
   "remaining_tasks": [
