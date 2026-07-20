@@ -98,6 +98,12 @@
       "name": "TG proxy pool: fastest-proxy race (getMe), 30min cache, throttled email alerts",
       "status": "done",
       "commit": "be2e278"
+    },
+    {
+      "id": "content-edits-2026-07-20",
+      "name": "Content: 10-14d delivery, 10k births, exp 3-5y, Rahmatullin to partner testimonials, address removed",
+      "status": "done",
+      "commit": "9a99e64"
     }
   ],
   "remaining_tasks": [
