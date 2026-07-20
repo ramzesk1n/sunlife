@@ -86,6 +86,12 @@
       "name": "a11y audit (axe + keyboard): 0 violations, map role, scrollable region, contrast, stable keys",
       "status": "done",
       "commit": "748d6a3"
+    },
+    {
+      "id": "form-delivery",
+      "name": "Independent TG/email channels, TG proxy, SMTP PHPMailer, anti-spam hardening",
+      "status": "done",
+      "commit": "e634f9e"
     }
   ],
   "remaining_tasks": [
@@ -134,8 +140,8 @@
   ],
   "human_actions_pending": [
     {
-      "action": "Upload f:\\VIBECODING\\SUNLIFE\\sunlife\\dist.zip to sunlife-photo.ru root via FTP, then open https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy",
-      "context": "dist.zip is ~1.9 MB, FLAT structure (no dist/ wrapper — deploy.php replaces files correctly). Excludes images subfolders, admin/, fonts/, content/ (already on server). Includes all 2026-07-19 changes: new contacts, Max, /terms, /sitemap, sitemap.xml, footer legal strip.",
+      "action": "Deploy dist.zip via deploy.php, then fill api/config.local.php on server: TG_PROXY (socks5/http proxy for api.telegram.org) and SMTP_* (smtp.mail.ru + app password for 89279611561@mail.ru)",
+      "context": "send-form.php now sends via Telegram (proxy with direct fallback) and email (SMTP with mail() fallback) independently. Without new config values it works as before (direct TG + mail()).",
       "blocking": true
     }
   ],
