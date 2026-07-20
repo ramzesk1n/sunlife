@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-07-20T13:45:00.000Z",
+  "timestamp": "2026-07-20T17:55:00.000Z",
   "phase": null,
   "phase_name": null,
   "phase_dir": null,
@@ -210,6 +210,6 @@
     }
   ],
   "uncommitted_files": [],
-  "next_action": "Deploy fresh dist.zip (form fixes, content, Syktyvkar, partnership map) via deploy.php, then set SMTP_PASS in api/config.local.php on server and verify email channel. Next todos: todo-011 (privacy), todo-005 (analytics, needs Metrica ID), cache headers via hostiman panel.",
-  "context_notes": "2026-07-20: Telegram form delivery WORKS (verified by user). Two proxy-pool bugs fixed (curl_multi handle map, TLS-intercepting proxy certs). config.local.php created on server with BOT_TOKEN/CHAT_ID/proxy (HTTP 198.64.244.136:59100) — but SMTP_PASS still placeholder, email channel down until filled. BOT_TOKEN exposed in chat — recommend /revoke after setup. Content edits: 10-14d delivery, 10k births, exp 3-5y, Rahmatullin into partner testimonials slider, minister block + minzdrav grid removed, office address removed everywhere. Syktyvkar added to map (+komi region highlight, geography.json); cache-bust ?v= on russia-map.svg (nginx 24h static cache). Partnership page: Before/After renamed to Ремонт помещений, map section added before pricing. Latest commits: 25c5ac7, 9a99e64, 0e672c3, a2b786f, 176afe9. Build clean, dist.zip fresh."
+  "next_action": "Deploy fresh dist.zip (newborn section on /partnership + /price, partnership reorder, step title) via deploy.php, Ctrl+F5 verify. Then: SMTP_PASS into api/config.local.php, BOT_TOKEN /revoke, cache headers via hostiman panel. Next todos: todo-011 (privacy), todo-005 (analytics, needs Metrica ID).",
+  "context_notes": "2026-07-20 (end of day): Telegram delivery works. New component NewbornPhotos (5 newborn photos, shared Lightbox) — subsection in partnership examples + section on /price after pricing. Partnership sections reordered: social projects («Участие в социальных проектах», ex «Портфолио партнёрских проектов») after FAQ, team section last. Step 2 title = «Индивидуальный подход». Still pending user-side: SMTP_PASS (email channel down), BOT_TOKEN revoke (exposed in chat), nginx static cache (24h) disable in hostiman panel. Latest commits: 4734542 (newborn on price), 5f495ec, 608139c, d9b323f, 176afe9. Build clean, dist.zip fresh."
 }
