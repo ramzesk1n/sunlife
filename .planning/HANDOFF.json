@@ -104,6 +104,12 @@
       "name": "Content: 10-14d delivery, 10k births, exp 3-5y, Rahmatullin to partner testimonials, address removed",
       "status": "done",
       "commit": "9a99e64"
+    },
+    {
+      "id": "map-syktyvkar",
+      "name": "Add Syktyvkar (Komi Republic) to Russia map + geography list",
+      "status": "done",
+      "commit": "0e672c3"
     }
   ],
   "remaining_tasks": [
