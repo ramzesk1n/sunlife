@@ -35,18 +35,6 @@ export default function ContactsPage() {
       href: 'mailto:89279611561@mail.ru',
       description: 'Ответим в течение 2 часов',
     },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      label: 'Адрес',
-      value: 'г. Уфа, ул. Ленина, 70',
-      href: 'https://yandex.ru/maps/-/CDXVfYJ1',
-      description: 'Офис и фотостудия',
-    },
   ];
 
   const { whatsapp, telegram, vk, max } = siteData;
@@ -198,24 +186,11 @@ export default function ContactsPage() {
             </div>
           </div>
 
-          {/* Map + Form */}
+          {/* Form */}
           <div>
             <h2 className="font-display text-2xl md:text-3xl text-gold-primary-80 uppercase tracking-wider mb-8">
-              Как нас найти
+              Свяжитесь с нами
             </h2>
-
-            {/* Yandex Map iframe */}
-            <div className="rounded-2xl overflow-hidden border border-gold-primary/10 shadow-card mb-8 aspect-[4/3]">
-              <iframe
-                src="https://yandex.ru/map-widget/v1/?z=16&ol=biz&oid=1792274489"
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                allowFullScreen
-                className="w-full h-full"
-                title="Карта проезда"
-              />
-            </div>
 
             {/* Quick Form */}
             <div className="p-6 rounded-2xl glass">
@@ -257,10 +232,6 @@ export default function ContactsPage() {
               <div className="flex justify-between border-b border-gold-primary/10 pb-2">
                 <span className="text-text-muted">ОГРНИП</span>
                 <span className="font-medium">313028000070599</span>
-              </div>
-              <div className="flex justify-between border-b border-gold-primary/10 pb-2">
-                <span className="text-text-muted">Юридический адрес</span>
-                <span className="font-medium text-right">РБ, г. Уфа, ул. Ленина, 70</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-text-muted">Email</span>

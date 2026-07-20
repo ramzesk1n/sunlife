@@ -72,16 +72,9 @@ export function getLocalBusinessSchema() {
     priceRange: '₽₽',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'ул. Ленина, 70',
       addressLocality: 'Уфа',
       addressRegion: 'Республика Башкортостан',
       addressCountry: 'RU',
-      postalCode: '450000',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: '54.7388',
-      longitude: '55.9721',
     },
     openingHoursSpecification: [
       {

@@ -1,18 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 
-const minzdravImages = [
-  '/images/image_minzdrav_1.webp',
-  '/images/image_minzdrav_2.webp',
-  '/images/image_minzdrav_3.webp',
-  '/images/image_minzdrav_4.webp',
-  '/images/image_minzdrav_5.webp',
-  '/images/image_minzdrav_6.webp',
-  '/images/image_minzdrav_7.webp',
-  '/images/image_minzdrav_8.webp',
-  '/images/image_minzdrav_9.webp',
-];
-
 interface Testimonial {
   id: string;
   name: string;
@@ -23,6 +11,14 @@ interface Testimonial {
 }
 
 const testimonials: Testimonial[] = [
+  {
+    id: 'rahmatullin',
+    name: 'РАХМАТУЛЛИН АЙРАТ РАЗИФОВИЧ',
+    role: 'Министр здравоохранения Республики Башкортостан',
+    photo: '/images/Rahmatullin_Airat_Razifovich.webp',
+    text: 'Примите нашу искреннюю признательность за успешное сотрудничество и высокий профессионализм в совместной работе! От всей души желаем успехов, новых свершений, надёжных партнёров, здоровья и благополучия!',
+    position: 'left',
+  },
   {
     id: 'garaev',
     name: 'ГАРАЕВ РУСЛАН РАЛИФОВИЧ',
@@ -138,81 +134,20 @@ export default function PartnershipTestimonial() {
       className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-cream-2"
     >
       <div className="max-w-5xl mx-auto">
-        {/* Minister */}
+        {/* Heading */}
         <motion.div
-          className="flex flex-col items-center mb-10"
+          className="mb-10 md:mb-14"
           initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-gold-primary/20 shadow-gold mb-6">
-            <img
-              src="/images/Rahmatullin_Airat_Razifovich.webp"
-              alt="Рахматуллин Айрат Разифович"
-              className="w-full h-full object-cover object-top"
-              loading="lazy"
-            />
-          </div>
-
-          <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-light text-gold-primary-80 uppercase tracking-wider text-center mb-2">
-            Рахматуллин Айрат Разифович
-          </h3>
-
-          <p className="text-text-muted text-base sm:text-lg text-center max-w-xl">
-            Министр здравоохранения Республики Башкортостан
-          </p>
-        </motion.div>
-
-        {/* Minister Quote */}
-        <motion.div
-          className="text-center mb-12 md:mb-16"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-        >
-          <blockquote className="text-gold-dark text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-6">
-            Примите нашу искреннюю признательность за успешное сотрудничество и высокий профессионализм в совместной работе! От всей души желаем успехов, новых свершений, надёжных партнёров, здоровья и благополучия!
-          </blockquote>
-
-          <p className="text-text-muted text-base sm:text-lg">
-            С уважением, министр здравоохранения РБ
-          </p>
-          <p className="text-gold-primary font-display font-light text-base sm:text-lg uppercase tracking-wider">
-            А.Р. Рахматуллин
-          </p>
-        </motion.div>
-
-        {/* Photo Grid - belongs to minister section */}
-        <motion.div
-          className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-12 md:mb-16"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
-        >
-          {minzdravImages.map((src, idx) => (
-            <div
-              key={src}
-              className="relative aspect-[4/3] rounded-lg sm:rounded-xl overflow-hidden"
-            >
-              <img
-                src={src}
-                alt={`Фото с мероприятия ${idx + 1}`}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Divider */}
-        <div className="border-t border-gold-primary/20 pt-12 md:pt-16 mb-10 md:mb-14">
           <h3 className="font-display text-2xl md:text-3xl font-light text-gold-primary-80 text-center uppercase tracking-wider">
             Отзывы партнёров
           </h3>
           <p className="text-text-muted text-center text-base mt-2">
             Что говорят о нас руководители медицинских учреждений
           </p>
-        </div>
+        </motion.div>
 
         {/* Testimonials Slider */}
         <motion.div
