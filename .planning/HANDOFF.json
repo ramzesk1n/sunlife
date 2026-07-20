@@ -122,6 +122,12 @@
       "name": "Step title 'Индивидуальный подход'; partnership reorder: social projects after FAQ, team last",
       "status": "done",
       "commit": "d9b323f"
+    },
+    {
+      "id": "newborn-section",
+      "name": "Newborn photo session subsection (5 photos) in partnership examples with shared lightbox",
+      "status": "done",
+      "commit": "608139c"
     }
   ],
   "remaining_tasks": [
