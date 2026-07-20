@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-07-19T17:10:00.000Z",
+  "timestamp": "2026-07-20T13:45:00.000Z",
   "phase": null,
   "phase_name": null,
   "phase_dir": null,
@@ -142,7 +142,7 @@
     {
       "id": "todo-012",
       "name": "Accessibility audit",
-      "status": "not_started"
+      "status": "done"
     },
     {
       "id": "todo-013",
@@ -152,7 +152,7 @@
     {
       "id": "todo-014",
       "name": "Thank-you page",
-      "status": "not_started"
+      "status": "done"
     }
   ],
   "blockers": [
@@ -164,9 +164,14 @@
   ],
   "human_actions_pending": [
     {
-      "action": "Deploy dist.zip via deploy.php, then fill api/config.local.php on server: TG_PROXY (socks5/http proxy for api.telegram.org) and SMTP_* (smtp.mail.ru + app password for 89279611561@mail.ru)",
-      "context": "send-form.php now sends via Telegram (proxy with direct fallback) and email (SMTP with mail() fallback) independently. Without new config values it works as before (direct TG + mail()).",
+      "action": "Deploy dist.zip via https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy, then Ctrl+F5 to verify (forms, Syktyvkar, partnership map)",
+      "context": "dist.zip contains form handler fixes (curl_multi + TLS), content edits, Syktyvkar, partnership map section, map cache-bust.",
       "blocking": true
+    },
+    {
+      "action": "Fill SMTP_PASS (mail.ru app password) in api/config.local.php on server",
+      "context": "Email channel currently fails (placeholder password). Without it forms only reach Telegram. Optional: revoke exposed BOT_TOKEN at @BotFather afterwards.",
+      "blocking": false
     }
   ],
   "decisions": [
@@ -187,6 +192,6 @@
     }
   ],
   "uncommitted_files": [],
-  "next_action": "Upload dist.zip (~1.9 MB, flat structure) to sunlife-photo.ru root and run https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy. Then verify site. After that pick the next todo (recommended: todo-014 Thank-you/404, todo-011 Privacy policy, or todo-005 Analytics).",
-  "context_notes": "2026-07-19: contacts updated (telegram.me/roddomaphoto, 89279611561@mail.ru, Max links + icon), form submissions now also emailed via NOTIFY_EMAIL, desktop tooltips on social icons, Max added to form contact-method selectors, new pages /terms and /sitemap, public/sitemap.xml created, footer legal links moved to a single-line bottom strip (text-xs). dist.zip is now FLAT (no dist/ wrapper) per updated rule in DEPLOY-GUIDE.md. Build is clean, prerender covers 8 routes. Commits: e28e66e, 135317a (pushed). Footer change built but not yet committed."
+  "next_action": "Deploy fresh dist.zip (form fixes, content, Syktyvkar, partnership map) via deploy.php, then set SMTP_PASS in api/config.local.php on server and verify email channel. Next todos: todo-011 (privacy), todo-005 (analytics, needs Metrica ID), cache headers via hostiman panel.",
+  "context_notes": "2026-07-20: Telegram form delivery WORKS (verified by user). Two proxy-pool bugs fixed (curl_multi handle map, TLS-intercepting proxy certs). config.local.php created on server with BOT_TOKEN/CHAT_ID/proxy (HTTP 198.64.244.136:59100) — but SMTP_PASS still placeholder, email channel down until filled. BOT_TOKEN exposed in chat — recommend /revoke after setup. Content edits: 10-14d delivery, 10k births, exp 3-5y, Rahmatullin into partner testimonials slider, minister block + minzdrav grid removed, office address removed everywhere. Syktyvkar added to map (+komi region highlight, geography.json); cache-bust ?v= on russia-map.svg (nginx 24h static cache). Partnership page: Before/After renamed to Ремонт помещений, map section added before pricing. Latest commits: 25c5ac7, 9a99e64, 0e672c3, a2b786f, 176afe9. Build clean, dist.zip fresh."
 }
