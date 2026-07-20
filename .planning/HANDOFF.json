@@ -128,6 +128,12 @@
       "name": "Newborn photo session subsection (5 photos) in partnership examples with shared lightbox",
       "status": "done",
       "commit": "608139c"
+    },
+    {
+      "id": "newborn-on-price",
+      "name": "NewbornPhotos extracted to shared component, added to /price after pricing",
+      "status": "done",
+      "commit": "4734542"
     }
   ],
   "remaining_tasks": [
