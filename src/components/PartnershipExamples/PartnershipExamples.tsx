@@ -43,8 +43,8 @@ function isValidPhoto(photo: Photo) {
 
 const NEWBORN_PHOTOS: Photo[] = [
   { src: '/images/newborn_evgeniy.webp', alt: 'Фотосессия Ньюборн в палате роддома — Евгений' },
-  { src: '/images/newborn_makar.webp', alt: 'Фотосессия Ньюборн в палате роддома — Макар' },
   { src: '/images/newborn_romashka.webp', alt: 'Фотосессия Ньюборн в палате роддома — Ромашка' },
+  { src: '/images/newborn_makar.webp', alt: 'Фотосессия Ньюборн в палате роддома — Макар' },
   { src: '/images/newborn_sashenka.webp', alt: 'Фотосессия Ньюборн в палате роддома — Сашенька' },
   { src: '/images/newborn_varvara.webp', alt: 'Фотосессия Ньюборн в палате роддома — Варвара' },
 ];
