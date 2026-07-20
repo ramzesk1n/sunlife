@@ -80,7 +80,7 @@ export default function PartnershipGallery() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Портфолио партнёрских проектов
+          Участие в социальных проектах
         </motion.h2>
 
         <motion.p

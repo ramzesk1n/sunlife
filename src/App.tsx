@@ -193,8 +193,8 @@ function PartnershipPage() {
         <PartnershipPricing />
         <PartnershipExamples />
         <PartnershipFAQ />
-        <PartnershipTeam />
         <PartnershipGallery />
+        <PartnershipTeam />
         <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream-2">
           <div className="max-w-4xl mx-auto">
             <InlineCta
