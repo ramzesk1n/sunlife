@@ -3,7 +3,15 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 import geographyData from '../../content/geography.json';
 import RussiaMap from '../RussiaMap/RussiaMap';
 
-export default function Geography() {
+interface GeographyProps {
+  title?: string;
+  subtitle?: string;
+}
+
+export default function Geography({
+  title = 'Где мы работаем',
+  subtitle = 'Наши специалисты выезжают на проекты в города по всей России',
+}: GeographyProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
@@ -21,7 +29,7 @@ export default function Geography() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Где мы работаем
+          {title}
         </motion.h2>
 
         <motion.p
@@ -30,7 +38,7 @@ export default function Geography() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         >
-          Наши специалисты выезжают на проекты в города по всей России
+          {subtitle}
         </motion.p>
 
         <motion.div

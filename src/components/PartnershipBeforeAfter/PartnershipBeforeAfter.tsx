@@ -113,7 +113,7 @@ export default function PartnershipBeforeAfter() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          Инвестиции: от визуализации к реальности
+          Ремонт помещений
         </motion.h2>
 
         <motion.p

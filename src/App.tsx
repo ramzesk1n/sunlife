@@ -189,6 +189,7 @@ function PartnershipPage() {
         <PartnershipOffers />
         <PartnershipTestimonial />
         <PartnershipBeforeAfter />
+        <Geography title="Карта филиалов фотослужбы Сан Лайф" />
         <PartnershipPricing />
         <PartnershipExamples />
         <PartnershipFAQ />
