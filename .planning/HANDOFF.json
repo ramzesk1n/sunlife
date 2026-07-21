@@ -152,6 +152,12 @@
       "name": "Hero instant paint, font preload, skeleton min-heights (CLS 0 locally, perf 73 local)",
       "status": "done",
       "commit": "c2f9e81"
+    },
+    {
+      "id": "perf-fonts-eager",
+      "name": "fonts.css eager load kills font-swap CLS; local perf 88, CLS 0, FCP 1.4s",
+      "status": "done",
+      "commit": "526abfe"
     }
   ],
   "remaining_tasks": [
