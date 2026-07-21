@@ -98,12 +98,14 @@ export default function Hero() {
                 className="relative w-full aspect-[178/100] rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
               >
                 <img
-                  src="/images/hero-image-main.webp"
+                  src="/images/hero-image-main-1400.webp"
+                  srcSet="/images/hero-image-main-700.webp 700w, /images/hero-image-main-1400.webp 1400w"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   alt="Фотограф на выписку из роддома"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="eager"
-                  width="2848"
-                  height="1600"
+                  width="1400"
+                  height="788"
                 />
               </div>
             </div>
