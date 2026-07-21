@@ -62,6 +62,12 @@
 ### Технические заметки
 - Периодические падения prerender — зомби-процессы chrome блокируют puppeteer; лечится `taskkill //F //IM chrome.exe`
 
+5. ✅ **Security review (скилл getsentry/security-review, 4 зоны + live-пробы)**
+   - CRITICAL: `admin/users.json` с bcrypt-хешами был публичен (live 200 + открытый репо). Код уже мигрирован на users.php (другой чат); **users.json удалён из репо** (`9fb81a0`). Осталось сервер-сайд: удалить файл с сервера, сменить все пароли, репо → private
+   - Прод крутил старый admin API — задеплоен свежий `public/admin/` (сессии с флагами, RBAC-фикс, без CORS *)
+   - Код-трек исправлен: flock в rate-limit формы (race condition), JSON-LD escape `<` (stored XSS через CMS), contactMethod whitelist, trim-safety полей, validatePhone по цифрам, escape pkg.price в admin.js, TTL сессии 8ч, login lockout (5 фейлов → 15 мин), `.htaccess` Require all denied (Apache 2.4 + fallback 2.2), robots Disallow /admin, deploy.php ключ из `api/config.local.php` (`DEPLOY_KEY`)
+   - Ждёт пользователя: новый `DEPLOY_KEY` в config.local.php, nginx deny для *.json (тикет в поддержку), HTTPS-редирект, удаление deploy.php после деплоев, ротация паролей админки
+
 ## Предыдущая сессия: 2026-07-19
 
 ### Что сделано сегодня (2026-07-19)
