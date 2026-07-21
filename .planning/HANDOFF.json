@@ -158,6 +158,12 @@
       "name": "fonts.css eager load kills font-swap CLS; local perf 88, CLS 0, FCP 1.4s",
       "status": "done",
       "commit": "526abfe"
+    },
+    {
+      "id": "perf-round-4",
+      "name": "Responsive hero srcset (700/1400w), slider q70, fonts.css inlined in index.html",
+      "status": "done",
+      "commit": "4c6b2b6"
     }
   ],
   "remaining_tasks": [
