@@ -44,3 +44,5 @@ dist.zip
 
 # Uploaded CMS images (generated on server)
 public/images/cms/
+public/admin/users.php
+.login_attempts.json

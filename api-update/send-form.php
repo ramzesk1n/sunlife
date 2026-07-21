@@ -39,16 +39,20 @@ const PROXY_CHECK_TIMEOUT = 6;       // getMe race timeout per candidate
 const PROXY_NOTIFY_THROTTLE = 21600; // max 1 "proxy down" email per 6h per proxy
 
 // Rate limiting: 60s between submissions + daily cap per IP
+// Whole read-check-write happens under an exclusive lock (parallel POSTs can't race)
 function checkRateLimit(): bool {
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     $now = time();
     $today = date('Y-m-d');
 
-    $data = [];
-    if (file_exists(RATE_LIMIT_FILE)) {
-        $content = file_get_contents(RATE_LIMIT_FILE);
-        $data = json_decode($content, true) ?: [];
+    $fh = fopen(RATE_LIMIT_FILE, 'c+');
+    if (!$fh) {
+        return true; // cannot open state file - fail open, do not break forms
     }
+    flock($fh, LOCK_EX);
+
+    $content = stream_get_contents($fh);
+    $data = $content ? (json_decode($content, true) ?: []) : [];
 
     // Cleanup stale entries (older than 24h)
     foreach ($data as $key => $entry) {
@@ -67,19 +71,24 @@ function checkRateLimit(): bool {
         $entry = ['last' => 0, 'count' => 0, 'day' => $today];
     }
 
+    $allowed = true;
     if (($now - $entry['last']) < RATE_LIMIT_SECONDS) {
-        return false;
-    }
-    if ($entry['count'] >= DAILY_LIMIT) {
-        return false;
+        $allowed = false;
+    } elseif ($entry['count'] >= DAILY_LIMIT) {
+        $allowed = false;
+    } else {
+        $entry['last'] = $now;
+        $entry['count']++;
+        $data[$ip] = $entry;
+        rewind($fh);
+        ftruncate($fh, 0);
+        fwrite($fh, json_encode($data));
     }
 
-    $entry['last'] = $now;
-    $entry['count']++;
-    $data[$ip] = $entry;
-    file_put_contents(RATE_LIMIT_FILE, json_encode($data), LOCK_EX);
+    flock($fh, LOCK_UN);
+    fclose($fh);
 
-    return true;
+    return $allowed;
 }
 
 // Honeypot check - works with both JSON and form data
@@ -97,10 +106,10 @@ function checkTimeTrap(array $input): bool {
     return $elapsed >= MIN_FILL_MS;
 }
 
-// Validate phone
+// Validate phone: 10-15 digits, optional single leading +
 function validatePhone(string $phone): bool {
-    $cleaned = preg_replace('/[^\d+]/', '', $phone);
-    return strlen($cleaned) >= 10 && strlen($cleaned) <= 15;
+    $digits = preg_replace('/\D/', '', $phone);
+    return strlen($digits) >= 10 && strlen($digits) <= 15;
 }
 
 // Reject URLs in fields where they never belong (typical spam)
@@ -424,16 +433,22 @@ if (!checkHoneypot($input) || !checkTimeTrap($input)) {
     exit;
 }
 
-$name = trim($input['name'] ?? '');
-$phone = trim($input['phone'] ?? '');
-$contactMethod = $input['contactMethod'] ?? 'phone';
-$hospital = trim($input['hospital'] ?? '');
-$date = trim($input['date'] ?? '');
-$package = trim($input['package'] ?? '');
-$email = trim($input['email'] ?? '');
-$volume = trim($input['volume'] ?? '');
-$messageText = trim($input['message'] ?? '');
-$formType = $input['formType'] ?? 'contact';
+// Safe string extraction (arrays/objects from JSON must not reach trim())
+function strField(array $input, string $key): string {
+    $value = $input[$key] ?? '';
+    return is_string($value) ? trim($value) : '';
+}
+
+$name = strField($input, 'name');
+$phone = strField($input, 'phone');
+$contactMethod = strField($input, 'contactMethod') ?: 'phone';
+$hospital = strField($input, 'hospital');
+$date = strField($input, 'date');
+$package = strField($input, 'package');
+$email = strField($input, 'email');
+$volume = strField($input, 'volume');
+$messageText = strField($input, 'message');
+$formType = strField($input, 'formType') ?: 'contact';
 $consent = filter_var($input['consent'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
 // Validation
@@ -468,6 +483,8 @@ if (!empty($errors)) {
 
 // Format message
 $methodLabels = ['telegram' => 'Telegram', 'whatsapp' => 'WhatsApp', 'max' => 'Max', 'phone' => 'Телефон'];
+// Whitelist only: raw user value must never reach the HTML-parse-mode message
+$contactMethodLabel = $methodLabels[$contactMethod] ?? 'Телефон';
 
 if ($formType === 'partnership') {
     $message = "🤝 <b>Новая заявка на партнёрство</b>\n\n";
@@ -476,7 +493,7 @@ if ($formType === 'partnership') {
     if (!empty($email)) {
         $message .= "📧 <b>Email:</b> " . htmlspecialchars($email) . "\n";
     }
-    $message .= "💬 <b>Способ связи:</b> " . ($methodLabels[$contactMethod] ?? $contactMethod) . "\n";
+    $message .= "💬 <b>Способ связи:</b> " . $contactMethodLabel . "\n";
     if (!empty($hospital)) {
         $message .= "🏥 <b>Клиника:</b> " . htmlspecialchars($hospital) . "\n";
     }
@@ -491,7 +508,7 @@ if ($formType === 'partnership') {
     $message = "🔔 <b>Новая заявка с сайта САН ЛАЙФ</b>\n\n";
     $message .= "👤 <b>Имя:</b> " . htmlspecialchars($name) . "\n";
     $message .= "📞 <b>Телефон:</b> " . htmlspecialchars($phone) . "\n";
-    $message .= "💬 <b>Способ связи:</b> " . ($methodLabels[$contactMethod] ?? $contactMethod) . "\n";
+    $message .= "💬 <b>Способ связи:</b> " . $contactMethodLabel . "\n";
 
     if (!empty($hospital)) {
         $message .= "🏥 <b>Роддом:</b> " . htmlspecialchars($hospital) . "\n";

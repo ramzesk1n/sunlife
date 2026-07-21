@@ -86,6 +86,9 @@ const ALL_PERMISSIONS = ['pricing', 'faq', 'gallery', 'benefits', 'reviews', 'st
 let currentUser = null;
 let currentData = {};
 let currentSection = '';
+// When true, section loaders re-render from currentData without refetching
+// (used by add/delete handlers so local changes are not wiped by a server reload)
+let rerenderFromState = false;
 
 // ===== Toast =====
 function showToast(message, type = 'info') {
@@ -174,10 +177,11 @@ function buildMenu() {
 }
 
 // ===== Section Loader =====
-async function loadSection(section) {
+async function loadSection(section, fromState = false) {
   if (!requirePermission(MENU_STRUCTURE.find(m => m.id === section)?.perm || section)) return;
   
   currentSection = section;
+  rerenderFromState = fromState;
   const container = document.getElementById('editorContainer');
   if (!container) return;
   
@@ -225,11 +229,13 @@ async function loadSection(section) {
 
 // ===== SHARED BLOCKS (pricing, geography, menu, footer, forms) =====
 async function loadSharedBlocks(container) {
-  // Load pricing + geography
-  const [pricing, geography] = await Promise.all([
-    api('get&file=pricing'),
-    api('get&file=geography')
-  ]);
+  // Load pricing + geography (or reuse state on local re-render)
+  const [pricing, geography] = rerenderFromState
+    ? [{ success: true, data: currentData.pricing }, { success: true, data: currentData.geography }]
+    : await Promise.all([
+      api('get&file=pricing'),
+      api('get&file=geography')
+    ]);
   
   let html = '<div class="section-group">';
   
@@ -266,12 +272,12 @@ function renderPricingTable(packages) {
   packages.forEach((pkg, i) => {
     html += `<tr>
       <td><input type="text" class="shared-pkg-name" data-idx="${i}" value="${escapeHtml(pkg.name)}"></td>
-      <td><input type="number" class="shared-pkg-price" data-idx="${i}" value="${pkg.price}" style="width:6rem"></td>
+      <td><input type="number" class="shared-pkg-price" data-idx="${i}" value="${escapeHtml(String(pkg.price ?? ''))}" style="width:6rem"></td>
       <td><input type="text" class="shared-pkg-desc" data-idx="${i}" value="${escapeHtml(pkg.description)}"></td>
       <td><input type="checkbox" class="shared-pkg-popular" data-idx="${i}" ${pkg.popular ? 'checked' : ''}></td>
       <td><button class="btn btn-danger btn-sm" onclick="deleteSharedPackage(${i})">🗑</button></td>
     </tr>
-    <tr><td colspan="5"><div class="form-group"><label>Особенности:</label><textarea class="shared-pkg-features" data-idx="${i}" rows="2">${(pkg.features || []).map(f => f.text).join('\n')}</textarea></div>${pkg.note ? `<div class="form-group"><label>Примечание:</label><input type="text" class="shared-pkg-note" data-idx="${i}" value="${escapeHtml(pkg.note)}"></div>` : ''}</td></tr>`;
+    <tr><td colspan="5"><div class="form-group"><label>Особенности:</label><textarea class="shared-pkg-features" data-idx="${i}" rows="2">${escapeHtml((pkg.features || []).map(f => f.text).join('\n'))}</textarea></div>${pkg.note ? `<div class="form-group"><label>Примечание:</label><input type="text" class="shared-pkg-note" data-idx="${i}" value="${escapeHtml(pkg.note)}"></div>` : ''}</td></tr>`;
   });
   html += '</tbody></table></div>';
   html += `<button class="btn btn-secondary btn-sm mt-1" onclick="addSharedPackage()">+ Добавить пакет</button>`;
@@ -289,28 +295,12 @@ function renderGeographyEditor(data) {
 }
 
 // Shared block actions
-function addSharedPackage() {
-  currentData.pricing.packages.push({ id: 'pkg-' + Date.now(), name: 'Новый пакет', price: 0, currency: '₽', description: '', features: [{ text: '' }] });
-  loadSection('shared');
-}
-function deleteSharedPackage(idx) {
-  if (!confirm('Удалить пакет?')) return;
-  currentData.pricing.packages.splice(idx, 1);
-  loadSection('shared');
-}
-function addSharedCity() {
-  currentData.geography.cities.push({ name: 'Новый город' });
-  loadSection('shared');
-}
-function deleteSharedCity(idx) {
-  currentData.geography.cities.splice(idx, 1);
-  loadSection('shared');
-}
-async function saveSharedPricing() {
+function syncSharedPricing() {
   const packages = [];
-  document.querySelectorAll('.shared-pkg-name').forEach((input, i) => {
+  document.querySelectorAll('.shared-pkg-name').forEach((input) => {
     const idx = parseInt(input.dataset.idx);
     const pkg = currentData.pricing.packages[idx];
+    if (!pkg) return;
     pkg.name = input.value;
     pkg.price = parseInt(document.querySelector(`.shared-pkg-price[data-idx="${idx}"]`).value) || 0;
     pkg.description = document.querySelector(`.shared-pkg-desc[data-idx="${idx}"]`).value;
@@ -322,10 +312,8 @@ async function saveSharedPricing() {
     packages.push(pkg);
   });
   currentData.pricing.packages = packages;
-  await api('save', 'POST', { file: 'pricing', data: currentData.pricing });
-  showToast('Цены сохранены!', 'success');
 }
-async function saveSharedGeography() {
+function syncSharedGeography() {
   currentData.geography.geographyText = document.getElementById('sharedGeoText').value;
   const cities = [];
   document.querySelectorAll('.shared-city-name').forEach(input => {
@@ -336,16 +324,47 @@ async function saveSharedGeography() {
     cities.push(city);
   });
   currentData.geography.cities = cities;
+}
+function addSharedPackage() {
+  syncSharedPricing();
+  currentData.pricing.packages.push({ id: 'pkg-' + Date.now(), name: 'Новый пакет', price: 0, currency: '₽', description: '', features: [{ text: '' }] });
+  loadSection('shared', true);
+}
+function deleteSharedPackage(idx) {
+  if (!confirm('Удалить пакет?')) return;
+  syncSharedPricing();
+  currentData.pricing.packages.splice(idx, 1);
+  loadSection('shared', true);
+}
+function addSharedCity() {
+  syncSharedGeography();
+  currentData.geography.cities.push({ name: 'Новый город' });
+  loadSection('shared', true);
+}
+function deleteSharedCity(idx) {
+  syncSharedGeography();
+  currentData.geography.cities.splice(idx, 1);
+  loadSection('shared', true);
+}
+async function saveSharedPricing() {
+  syncSharedPricing();
+  await api('save', 'POST', { file: 'pricing', data: currentData.pricing });
+  showToast('Цены сохранены!', 'success');
+}
+async function saveSharedGeography() {
+  syncSharedGeography();
   await api('save', 'POST', { file: 'geography', data: currentData.geography });
   showToast('География сохранена!', 'success');
 }
 
 // ===== HOME PAGE =====
 async function loadHomePage(container) {
-  const [steps, reviews] = await Promise.all([
-    api('get&file=steps'),
-    api('get&file=reviews')
-  ]);
+  const [steps, reviews] = rerenderFromState
+    ? [{ success: true, data: currentData.steps }, { success: true, data: currentData.reviews }]
+    : await Promise.all([
+      api('get&file=steps'),
+      api('get&file=reviews')
+    ]);
   
   let html = '<div class="section-group">';
   
@@ -362,7 +381,7 @@ async function loadHomePage(container) {
   html += `<div class="card" style="margin-top:1rem"><div class="card-header"><h3>💬 Отзывы на главной</h3></div>`;
   if (reviews.success) {
     currentData.reviews = reviews.data;
-    html += renderReviewsEditor(reviews.data.reviews || [], 'home');
+    html += renderReviewsEditor(reviews.data.reviews || []);
     html += `<div class="mt-2 text-right"><button class="btn btn-primary" onclick="saveHomeReviews()">💾 Сохранить отзывы</button></div>`;
   }
   html += '</div>';
@@ -373,7 +392,7 @@ async function loadHomePage(container) {
 
 // ===== BENEFITS PAGE (standalone) =====
 async function loadBenefitsPage(container) {
-  const benefits = await api('get&file=benefits');
+  const benefits = rerenderFromState ? { success: true, data: currentData.benefits } : await api('get&file=benefits');
   if (!benefits.success) {
     container.innerHTML = '<p class="error">Ошибка загрузки преимуществ</p>';
     return;
@@ -390,7 +409,7 @@ async function loadBenefitsPage(container) {
 
 // ===== GALLERY PAGE (standalone) =====
 async function loadGalleryPage(container) {
-  const gallery = await api('get&file=gallery');
+  const gallery = rerenderFromState ? { success: true, data: currentData.gallery } : await api('get&file=gallery');
   if (!gallery.success) {
     container.innerHTML = '<p class="error">Ошибка загрузки галереи</p>';
     return;
@@ -399,14 +418,14 @@ async function loadGalleryPage(container) {
   
   let html = '<div class="section-group">';
   html += `<div class="card"><div class="card-header"><h3>📷 Галерея</h3></div>`;
-  html += renderGalleryEditor(gallery.data, 'gallery');
+  html += renderGalleryEditor(gallery.data);
   html += '</div></div>';
   container.innerHTML = html;
 }
 
 // ===== FAQ PAGE =====
 async function loadFAQPage(container) {
-  const faq = await api('get&file=faq');
+  const faq = rerenderFromState ? { success: true, data: currentData.faq } : await api('get&file=faq');
   if (!faq.success) {
     container.innerHTML = '<p class="error">Ошибка загрузки FAQ</p>';
     return;
@@ -430,7 +449,7 @@ async function loadFAQPage(container) {
 
 // ===== REVIEWS PAGE =====
 async function loadReviewsPage(container) {
-  const reviews = await api('get&file=reviews');
+  const reviews = rerenderFromState ? { success: true, data: currentData.reviews } : await api('get&file=reviews');
   if (!reviews.success) {
     container.innerHTML = '<p class="error">Ошибка загрузки отзывов</p>';
     return;
@@ -439,7 +458,7 @@ async function loadReviewsPage(container) {
   
   let html = '<div class="section-group">';
   html += `<div class="card"><div class="card-header"><h3>💬 Все отзывы</h3><button class="btn btn-primary btn-sm" onclick="addReview()">+ Добавить отзыв</button></div>`;
-  html += renderReviewsEditor(reviews.data.reviews || [], 'all');
+  html += renderReviewsEditor(reviews.data.reviews || []);
   html += `<div class="mt-2 text-right"><button class="btn btn-primary" onclick="saveAllReviews()">💾 Сохранить все отзывы</button></div>`;
   html += '</div></div>';
   
@@ -448,7 +467,7 @@ async function loadReviewsPage(container) {
 
 // ===== PARTNERSHIP PAGE =====
 async function loadPartnershipPage(container) {
-  const partnership = await api('get&file=partnership');
+  const partnership = rerenderFromState ? { success: true, data: currentData.partnership } : await api('get&file=partnership');
   if (!partnership.success) {
     container.innerHTML = '<p class="error">Ошибка загрузки партнёрства</p>';
     return;
@@ -680,20 +699,16 @@ async function editUser(login) {
 
 // ===== PHOTO MANAGEMENT =====
 function renderPhotoUploader(id, onUpload, multiple = true) {
-  // For upload handlers that need an index, use data-upload attribute
-  const uploadAttr = onUpload.startsWith('handle') && onUpload.includes('Upload') 
-    ? `data-upload="${onUpload}"` 
-    : '';
   return `
     <div class="upload-zone" onclick="document.getElementById('${id}').click()">
       <p>📁 Нажмите или перетащите фото</p>
       <p style="font-size:0.75rem;color:var(--text-light)">JPG, PNG, GIF → WebP (400/800/1200/1600px)</p>
-      <input type="file" id="${id}" accept="image/*" ${multiple ? 'multiple' : ''} onchange="${onUpload}(event)" ${uploadAttr}>
+      <input type="file" id="${id}" accept="image/*" ${multiple ? 'multiple' : ''} onchange="${onUpload}(event)">
     </div>
   `;
 }
 
-async function handlePhotoUpload(event, collection, type = 'gallery') {
+async function handlePhotoUpload(event, collection) {
   const files = event.target.files;
   if (!files.length) return;
   
@@ -704,23 +719,19 @@ async function handlePhotoUpload(event, collection, type = 'gallery') {
     
     const res = await apiFormData('upload', formData);
     if (res.success) {
-      const newItem = {
+      collection.push({
         src: res.image.src,
         alt: file.name.replace(/\.[^.]+$/, ''),
         width: res.image.width,
         height: res.image.height,
-      };
-      if (type === 'team') {
-        newItem.id = 'team-' + Date.now();
-        newItem.name = '';
-        newItem.role = '';
-      }
-      collection.push(newItem);
+      });
       showToast(`${file.name} ✓`, 'success');
     } else {
       showToast(res.error || 'Ошибка', 'error');
     }
   }
+  // Persist right away, otherwise the re-render would drop the new photos
+  await saveGallery();
   loadSection(currentSection);
 }
 
@@ -753,7 +764,7 @@ function renderStepsEditor(data) {
   return html;
 }
 
-function renderReviewsEditor(reviews, context) {
+function renderReviewsEditor(reviews) {
   let html = '';
   reviews.forEach((r, i) => {
     html += `<div class="form-row collection-item" style="margin-bottom:1rem;padding:1rem;border:1px solid var(--border);border-radius:var(--radius)">
@@ -768,13 +779,13 @@ function renderReviewsEditor(reviews, context) {
   return html;
 }
 
-function renderGalleryEditor(data, context) {
+function renderGalleryEditor(data) {
   const images = data.images || [];
   let html = renderPhotoUploader('galleryUpload', 'handleGalleryUpload', true);
   html += '<div class="image-grid" style="margin-top:1rem">';
   images.forEach((img, i) => {
     html += `<div class="image-card">
-      <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
+      <img src="${escapeHtml(img.src)}" alt="${escapeHtml(img.alt)}" loading="lazy">
       <div class="image-info">
         <input type="text" class="gallery-alt" data-idx="${i}" value="${escapeHtml(img.alt)}" placeholder="SEO alt описание">
       </div>
@@ -782,7 +793,7 @@ function renderGalleryEditor(data, context) {
     </div>`;
   });
   html += '</div>';
-  html += `<div class="mt-2 text-right"><button class="btn btn-primary" onclick="saveGallery('${context}')">💾 Сохранить галерею</button></div>`;
+  html += `<div class="mt-2 text-right"><button class="btn btn-primary" onclick="saveGallery()">💾 Сохранить галерею</button></div>`;
   return html;
 }
 
@@ -824,8 +835,8 @@ function renderPartnershipTeam(items) {
       <div style="text-align:center;margin-bottom:0.75rem">
         <div style="width:8rem;height:8rem;margin:0 auto;border-radius:50%;overflow:hidden;background:var(--gold-pale);display:flex;align-items:center;justify-content:center">
           ${item.src && !item.src.includes('placeholder') 
-            ? `<img src="${item.src}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover">` 
-            : `<span style="font-size:2.5rem;color:var(--gold-primary);font-family:var(--font-display)">${item.name.charAt(0)}</span>`
+            ? `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover">` 
+            : `<span style="font-size:2.5rem;color:var(--gold-primary);font-family:var(--font-display)">${escapeHtml(item.name.charAt(0))}</span>`
           }
         </div>
       </div>
@@ -859,7 +870,7 @@ function renderPartnershipProjects(items) {
       html += '<div class="image-grid">';
       photos.forEach((img, j) => {
         html += `<div class="image-card" style="max-width:8rem">
-          <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
+          <img src="${escapeHtml(img.src)}" alt="${escapeHtml(img.alt)}" loading="lazy">
           <div class="image-info"><input type="text" class="project-photo-alt" data-proj="${i}" data-photo="${j}" value="${escapeHtml(img.alt)}" placeholder="Описание" style="font-size:0.75rem"></div>
           <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteProjectPhoto(${i}, ${j})">🗑</button></div>
         </div>`;
@@ -897,7 +908,7 @@ function renderPartnershipExamples(items) {
       html += '<div class="image-grid">';
       photos.forEach((img, j) => {
         html += `<div class="image-card" style="max-width:8rem">
-          <img src="${img.src}" alt="${escapeHtml(img.alt)}" loading="lazy">
+          <img src="${escapeHtml(img.src)}" alt="${escapeHtml(img.alt)}" loading="lazy">
           <div class="image-info"><input type="text" class="example-photo-alt" data-proj="${i}" data-photo="${j}" value="${escapeHtml(img.alt)}" placeholder="Описание" style="font-size:0.75rem"></div>
           <div class="image-actions"><button class="btn btn-danger btn-sm" onclick="deleteExamplePhoto(${i}, ${j})">🗑</button></div>
         </div>`;
@@ -921,7 +932,7 @@ function renderPartnershipExamples(items) {
   return html;
 }
 
-async function savePartnershipExamples() {
+function syncPartnershipExamples() {
   // Only update titles and alts, don't recreate examples array
   document.querySelectorAll('.example-title').forEach((el, i) => {
     if (currentData.partnership.examples[i]) {
@@ -935,12 +946,15 @@ async function savePartnershipExamples() {
       currentData.partnership.examples[projIdx].photos[photoIdx].alt = altInput.value;
     }
   });
+}
+async function savePartnershipExamples() {
+  syncPartnershipExamples();
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
   showToast('Сохранено!', 'success');
 }
 
-function addExampleItem() { currentData.partnership.examples.push({ id: 'ex-' + Date.now(), title: '', photos: [] }); loadSection('partnership'); }
-function deleteExampleItem(i) { if (!confirm('Удалить роддом?')) return; currentData.partnership.examples.splice(i, 1); loadSection('partnership'); }
+function addExampleItem() { syncPartnershipExamples(); currentData.partnership.examples.push({ id: 'ex-' + Date.now(), title: '', photos: [] }); loadSection('partnership', true); }
+function deleteExampleItem(i) { if (!confirm('Удалить роддом?')) return; syncPartnershipExamples(); currentData.partnership.examples.splice(i, 1); loadSection('partnership', true); }
 
 async function handleExampleUploadFromInput(event) {
   const input = event.target;
@@ -948,13 +962,9 @@ async function handleExampleUploadFromInput(event) {
   const files = input.files;
   if (!files.length) return;
   
-  console.log('Upload started for example', exampleIdx, 'files:', files.length);
-  console.log('Current examples:', currentData.partnership.examples);
-  
   const example = currentData.partnership.examples[exampleIdx];
   if (!example) {
     showToast('Ошибка: роддом не найден', 'error');
-    console.error('Example not found at index', exampleIdx);
     return;
   }
   if (!example.photos) example.photos = [];
@@ -965,7 +975,6 @@ async function handleExampleUploadFromInput(event) {
     showToast(`Загрузка ${file.name}...`, 'info');
     
     const res = await apiFormData('upload', formData);
-    console.log('Upload response:', res);
     if (res.success) {
       example.photos.push({
         src: res.image.src,
@@ -974,43 +983,53 @@ async function handleExampleUploadFromInput(event) {
       showToast(`${file.name} ✓`, 'success');
     } else {
       showToast(res.error || 'Ошибка загрузки', 'error');
-      console.error('Upload failed:', res.error);
     }
   }
-  console.log('Saving partnership with examples:', currentData.partnership.examples);
-  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
-  showToast('Сохранено!', 'success');
+  // savePartnershipExamples syncs titles/alts from DOM first, so unsaved edits survive
+  await savePartnershipExamples();
   loadSection('partnership');
 }
 
 // ===== SAVE ACTIONS =====
-async function saveHomeBenefits() {
+// Each editor has a sync*() helper that copies DOM input values into currentData.
+// Save handlers call sync + API save; add/delete handlers call sync + mutate +
+// local re-render (loadSection(section, true)) so unsaved input is never lost.
+function syncBenefits() {
   const benefits = [];
   document.querySelectorAll('.benefit-title').forEach((input, i) => {
     benefits.push({ id: currentData.benefits.benefits[i]?.id || 'benefit-' + Date.now(), title: input.value, description: document.querySelectorAll('.benefit-desc')[i].value, icon: document.querySelectorAll('.benefit-icon')[i].value });
   });
   currentData.benefits.benefits = benefits;
+}
+async function saveHomeBenefits() {
+  syncBenefits();
   await api('save', 'POST', { file: 'benefits', data: currentData.benefits });
   showToast('Преимущества сохранены!', 'success');
 }
 
-async function saveHomeSteps() {
+function syncHomeSteps() {
   currentData.steps.introText = document.getElementById('stepsIntro').value;
   const steps = [];
   document.querySelectorAll('.step-title').forEach((input, i) => {
     steps.push({ id: currentData.steps.steps[i]?.id || 'step-' + Date.now(), title: input.value, description: document.querySelectorAll('.step-desc')[i].value, image: currentData.steps.steps[i]?.image || '/images/about-1.avif', stat: document.querySelectorAll('.step-stat')[i].value || undefined });
   });
   currentData.steps.steps = steps;
+}
+async function saveHomeSteps() {
+  syncHomeSteps();
   await api('save', 'POST', { file: 'steps', data: currentData.steps });
   showToast('Шаги сохранены!', 'success');
 }
 
-async function saveHomeReviews() {
+function syncHomeReviews() {
   const reviews = [];
   document.querySelectorAll('.review-author').forEach((input, i) => {
     reviews.push({ id: currentData.reviews.reviews[i]?.id || 'review-' + Date.now(), author: input.value, text: document.querySelectorAll('.review-text')[i].value, city: document.querySelectorAll('.review-city')[i].value || undefined, date: document.querySelectorAll('.review-date')[i].value || undefined });
   });
   currentData.reviews.reviews = reviews;
+}
+async function saveHomeReviews() {
+  syncHomeReviews();
   await api('save', 'POST', { file: 'reviews', data: currentData.reviews });
   showToast('Отзывы сохранены!', 'success');
 }
@@ -1019,57 +1038,72 @@ async function saveAllReviews() {
   await saveHomeReviews();
 }
 
-async function saveFAQCategory(category) {
+function syncFAQCategory(category) {
   const items = [];
-  document.querySelectorAll(`.faq-q[data-cat="${category}"]`).forEach((q, i) => {
+  document.querySelectorAll(`.faq-q[data-cat="${category}"]`).forEach((q) => {
     const idx = q.dataset.idx;
     items.push({ id: currentData.faq.categories[category][idx]?.id || 'faq-' + Date.now(), question: q.value, answer: document.querySelector(`.faq-a[data-cat="${category}"][data-idx="${idx}"]`).value });
   });
   currentData.faq.categories[category] = items;
+}
+async function saveFAQCategory(category) {
+  syncFAQCategory(category);
   await api('save', 'POST', { file: 'faq', data: currentData.faq });
   showToast(`FAQ ${category === 'customer' ? 'клиентов' : 'партнёров'} сохранён!`, 'success');
 }
 
-async function saveGallery(context) {
+function syncGallery() {
   document.querySelectorAll('.gallery-alt').forEach(input => {
     const idx = parseInt(input.dataset.idx);
-    currentData.gallery.images[idx].alt = input.value;
+    if (currentData.gallery.images[idx]) currentData.gallery.images[idx].alt = input.value;
   });
+}
+async function saveGallery() {
+  syncGallery();
   await api('save', 'POST', { file: 'gallery', data: currentData.gallery });
   showToast('Галерея сохранена!', 'success');
 }
 
-async function savePartnershipAbout() {
+function syncPartnershipAbout() {
   const about = [];
   document.querySelectorAll('.about-num').forEach((el, i) => {
     about.push({ id: currentData.partnership.about[i]?.id || 'about-' + Date.now(), number: el.value, text: document.querySelectorAll('.about-text')[i].value });
   });
   currentData.partnership.about = about;
+}
+async function savePartnershipAbout() {
+  syncPartnershipAbout();
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
   showToast('Сохранено!', 'success');
 }
 
-async function savePartnershipOffers() {
+function syncPartnershipOffers() {
   const offers = [];
   document.querySelectorAll('.offer-num').forEach((el, i) => {
     offers.push({ id: currentData.partnership.offers[i]?.id || 'offer-' + Date.now(), number: el.value, title: document.querySelectorAll('.offer-title')[i].value, description: document.querySelectorAll('.offer-desc')[i].value });
   });
   currentData.partnership.offers = offers;
+}
+async function savePartnershipOffers() {
+  syncPartnershipOffers();
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
   showToast('Сохранено!', 'success');
 }
 
-async function savePartnershipPrices() {
+function syncPartnershipPrices() {
   const prices = [];
   document.querySelectorAll('.price-title').forEach((el, i) => {
     prices.push({ id: currentData.partnership.prices[i]?.id || 'price-' + Date.now(), title: el.value, price: document.querySelectorAll('.price-value')[i].value });
   });
   currentData.partnership.prices = prices;
+}
+async function savePartnershipPrices() {
+  syncPartnershipPrices();
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
   showToast('Сохранено!', 'success');
 }
 
-async function savePartnershipTeam() {
+function syncPartnershipTeam() {
   const team = [];
   document.querySelectorAll('.team-name').forEach((el, i) => {
     team.push({ 
@@ -1080,11 +1114,14 @@ async function savePartnershipTeam() {
     });
   });
   currentData.partnership.team = team;
+}
+async function savePartnershipTeam() {
+  syncPartnershipTeam();
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
   showToast('Сохранено!', 'success');
 }
 
-async function savePartnershipProjects() {
+function syncPartnershipProjects() {
   const projects = [];
   document.querySelectorAll('.project-title').forEach((el, i) => {
     const proj = currentData.partnership.projects[i] || { id: 'proj-' + Date.now(), photos: [] };
@@ -1099,27 +1136,30 @@ async function savePartnershipProjects() {
     projects.push(proj);
   });
   currentData.partnership.projects = projects;
+}
+async function savePartnershipProjects() {
+  syncPartnershipProjects();
   await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
   showToast('Сохранено!', 'success');
 }
 
 // ===== ADD/DELETE ACTIONS =====
-function addBenefit() { currentData.benefits.benefits.push({ id: 'benefit-' + Date.now(), title: '', description: '', icon: 'camera' }); loadSection('benefits'); }
-function deleteBenefit(i) { if (!confirm('Удалить?')) return; currentData.benefits.benefits.splice(i, 1); loadSection('benefits'); }
-function addStep() { currentData.steps.steps.push({ id: 'step-' + Date.now(), title: '', description: '', image: '/images/about-1.avif' }); loadSection('home'); }
-function deleteStep(i) { if (!confirm('Удалить?')) return; currentData.steps.steps.splice(i, 1); loadSection('home'); }
-function addReview() { currentData.reviews.reviews.push({ id: 'review-' + Date.now(), author: '', text: '' }); loadSection(currentSection === 'home' ? 'home' : 'reviews'); }
-function deleteReview(i) { if (!confirm('Удалить?')) return; currentData.reviews.reviews.splice(i, 1); loadSection(currentSection); }
-function addAboutItem() { currentData.partnership.about.push({ id: 'about-' + Date.now(), number: '', text: '' }); loadSection('partnership'); }
-function deleteAboutItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.about.splice(i, 1); loadSection('partnership'); }
-function addOfferItem() { currentData.partnership.offers.push({ id: 'offer-' + Date.now(), number: '', title: '', description: '' }); loadSection('partnership'); }
-function deleteOfferItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.offers.splice(i, 1); loadSection('partnership'); }
-function addPriceItem() { currentData.partnership.prices.push({ id: 'price-' + Date.now(), title: '', price: '' }); loadSection('partnership'); }
-function deletePriceItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.prices.splice(i, 1); loadSection('partnership'); }
-function addTeamItem() { currentData.partnership.team.push({ id: 'team-' + Date.now(), name: '', role: '', src: '/images/placeholder-team-1.jpg' }); loadSection('partnership'); }
-function deleteTeamItem(i) { if (!confirm('Удалить?')) return; currentData.partnership.team.splice(i, 1); loadSection('partnership'); }
-function addProjectItem() { currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', photos: [] }); loadSection('partnership'); }
-function deleteProjectItem(i) { if (!confirm('Удалить проект?')) return; currentData.partnership.projects.splice(i, 1); loadSection('partnership'); }
+function addBenefit() { syncBenefits(); currentData.benefits.benefits.push({ id: 'benefit-' + Date.now(), title: '', description: '', icon: 'camera' }); loadSection('benefits', true); }
+function deleteBenefit(i) { if (!confirm('Удалить?')) return; syncBenefits(); currentData.benefits.benefits.splice(i, 1); loadSection('benefits', true); }
+function addStep() { syncHomeSteps(); currentData.steps.steps.push({ id: 'step-' + Date.now(), title: '', description: '', image: '/images/about-1.avif' }); loadSection('home', true); }
+function deleteStep(i) { if (!confirm('Удалить?')) return; syncHomeSteps(); currentData.steps.steps.splice(i, 1); loadSection('home', true); }
+function addReview() { syncHomeReviews(); currentData.reviews.reviews.push({ id: 'review-' + Date.now(), author: '', text: '' }); loadSection(currentSection === 'home' ? 'home' : 'reviews', true); }
+function deleteReview(i) { if (!confirm('Удалить?')) return; syncHomeReviews(); currentData.reviews.reviews.splice(i, 1); loadSection(currentSection, true); }
+function addAboutItem() { syncPartnershipAbout(); currentData.partnership.about.push({ id: 'about-' + Date.now(), number: '', text: '' }); loadSection('partnership', true); }
+function deleteAboutItem(i) { if (!confirm('Удалить?')) return; syncPartnershipAbout(); currentData.partnership.about.splice(i, 1); loadSection('partnership', true); }
+function addOfferItem() { syncPartnershipOffers(); currentData.partnership.offers.push({ id: 'offer-' + Date.now(), number: '', title: '', description: '' }); loadSection('partnership', true); }
+function deleteOfferItem(i) { if (!confirm('Удалить?')) return; syncPartnershipOffers(); currentData.partnership.offers.splice(i, 1); loadSection('partnership', true); }
+function addPriceItem() { syncPartnershipPrices(); currentData.partnership.prices.push({ id: 'price-' + Date.now(), title: '', price: '' }); loadSection('partnership', true); }
+function deletePriceItem(i) { if (!confirm('Удалить?')) return; syncPartnershipPrices(); currentData.partnership.prices.splice(i, 1); loadSection('partnership', true); }
+function addTeamItem() { syncPartnershipTeam(); currentData.partnership.team.push({ id: 'team-' + Date.now(), name: '', role: '', src: '/images/placeholder-team-1.jpg' }); loadSection('partnership', true); }
+function deleteTeamItem(i) { if (!confirm('Удалить?')) return; syncPartnershipTeam(); currentData.partnership.team.splice(i, 1); loadSection('partnership', true); }
+function addProjectItem() { syncPartnershipProjects(); currentData.partnership.projects.push({ id: 'proj-' + Date.now(), title: '', photos: [] }); loadSection('partnership', true); }
+function deleteProjectItem(i) { if (!confirm('Удалить проект?')) return; syncPartnershipProjects(); currentData.partnership.projects.splice(i, 1); loadSection('partnership', true); }
 async function deleteProjectPhoto(projIdx, photoIdx) {
   if (!confirm('Удалить фото?')) return;
   const project = currentData.partnership.projects[projIdx];
@@ -1148,7 +1188,16 @@ async function deleteExamplePhoto(projIdx, photoIdx) {
   showToast('Фото удалено', 'success');
   loadSection('partnership');
 }
-function deleteGalleryImage(i) { if (!confirm('Удалить фото?')) return; currentData.gallery.images.splice(i, 1); loadSection(currentSection); }
+async function deleteGalleryImage(i) {
+  if (!confirm('Удалить фото?')) return;
+  const src = currentData.gallery.images[i]?.src;
+  syncGallery();
+  currentData.gallery.images.splice(i, 1);
+  await api('save', 'POST', { file: 'gallery', data: currentData.gallery });
+  if (src) await deleteImageFile(src);
+  showToast('Фото удалено', 'success');
+  loadSection(currentSection);
+}
 async function deleteImageFile(src) {
   if (!src || !src.startsWith('/images/cms/')) return;
   try {
@@ -1161,7 +1210,7 @@ async function deleteImageFile(src) {
 
 // ===== PHOTO UPLOAD HANDLERS =====
 async function handleGalleryUpload(event) {
-  await handlePhotoUpload(event, currentData.gallery.images, 'gallery');
+  await handlePhotoUpload(event, currentData.gallery.images);
 }
 
 async function handleTeamUploadFromInput(event) {
@@ -1176,9 +1225,11 @@ async function handleTeamUploadFromInput(event) {
   const res = await apiFormData('upload', formData);
   if (res.success) {
     currentData.partnership.team[memberIdx].src = res.image.src;
-    // Save immediately
-    await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
-    showToast(`${file.name} ✓ Сохранено!`, 'success');
+    // Reflect the new src in the DOM input so syncPartnershipTeam keeps it
+    const srcInput = input.closest('[data-team-idx]')?.querySelector('.team-src');
+    if (srcInput) srcInput.value = res.image.src;
+    // savePartnershipTeam syncs names/roles from DOM first, so unsaved edits survive
+    await savePartnershipTeam();
     loadSection('partnership');
   } else {
     showToast(res.error || 'Ошибка', 'error');
@@ -1209,9 +1260,8 @@ async function handleProjectUploadFromInput(event) {
       showToast(res.error || 'Ошибка', 'error');
     }
   }
-  // Save all uploaded photos
-  await api('save', 'POST', { file: 'partnership', data: currentData.partnership });
-  showToast('Проект сохранён!', 'success');
+  // savePartnershipProjects syncs titles/alts from DOM first, so unsaved edits survive
+  await savePartnershipProjects();
   loadSection('partnership');
 }
 
@@ -1235,13 +1285,18 @@ function renderFAQList(items, category) {
 
 function addFAQItem(category) {
   currentData.faq.categories = currentData.faq.categories || { customer: [], partnership: [] };
+  // Both categories are rendered on this page - sync both so no input is lost
+  syncFAQCategory('customer');
+  syncFAQCategory('partnership');
   currentData.faq.categories[category].push({ id: 'faq-' + Date.now(), question: 'Новый вопрос', answer: 'Ответ...' });
-  loadSection('faq');
+  loadSection('faq', true);
 }
 function deleteFAQItem(category, i) {
   if (!confirm('Удалить?')) return;
+  syncFAQCategory('customer');
+  syncFAQCategory('partnership');
   currentData.faq.categories[category].splice(i, 1);
-  loadSection('faq');
+  loadSection('faq', true);
 }
 
 // ===== UTILITY =====
@@ -1254,6 +1309,29 @@ async function logout() {
   await api('logout');
   window.location.href = 'index.html';
 }
+
+// ===== GLOBAL REGISTRATION =====
+// The functions below are invoked from inline handlers (onclick/onchange) in the
+// generated HTML and in dashboard.html, so static analysis cannot see the
+// references. Register them explicitly to keep the linter useful for real dead code.
+Object.assign(window, {
+  addSharedPackage, deleteSharedPackage, addSharedCity, deleteSharedCity,
+  saveSharedPricing, saveSharedGeography,
+  saveHomeSteps, saveHomeReviews, saveHomeBenefits,
+  addBenefit, deleteBenefit, addStep, deleteStep, addReview, deleteReview,
+  saveAllReviews, saveFAQCategory, addFAQItem, deleteFAQItem,
+  saveGallery, deleteGalleryImage, handleGalleryUpload,
+  savePartnershipAbout, savePartnershipOffers, savePartnershipPrices,
+  savePartnershipTeam, savePartnershipProjects, savePartnershipExamples,
+  addAboutItem, deleteAboutItem, addOfferItem, deleteOfferItem,
+  addPriceItem, deletePriceItem, addTeamItem, deleteTeamItem,
+  addProjectItem, deleteProjectItem, deleteProjectPhoto,
+  addExampleItem, deleteExampleItem, deleteExamplePhoto,
+  handleTeamUploadFromInput, handleProjectUploadFromInput, handleExampleUploadFromInput,
+  saveContactsGeo, saveMeta,
+  showCreateUserForm, hideCreateUserForm, createUser, deleteUser, editUser,
+  logout,
+});
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', async () => {

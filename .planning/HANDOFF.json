@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-07-20T17:55:00.000Z",
+  "timestamp": "2026-07-21T15:25:00.000Z",
   "phase": null,
   "phase_name": null,
   "phase_dir": null,
@@ -134,12 +134,23 @@
       "name": "NewbornPhotos extracted to shared component, added to /price after pricing",
       "status": "done",
       "commit": "4734542"
+    },
+    {
+      "id": "admin-audit-fixes",
+      "name": "Admin panel full audit + fixes: users.php storage (hash leak), add/delete wipe, gallery save, priv-escalation default-deny, XSS escapes, user-delete guards, session hardening, dead code (lint 0/0), meta baseUrl",
+      "status": "done",
+      "commit": null
     }
   ],
   "remaining_tasks": [
     {
       "id": "manual-deploy",
-      "name": "Manual deploy: upload dist.zip and run deploy.php",
+      "name": "Manual deploy: upload dist.zip and run deploy.php; upload public/admin/* to /admin/, then delete /admin/users.json on server",
+      "status": "not_started"
+    },
+    {
+      "id": "rotate-admin-passwords",
+      "name": "Change ramzes/tagir passwords after deploy (hashes were publicly exposed at /admin/users.json + in git history)",
       "status": "not_started"
     },
     {
@@ -154,7 +165,7 @@
     },
     {
       "id": "todo-011",
-      "name": "Privacy policy actualization",
+      "name": "Privacy policy actualization (also: sunlife-ufa.ru mentions in PrivacyPage.tsx, stale src/content/meta.ts duplicate)",
       "status": "not_started"
     },
     {
@@ -177,13 +188,23 @@
     {
       "description": "No FTP/SSH password available in this environment; SSH key was rejected by hostiman server.",
       "type": "human_action",
-      "workaround": "User will upload dist.zip manually and call deploy.php."
+      "workaround": "User will upload dist.zip and admin files manually and call deploy.php."
     }
   ],
   "human_actions_pending": [
     {
-      "action": "Deploy dist.zip via https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy, then Ctrl+F5 to verify (forms, Syktyvkar, partnership map)",
-      "context": "dist.zip contains form handler fixes (curl_multi + TLS), content edits, Syktyvkar, partnership map section, map cache-bust.",
+      "action": "Deploy admin panel: upload public/admin/api/index.php, public/admin/js/admin.js, public/admin/index.html, public/admin/dashboard.html to /admin/ on the server. After first admin login (auto-migration users.json→users.php), DELETE /admin/users.json from the server.",
+      "context": "users.json was publicly downloadable (HTTP 200) — bcrypt hashes exposed. New API stores users in users.php which executes to empty output when accessed via web. Migration is automatic on first getUsers() call.",
+      "blocking": true
+    },
+    {
+      "action": "Change passwords for ramzes and tagir in the admin panel after deploy; optionally run: git rm --cached public/admin/users.json",
+      "context": "Password hashes must be treated as compromised: they were served publicly by nginx and are in git history.",
+      "blocking": true
+    },
+    {
+      "action": "Deploy dist.zip via https://sunlife-photo.ru/deploy.php?key=sunlife2025deploy, then Ctrl+F5 to verify (forms, Syktyvkar, partnership map, canonical URLs now sunlife-photo.ru)",
+      "context": "dist.zip contains the site build with meta.json baseUrl fixed to https://sunlife-photo.ru (was sunlife-ufa.ru, leaked into canonical/OG/schema.org).",
       "blocking": true
     },
     {
@@ -194,22 +215,38 @@
   ],
   "decisions": [
     {
-      "decision": "Exclude images/gallery from dist.zip for this deploy.",
-      "rationale": "Gallery files are already on the server and were only optimized, not renamed. Including them would make the archive ~47 MB and slow FTP upload unnecessarily.",
+      "decision": "Store admin users in users.php (PHP file returning an array) instead of users.json, with auto-migration on first read.",
+      "rationale": "nginx serves .json statically bypassing Apache/.htaccess protection, so password hashes were publicly downloadable. A .php file is always executed and outputs nothing. Works regardless of server static-file config.",
       "phase": null
     },
     {
-      "decision": "Delete original JPG/PNG files that have WebP equivalents.",
-      "rationale": "All code references use WebP versions; originals were unused and consumed ~50 MB in the repo.",
+      "decision": "Default-deny in admin API save action: files outside permissionMap require admin role.",
+      "rationale": "site.json and gallery-portfolio.json (and any future files) were writable by any authenticated editor — confirmed privilege escalation in local test.",
       "phase": null
     },
     {
-      "decision": "Resize gallery images to 1600px on the long edge and encode at WebP quality 75.",
-      "rationale": "Reduced gallery from 87 MB to 36 MB with acceptable visual quality; large originals are not needed for web display.",
+      "decision": "Add/delete in admin JS re-renders from local state (loadSection(section, true)) after syncing DOM into currentData, instead of immediate server refetch; uploads save immediately via the same sync helpers.",
+      "rationale": "Server refetch after local mutation silently discarded all add/delete operations and unsaved edits (confirmed in puppeteer run).",
+      "phase": null
+    },
+    {
+      "decision": "Register inline-handler functions via Object.assign(window, {...}) in admin.js.",
+      "rationale": "oxlint cannot see references from inline onclick/onchange HTML strings and reported ~49 false-positive unused-vars; explicit registration keeps the linter useful for real dead code (now 0 warnings).",
       "phase": null
     }
   ],
-  "uncommitted_files": [],
-  "next_action": "Deploy fresh dist.zip (newborn section on /partnership + /price, partnership reorder, step title) via deploy.php, Ctrl+F5 verify. Then: SMTP_PASS into api/config.local.php, BOT_TOKEN /revoke, cache headers via hostiman panel. Next todos: todo-011 (privacy), todo-005 (analytics, needs Metrica ID).",
-  "context_notes": "2026-07-20 (end of day): Telegram delivery works. New component NewbornPhotos (5 newborn photos, shared Lightbox) — subsection in partnership examples + section on /price after pricing. Partnership sections reordered: social projects («Участие в социальных проектах», ex «Портфолио партнёрских проектов») after FAQ, team section last. Step 2 title = «Индивидуальный подход». Still pending user-side: SMTP_PASS (email channel down), BOT_TOKEN revoke (exposed in chat), nginx static cache (24h) disable in hostiman panel. Latest commits: 4734542 (newborn on price), 5f495ec, 608139c, d9b323f, 176afe9. Build clean, dist.zip fresh."
+  "uncommitted_files": [
+    ".gitignore",
+    "public/admin/api/index.php",
+    "public/admin/dashboard.html",
+    "public/admin/index.html",
+    "public/admin/js/admin.js",
+    "public/content/meta.json",
+    "scripts/test-admin.cjs",
+    "scripts/test-admin-fixes.cjs",
+    ".planning/STATE.md",
+    ".planning/HANDOFF.json"
+  ],
+  "next_action": "User confirms, then commit. Deploy: (1) admin files to /admin/ + delete /admin/users.json on server + change both passwords; (2) dist.zip via deploy.php. Then backlog: SMTP_PASS, BOT_TOKEN revoke, cache headers via hostiman panel, todo-011 (privacy, also stale sunlife-ufa.ru mentions in PrivacyPage.tsx and src/content/meta.ts).",
+  "context_notes": "2026-07-21: Admin panel full audit done (static + local puppeteer on php -S; scripts/test-admin.cjs 16 scenarios, scripts/test-admin-fixes.cjs 12 scenarios — 12/12 PASS after fixes). Fixed: CRITICAL users.json public hash leak (now users.php + auto-migration, .gitignore'd), HIGH add/delete silent wipe (loadSection fromState + DOM sync), HIGH gallery upload/delete not persisted (+file cleanup on delete), HIGH editor privilege escalation (default-deny), MEDIUM stored XSS escapes, MEDIUM user-delete self/last-admin guards, MEDIUM session hardening (regenerate id, cookie params, login delay, CORS wildcard removed), LOW sizes-string join, empty baseName fallback, admin favicon. meta.json baseUrl fixed to sunlife-photo.ru. tsc 0 errors, oxlint 0 errors/2 pre-existing src warnings, dist.zip flat (no dist/ wrapper, no admin/), prerender 8/8. Test users removed, content restored from snapshot. NOT committed — awaiting user confirmation."
 }

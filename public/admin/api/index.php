@@ -7,7 +7,14 @@
 // Configuration
 const CONTENT_DIR = __DIR__ . '/../../content/';
 const IMAGES_DIR = __DIR__ . '/../../images/cms/';
-const USERS_FILE = __DIR__ . '/../users.json';
+// users.php stores users as a PHP file returning an array: when requested via
+// web it executes and outputs nothing, so password hashes are never exposed
+// (users.json was publicly downloadable on nginx static handling).
+const USERS_FILE = __DIR__ . '/../users.php';
+const USERS_FILE_LEGACY = __DIR__ . '/../users.json';
+const LOGIN_ATTEMPTS_FILE = __DIR__ . '/../.login_attempts.json';
+const LOGIN_MAX_ATTEMPTS = 5;
+const LOGIN_LOCK_SECONDS = 900; // 15 min lock after 5 failed attempts
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 const IMAGE_SIZES = [400, 800, 1200, 1600];
@@ -24,13 +31,16 @@ const PERM_PARTNERSHIP = 'partnership';
 const PERM_META = 'meta';
 const PERM_USERS = 'users'; // Admin only
 
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    'httponly' => true,
+    'samesite' => 'Lax',
+]);
 session_start();
 
-// CORS headers for API
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -45,22 +55,32 @@ function jsonResponse(array $data, int $status = 200): void {
 }
 
 function getUsers(): array {
-    if (!file_exists(USERS_FILE)) {
-        return [];
+    if (file_exists(USERS_FILE)) {
+        $users = include USERS_FILE;
+        return is_array($users) ? $users : [];
     }
-    $content = file_get_contents(USERS_FILE);
-    $users = json_decode($content, true);
-    return is_array($users) ? $users : [];
+    // One-time migration from users.json (delete users.json from the server afterwards)
+    if (file_exists(USERS_FILE_LEGACY)) {        $users = json_decode(file_get_contents(USERS_FILE_LEGACY), true);
+        if (is_array($users)) {
+            saveUsers($users);
+            return $users;
+        }
+    }
+    return [];
 }
 
 function saveUsers(array $users): bool {
-    $json = json_encode($users, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    if ($json === false) return false;
-    return file_put_contents(USERS_FILE, $json, LOCK_EX) !== false;
+    $php = "<?php\n// Users storage. Managed by the admin API - do not edit manually.\nreturn " . var_export($users, true) . ";\n";
+    return file_put_contents(USERS_FILE, $php, LOCK_EX) !== false;
 }
 
 function getCurrentUser(): ?array {
     if (empty($_SESSION['user_id'])) return null;
+    // Sessions expire after 8 hours
+    if (empty($_SESSION['login_time']) || (time() - $_SESSION['login_time']) > 8 * 3600) {
+        session_unset();
+        return null;
+    }
     $users = getUsers();
     return $users[$_SESSION['user_id']] ?? null;
 }
@@ -154,14 +174,61 @@ function optimizeImage(string $sourcePath, string $filename, string $ext): array
     imagedestroy($source);
     unlink($sourcePath);
 
+    $sizesAttr = implode(', ', array_map(fn($s) => '(max-width: ' . ($s + 100) . 'px) ' . $s . 'px', $sizes));
+    $sizesAttr = $sizesAttr !== '' ? $sizesAttr . ', 100vw' : '100vw';
+
     return [
         'success' => true,
         'src' => '/images/cms/' . $baseName . '-orig.webp',
         'srcset' => implode(', ', $srcset),
-        'sizes' => implode(', ', array_map(fn($s) => '(max-width: ' . ($s + 100) . 'px) ' . $s . 'px', $sizes)) . ' 100vw',
+        'sizes' => $sizesAttr,
         'width' => $origWidth,
         'height' => $origHeight,
     ];
+}
+
+// Login brute-force protection: 5 failed attempts -> 15 min lock per login+IP
+function loginLockKey(string $login): string {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    return $login . '|' . $ip;
+}
+
+function loginIsLocked(string $key): bool {
+    if (!file_exists(LOGIN_ATTEMPTS_FILE)) return false;
+    $data = json_decode(file_get_contents(LOGIN_ATTEMPTS_FILE), true) ?: [];
+    $entry = $data[$key] ?? null;
+    if (!is_array($entry)) return false;
+    if (($entry['locked_until'] ?? 0) > time()) return true;
+    return false;
+}
+
+function loginRecordFailure(string $key): void {
+    $now = time();
+    $data = file_exists(LOGIN_ATTEMPTS_FILE)
+        ? (json_decode(file_get_contents(LOGIN_ATTEMPTS_FILE), true) ?: [])
+        : [];
+    // cleanup stale
+    foreach ($data as $k => $e) {
+        if (($e['locked_until'] ?? 0) < $now && ($now - ($e['last'] ?? 0)) > LOGIN_LOCK_SECONDS) {
+            unset($data[$k]);
+        }
+    }
+    $entry = $data[$key] ?? ['count' => 0, 'last' => 0, 'locked_until' => 0];
+    $entry['count']++;
+    $entry['last'] = $now;
+    if ($entry['count'] >= LOGIN_MAX_ATTEMPTS) {
+        $entry['locked_until'] = $now + LOGIN_LOCK_SECONDS;
+        $entry['count'] = 0;
+    }
+    $data[$key] = $entry;
+    file_put_contents(LOGIN_ATTEMPTS_FILE, json_encode($data), LOCK_EX);
+}
+
+function loginClearFailures(string $key): void {
+    if (!file_exists(LOGIN_ATTEMPTS_FILE)) return;
+    $data = json_decode(file_get_contents(LOGIN_ATTEMPTS_FILE), true) ?: [];
+    unset($data[$key]);
+    file_put_contents(LOGIN_ATTEMPTS_FILE, json_encode($data), LOCK_EX);
 }
 
 // Router
@@ -181,13 +248,22 @@ switch ($action) {
             jsonResponse(['success' => false, 'error' => 'Login and password required'], 401);
         }
 
+        $lockKey = loginLockKey($login);
+        if (loginIsLocked($lockKey)) {
+            jsonResponse(['success' => false, 'error' => 'Слишком много попыток. Попробуйте через 15 минут.'], 429);
+        }
+
         $users = getUsers();
         $user = $users[$login] ?? null;
 
         if (!$user || !password_verify($password, $user['password_hash'])) {
+            loginRecordFailure($lockKey);
+            sleep(1); // slow down brute-force attempts
             jsonResponse(['success' => false, 'error' => 'Invalid login or password'], 401);
         }
 
+        loginClearFailures($lockKey);
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $login;
         $_SESSION['login_time'] = time();
 
@@ -278,6 +354,9 @@ switch ($action) {
 
         if (isset($permissionMap[$file])) {
             requirePermission($permissionMap[$file]);
+        } else {
+            // Files outside the map (site, gallery-portfolio, anything new) are admin-only
+            requireAdmin();
         }
 
         $path = CONTENT_DIR . $file . '.json';
@@ -338,6 +417,7 @@ switch ($action) {
         }
 
         $baseName = preg_replace('/[^a-zA-Z0-9_-]/', '', pathinfo($file['name'], PATHINFO_FILENAME));
+        if ($baseName === '') $baseName = 'img'; // e.g. Cyrillic-only filenames sanitize to empty
         $uniqueName = $baseName . '-' . uniqid();
         $tmpPath = $file['tmp_name'];
 
@@ -546,9 +626,20 @@ switch ($action) {
         $input = json_decode(file_get_contents('php://input'), true);
         $login = trim($input['login'] ?? '');
 
+        if ($login === ($_SESSION['user_id'] ?? '')) {
+            jsonResponse(['success' => false, 'error' => 'Cannot delete your own account'], 400);
+        }
+
         $users = getUsers();
         if (!isset($users[$login])) {
             jsonResponse(['success' => false, 'error' => 'User not found'], 404);
+        }
+
+        if ($users[$login]['role'] === 'admin') {
+            $admins = array_filter($users, fn($u) => ($u['role'] ?? '') === 'admin');
+            if (count($admins) <= 1) {
+                jsonResponse(['success' => false, 'error' => 'Cannot delete the last admin'], 400);
+            }
         }
 
         unset($users[$login]);

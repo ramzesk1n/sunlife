@@ -12,10 +12,12 @@ interface SchemaOrgProps {
 }
 
 function JsonLd({ data }: { data: unknown }) {
+  // Escape "<" so a "</script>" inside CMS-edited JSON cannot break out of the tag
+  const safeJson = JSON.stringify(data).replace(/</g, '\\u003c');
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJson }}
     />
   );
 }

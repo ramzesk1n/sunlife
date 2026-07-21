@@ -5,7 +5,16 @@
  * https://sunlife-photo.ru/deploy.php?key=YOUR_SECRET_KEY
  */
 
-$secretKey = 'sunlife2025deploy'; // Change this!
+$secretKey = 'sunlife2025deploy'; // Fallback - set DEPLOY_KEY in api/config.local.php (server-only file)
+
+// Prefer a server-only key from api/config.local.php (never committed to git)
+$localConfig = __DIR__ . '/api/config.local.php';
+if (file_exists($localConfig)) {
+    require_once $localConfig;
+    if (defined('DEPLOY_KEY') && DEPLOY_KEY !== '') {
+        $secretKey = DEPLOY_KEY;
+    }
+}
 
 // Check key
 if (!isset($_GET['key']) || $_GET['key'] !== $secretKey) {

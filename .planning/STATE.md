@@ -1,6 +1,36 @@
 # САН ЛАЙФ - Состояние проекта
 
-## Активная сессия: 2026-07-20
+## Активная сессия: 2026-07-21
+
+### Что сделано сегодня (2026-07-21)
+
+1. ✅ **Полный аудит админ-панели + исправления** (статический анализ + puppeteer-прогон на локальном php -S, 16 сценариев до фиксов, 12/12 PASS после)
+   - **CRITICAL: утечка хэшей паролей** — `/admin/users.json` на проде отдавался публично (HTTP 200, nginx отдаёт статику мимо Apache/.htaccess). Хранилище переведено на `users.php` (PHP-файл, возвращает массив; при веб-доступе исполняется и ничего не отдаёт) с авто-миграцией из `users.json` при первом обращении. `users.php` в .gitignore.
+   - **HIGH: add/delete элементов затирались** — обработчики мутировали `currentData` и тут же перезагружали раздел с сервера (подтверждено прогоном: 4→4 вместо 5). Фикс: `loadSection(section, fromState)` + sync-хелперы DOM→currentData перед мутацией; несохранённые правки больше не теряются.
+   - **HIGH: загрузка/удаление фото галереи не сохранялись** — `handlePhotoUpload`/`deleteGalleryImage` не вызывали save (файлы-сироты в images/cms). Теперь сохраняют + delete-image чистит файлы с диска.
+   - **HIGH: эскалация привилегий** — editor мог перезаписать `site.json`/`gallery-portfolio.json`/любой файл вне `permissionMap` (подтверждено: 200). Теперь default-deny: файлы вне мапы — только admin.
+   - **MEDIUM: stored-XSS в админке** — `img.src` и features в textarea без escape → `escapeHtml` во всех рендерах (галерея, команда, проекты, примеры, pricing).
+   - **MEDIUM: user-delete** — можно было удалить себя/последнего админа → блокировки (400) добавлены.
+   - **MEDIUM: сессии/заголовки** — `session_regenerate_id` после логина, явные cookie-параметры (Secure при HTTPS, HttpOnly, SameSite=Lax), `sleep(1)` на неверный пароль, убран `Access-Control-Allow-Origin: *`.
+   - **LOW**: невалидная строка `sizes` в upload-ответе (склейка без запятой), пустой baseName при кириллическом имени файла (→ `img`), favicon 404 в админке (добавлен `<link rel="icon">`).
+   - **Мёртвый код в admin.js**: убраны 4 неиспользуемых параметра, мёртвая ветка `type==='team'`, мёртвый `uploadAttr`, отладочные `console.log`. Остальные ~49 «unused» oxlint — ложные (функции вызываются из inline onclick): зарегистрированы явно через `Object.assign(window, {...})` → **0 warnings, 0 errors**.
+   - **Данные**: `meta.json` baseUrl `sunlife-ufa.ru` → `sunlife-photo.ru` (тянулся в canonical/OG/schema.org через `src/lib/schema.ts`).
+   - Тестовые скрипты: `scripts/test-admin.cjs` (первичный аудит, 16 сценариев), `scripts/test-admin-fixes.cjs` (регресс фиксов, 12 сценариев).
+
+2. **Требуется действие пользователя на проде** (см. human_actions в HANDOFF.json):
+   - Залить `public/admin/*` (api/index.php, js/admin.js, index.html, dashboard.html) на сервер в `/admin/`
+   - После первого входа в админку **удалить `/admin/users.json` с сервера** (миграция в users.php произойдёт автоматически)
+   - **Сменить пароли** ramzes/tagir (хэши были публично доступны + в git-истории — считать скомпрометированными)
+   - Рекомендовано: `git rm --cached public/admin/users.json` (убрать из трекинга)
+
+### Замеченное вне скоупа (не трогали)
+- `src/content/meta.ts` — неиспользуемый дубль меты (сайт берёт meta.json), внутри тоже старый домен
+- `src/pages/PrivacyPage.tsx` — упоминания sunlife-ufa.ru в тексте (к todo-011)
+- 20 старых `partnership-*.backup.json` в `public/content/` (до ротации бэкапов) — кандидаты на чистку
+- Нет UI восстановления из бэкапов (есть только API list-backups) — фича-запрос
+- `users-list` анониму отдаёт 403 вместо 401 — косметика
+
+## Предыдущая сессия: 2026-07-20
 
 ### Что сделано сегодня (2026-07-20)
 
