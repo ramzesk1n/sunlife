@@ -146,6 +146,12 @@
       "name": "Security review (getsentry skill) + code-track fixes; users.json removed from repo",
       "status": "done",
       "commit": "9fb81a0"
+    },
+    {
+      "id": "perf-round-3",
+      "name": "Hero instant paint, font preload, skeleton min-heights (CLS 0 locally, perf 73 local)",
+      "status": "done",
+      "commit": "c2f9e81"
     }
   ],
   "remaining_tasks": [
