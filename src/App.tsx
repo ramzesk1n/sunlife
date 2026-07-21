@@ -58,9 +58,12 @@ function PageLoader() {
   );
 }
 
-function SectionSkeleton({ count = 1 }: { count?: number }) {
+function SectionSkeleton({ count = 1, minHeight }: { count?: number; minHeight?: number }) {
   return (
-    <div className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-cream">
+    <div
+      className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-cream"
+      style={minHeight ? { minHeight: `${minHeight}px` } : undefined}
+    >
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {Array.from({ length: count }).map((_, i) => (
           <SkeletonCard key={i} />
@@ -78,10 +81,10 @@ function HomePage() {
       <main>
         <Hero />
         <Benefits />
-        <Suspense fallback={<SectionSkeleton count={1} />}>
+        <Suspense fallback={<SectionSkeleton count={1} minHeight={2790} />}>
           <ExperienceSteps />
         </Suspense>
-        <Suspense fallback={<SectionSkeleton count={4} />}>
+        <Suspense fallback={<SectionSkeleton count={4} minHeight={670} />}>
           <Gallery />
         </Suspense>
         <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
@@ -93,7 +96,7 @@ function HomePage() {
             />
           </div>
         </section>
-        <Suspense fallback={<SectionSkeleton count={4} />}>
+        <Suspense fallback={<SectionSkeleton count={4} minHeight={3670} />}>
           <PricingCards />
         </Suspense>
         <section className="py-8 md:py-12 px-4 sm:px-6 lg:px-8 bg-cream">
@@ -105,16 +108,16 @@ function HomePage() {
             />
           </div>
         </section>
-        <Suspense fallback={<SectionSkeleton count={3} />}>
+        <Suspense fallback={<SectionSkeleton count={3} minHeight={770} />}>
           <Testimonials />
         </Suspense>
-        <Suspense fallback={<SectionSkeleton count={1} />}>
+        <Suspense fallback={<SectionSkeleton count={1} minHeight={1630} />}>
           <FAQ />
         </Suspense>
-        <Suspense fallback={<SectionSkeleton count={4} />}>
+        <Suspense fallback={<SectionSkeleton count={4} minHeight={570} />}>
           <TeamSlider />
         </Suspense>
-        <Suspense fallback={<SectionSkeleton count={1} />}>
+        <Suspense fallback={<SectionSkeleton count={1} minHeight={690} />}>
           <Geography />
         </Suspense>
       </main>

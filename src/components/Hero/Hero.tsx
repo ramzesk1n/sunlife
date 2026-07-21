@@ -10,29 +10,8 @@ export default function Hero() {
   const imageRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [isTextVisible, setIsTextVisible] = useState(false);
-  const [isImageVisible, setIsImageVisible] = useState(false);
-
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
-
-  useEffect(() => {
-    // Trigger entrance animations on mount
-    if (prefersReducedMotion) {
-      setIsTextVisible(true);
-      setIsImageVisible(true);
-      return;
-    }
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    const rafId = requestAnimationFrame(() => {
-      setIsTextVisible(true);
-      timeoutId = setTimeout(() => setIsImageVisible(true), 200);
-    });
-    return () => {
-      cancelAnimationFrame(rafId);
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
-    };
-  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -85,12 +64,8 @@ export default function Hero() {
       >
         <div className="max-w-7xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            {/* Text content */}
-            <div
-              className={`order-1 lg:order-1 flex transition-all duration-700 ease-out ${
-                isTextVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-              }`}
-            >
+            {/* Text content — visible immediately (prerender paints LCP without waiting for JS) */}
+            <div className="order-1 lg:order-1 flex">
               <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12 flex flex-col justify-center w-full">
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-medium text-gold-primary-80 uppercase tracking-[0.1em] mb-6 text-balance">
                   Фотограф на выписку из роддома
@@ -116,12 +91,8 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Hero image */}
-            <div
-              className={`order-2 lg:order-2 flex transition-all duration-700 ease-out ${
-                isImageVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-              }`}
-            >
+            {/* Hero image — visible immediately (LCP candidate) */}
+            <div className="order-2 lg:order-2 flex">
               <div
                 ref={imageRef}
                 className="relative w-full aspect-[178/100] rounded-2xl overflow-hidden shadow-glass bg-gold-pale"
