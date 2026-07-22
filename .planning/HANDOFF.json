@@ -170,6 +170,12 @@
       "name": "Mobile: heading breaks, testimonial swipe+autoplay, back-to-top above bar, tighter offsets",
       "status": "done",
       "commit": "725c07a"
+    },
+    {
+      "id": "menu-toggle-backtotop",
+      "name": "Contact menu closes on toggle click; BackToTop hides while menu open",
+      "status": "done",
+      "commit": "2616ffa"
     }
   ],
   "remaining_tasks": [
