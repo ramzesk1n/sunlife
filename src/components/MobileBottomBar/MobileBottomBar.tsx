@@ -55,6 +55,11 @@ export default function MobileBottomBar() {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
+  // Let other components (e.g. BackToTop) hide while the contact menu is open
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('sunlife:contact-menu', { detail: isMenuOpen }));
+  }, [isMenuOpen]);
+
   const handlePrimaryClick = () => {
     if (cta.form === 'home') {
       navigate('/');
@@ -85,11 +90,10 @@ export default function MobileBottomBar() {
             isVisible ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
-          <div className="max-w-md mx-auto pointer-events-auto">
+          <div ref={menuRef} className="max-w-md mx-auto pointer-events-auto">
             {/* Contact menu */}
             {isMenuOpen && (
               <div
-                ref={menuRef}
                 className="absolute bottom-full left-4 right-4 mb-3 glass rounded-2xl p-3 shadow-gold transition-all duration-200 ease-out animate-fade-in-up"
               >
                 <div className="grid grid-cols-5 gap-2">

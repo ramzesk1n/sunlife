@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isContactMenuOpen, setIsContactMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,16 +14,27 @@ export default function BackToTop() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Hide while the mobile contact menu is open (it overlaps the arrow)
+  useEffect(() => {
+    const handleMenu = (e: Event) => {
+      setIsContactMenuOpen((e as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener('sunlife:contact-menu', handleMenu);
+    return () => window.removeEventListener('sunlife:contact-menu', handleMenu);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const shown = isVisible && !isContactMenuOpen;
 
   return (
     <button
       type="button"
       onClick={scrollToTop}
       className={`fixed bottom-[5.5rem] right-5 lg:bottom-6 lg:right-6 z-40 w-12 h-12 rounded-full bg-gold-primary text-cream shadow-gold flex items-center justify-center transition-all duration-300 hover:bg-gold-dark hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gold-primary/50 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+        shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
       }`}
       aria-label="Наверх"
       title="Наверх"
