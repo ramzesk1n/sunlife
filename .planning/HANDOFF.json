@@ -164,6 +164,12 @@
       "name": "Responsive hero srcset (700/1400w), slider q70, fonts.css inlined in index.html",
       "status": "done",
       "commit": "4c6b2b6"
+    },
+    {
+      "id": "mobile-ux-edits",
+      "name": "Mobile: heading breaks, testimonial swipe+autoplay, back-to-top above bar, tighter offsets",
+      "status": "done",
+      "commit": "725c07a"
     }
   ],
   "remaining_tasks": [
