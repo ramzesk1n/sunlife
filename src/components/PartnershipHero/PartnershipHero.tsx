@@ -27,9 +27,9 @@ export default function PartnershipHero({ onOpenForm }: PartnershipHeroProps) {
             <div className="glass rounded-3xl p-8 sm:p-10 lg:p-12 flex flex-col justify-center w-full">
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-gold-primary-80 uppercase tracking-[0.06em] mb-6 text-balance">
                 <span className="block">Фотослужба</span>
-                <span className="block">САН ЛАЙФ</span>
-                <span className="block">- предложение</span>
-                <span className="block">о сотрудничестве</span>
+                <span className="block">САН ЛАЙФ -</span>
+                <span className="block">предложение о</span>
+                <span className="block">сотрудничестве</span>
               </h1>
 
               <div className="space-y-4 text-base sm:text-lg text-text-dark mb-8">

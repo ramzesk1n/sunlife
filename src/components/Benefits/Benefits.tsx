@@ -79,7 +79,9 @@ export default function Benefits() {
         <h2
           className={`text-3xl md:text-4xl lg:text-5xl font-display font-light text-gold-primary-80 text-center mb-4 uppercase tracking-wider ${headingClass}`}
         >
-          Гильдия фотографов САН ЛАЙФ - это
+          <span className="block">Гильдия</span>
+          <span className="block">фотографов</span>
+          <span className="block">САН ЛАЙФ - это</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">

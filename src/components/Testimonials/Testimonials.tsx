@@ -59,6 +59,18 @@ export default function Testimonials() {
     if (page < totalPages - 1) goToPage(page + 1);
   }, [page, totalPages, goToPage]);
 
+  // Autoplay: advance every 5s, wrap around, pause on hover/touch and reduced motion
+  const [isPaused, setIsPaused] = useState(false);
+  const autoplayNext = useCallback(() => {
+    goToPage((page + 1) % totalPages);
+  }, [goToPage, page, totalPages]);
+
+  useEffect(() => {
+    if (shouldReduceMotion || isPaused || totalPages < 2) return undefined;
+    const id = window.setInterval(autoplayNext, 5000);
+    return () => window.clearInterval(id);
+  }, [shouldReduceMotion, isPaused, autoplayNext, totalPages]);
+
   const prevPage = useCallback(() => {
     if (page > 0) goToPage(page - 1);
   }, [page, goToPage]);
@@ -148,6 +160,8 @@ export default function Testimonials() {
           <div className="px-2 md:px-12"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
           >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div

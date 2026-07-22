@@ -81,7 +81,7 @@ export default function MobileBottomBar() {
     <>
       {isBarRendered && (
         <div
-          className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2 pointer-events-none transition-transform duration-350 ease-out ${
+          className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 pointer-events-none transition-transform duration-350 ease-out ${
             isVisible ? 'translate-y-0' : 'translate-y-full'
           }`}
         >

@@ -71,7 +71,7 @@ export default function Header() {
   }, [location.pathname]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-2">
       <nav
         className={`mx-auto max-w-7xl rounded-2xl transition-all duration-300 ${
           isScrolled

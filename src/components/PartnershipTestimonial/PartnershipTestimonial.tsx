@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 
 interface Testimonial {
@@ -120,12 +120,34 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 
 export default function PartnershipTestimonial() {
   const sectionRef = useRef<HTMLElement>(null);
+  const touchStartX = useRef(0);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
   const shouldReduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const next = () => setActiveIndex((prev) => (prev + 1) % testimonials.length);
-  const prev = () => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const next = useCallback(() => setActiveIndex((prev) => (prev + 1) % testimonials.length), []);
+  const prev = useCallback(() => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length), []);
+
+  // Swipe
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) next();
+      else prev();
+    }
+  }, [next, prev]);
+
+  // Autoplay: advance every 5s, pause on hover and reduced motion
+  useEffect(() => {
+    if (shouldReduceMotion || isPaused) return undefined;
+    const id = window.setInterval(next, 5000);
+    return () => window.clearInterval(id);
+  }, [shouldReduceMotion, isPaused, next]);
 
   return (
     <section
@@ -156,7 +178,13 @@ export default function PartnershipTestimonial() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
         >
-          <div className="overflow-hidden">
+          <div
+            className="overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
